@@ -12,7 +12,7 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <ThreeItemGrid />
+      <ThreeItemGrid collection='Apparel' />
       <Carousel />
       <Footer />
     </>
