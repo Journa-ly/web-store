@@ -40,7 +40,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   const cart = getCart(cartId);
 
   return (
-    <html lang="en" className={GeistSans.variable}>
+    <html lang="en" data-theme="cmyk" className={GeistSans.variable}>
       <body>
         <CartProvider cartPromise={cart}>
           <Navbar />

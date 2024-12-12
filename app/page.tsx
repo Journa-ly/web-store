@@ -1,5 +1,5 @@
 import { Carousel } from 'components/carousel';
-import { ThreeItemGrid } from 'components/grid/three-items';
+import Hero from 'components/Hero';
 import Footer from 'components/layout/footer';
 
 export const metadata = {
@@ -12,7 +12,12 @@ export const metadata = {
 export default function HomePage() {
   return (
     <>
-      <ThreeItemGrid collection='Apparel' />
+      <Hero 
+        title="Create the sh*t you wish you could buy." 
+        subtitle="Use our AI to create designs for nearly any apparel type. You don’t have to be bougie either.  We promise."
+        imageSrc="/images/hero.png"
+        altText="Hero Image"
+      />
       <Carousel />
       <Footer />
     </>
