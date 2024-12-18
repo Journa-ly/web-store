@@ -8,7 +8,7 @@ export async function Navbar() {
   const menu = await getMenu('mega-menu');
 
   return (
-    <div className="pb-8 pt-4 mx-8">
+    <div className="pb-8 pt-4 mx-2 lg:mx-6">
       <div className="navbar shadow-lg rounded-box bg-base-100">
         <div className="navbar-start">
           <div className="dropdown">

@@ -12,7 +12,17 @@ const config: Config = {
   ],
   // daisyUI config
   daisyui: {
-    themes: ["cmyk"], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+    themes: [
+      {
+        journaTheme: {
+          "primary": "#00d7c0",
+          "secondary": "#ff00d3",
+          "accent": "#4a00ff",
+          "neutral": "#3d4451",
+          "base-100": "#ffffff",
+        },
+      }
+    ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
     base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes

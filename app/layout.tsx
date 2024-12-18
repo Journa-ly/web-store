@@ -1,8 +1,8 @@
 import { CartProvider } from 'components/cart/cart-context';
 import { Navbar } from 'components/layout/navbar';
-import { GeistSans } from 'geist/font/sans';
 import { getCart } from 'lib/shopify';
 import { ensureStartsWith } from 'lib/utils';
+import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import { ReactNode } from 'react';
 import './globals.css';
@@ -34,13 +34,15 @@ export const metadata = {
     })
 };
 
+const inter = Inter({ subsets: ['latin'] })
+
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
   // Don't await the fetch, pass the Promise to the context provider
   const cart = getCart(cartId);
 
   return (
-    <html lang="en" data-theme="cmyk" className={GeistSans.variable}>
+    <html lang="en" data-theme="journaTheme" className={inter.className}>
       <body>
         <CartProvider cartPromise={cart}>
           <Navbar />
