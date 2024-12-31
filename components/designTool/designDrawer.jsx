@@ -1,13 +1,14 @@
+'use client';
+import 'public/styles/design_tool.css';
+import DesignTool from "./designTool";
 import { ModalProvider } from "./ModalContext";
-import Preview from "./Preview";
 import { WebSocketProvider } from './WebSocketContext';
-
 
 export default function DesignDrawer() {
   return (
       <WebSocketProvider>
         <ModalProvider>
-          <Preview />
+          <DesignTool />
         </ModalProvider>
       </WebSocketProvider>
   );

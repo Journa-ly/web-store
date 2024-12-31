@@ -1,7 +1,7 @@
 
 const RegenerateButton = () => {
   return (
-    <button class="generate-btn" type="submit">Create More</button>
+    <button className="generate-btn" type="submit">Create More</button>
   );
 }
 

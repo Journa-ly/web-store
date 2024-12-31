@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useReducer, useRef, useState } fr
 import { WEBSOCKET_URL } from './constants';
 
 // Context creation
-const WebSocketContext = createContext();
+
 const WebSocketDispatchContext = createContext();
 
 const initialState = {
@@ -11,6 +11,8 @@ const initialState = {
   sharedGenerationsGroups: [],
   error: null
 };
+
+const WebSocketContext = createContext(initialState);
 
 export const SESSION_ID = 'SESSION_ID';
 export const PIPELINE_JOB = 'PIPELINE_JOB';
@@ -21,6 +23,7 @@ export const SELECT_PIPELINE_JOB_AND_IMAGE = 'SELECT_PIPELINE_JOB_AND_IMAGE';
 export const DESELECT_PIPELINE_JOBS = 'DE_SELECT_PIPELINE_JOB';
 const SET_SHARED_GENERATIONS_GROUPS = 'SET_SHARED_GENERATIONS_GROUPS';
 export const SELECT_IMAGE = 'SELECT_IMAGE';
+export const SET_FROM_SESSION_STORAGE = 'SET_FROM_SESSION_STORAGE';
 export const ERROR = 'ERROR';
 export const CLEAR = 'CLEAR';
 
@@ -149,13 +152,19 @@ export function webSocketReducer(state, action) {
         })),
       }
     }
+    case SET_FROM_SESSION_STORAGE: {
+      return {
+        ...action.data
+      }
+    }
+
     case CLEAR: {
       return {
         ...initialState
       }
     }
     default: {
-      throw Error('Unknown action: ' + action.type);
+      throw Error('Unknown action: ' + action);
     }
   }
 }
@@ -169,15 +178,16 @@ export function useWebSocketDispatch() {
 }
 
 export function WebSocketProvider({ children }) {
-  const initialStateFromSession = () => {
-    const sessionData = sessionStorage.getItem('websocketData');
-    return sessionData ? JSON.parse(sessionData) : initialState;
-  };
+  const [value, dispatch] = useReducer(webSocketReducer, initialState);
 
-  const [value, dispatch] = useReducer(
-    webSocketReducer,
-    initialStateFromSession()
-  );
+  useEffect(() => {
+    const sessionData = sessionStorage.getItem('websocketData');
+    const contextData =  sessionData ? JSON.parse(sessionData) : initialState;
+    dispatch({type: SET_FROM_SESSION_STORAGE, data: contextData});
+  }, [])
+
+  console.log('WebSocketProvider:', value);
+  
 
   // Effect to sync state with sessionStorage
   useEffect(() => {

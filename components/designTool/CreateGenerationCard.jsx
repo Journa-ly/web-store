@@ -93,7 +93,7 @@ const CreateGenerationCard = () => {
   return (
       <Card>
         <PlaceholderArea />
-        <form id="upload-form" class="upload-form" onSubmit={onSubmit}>
+        <form id="upload-form" className="upload-form" onSubmit={onSubmit}>
           <PromptInput />
           <ThemeSelector />
           <ImageText />

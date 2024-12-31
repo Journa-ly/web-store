@@ -2,7 +2,7 @@
 
 const GenerateButton = () => {
   return (
-    <button class="generate-btn" type="submit" onClick={handleGenerateMore}>Regenerate</button>
+    <button className="generate-btn" type="submit" onClick={handleGenerateMore}>Regenerate</button>
   );
 }
 

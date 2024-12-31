@@ -1,3 +1,4 @@
+import DesignDrawer from 'components/designTool/designDrawer';
 import Hero from 'components/Hero';
 import HeroWithCarousel from 'components/heroWithCarousel';
 import Footer from 'components/layout/footer';
@@ -17,13 +18,13 @@ export default function HomePage() {
       <Hero 
         title="Create the sh*t you wish you could buy." 
         subtitle="Use our AI to create designs for nearly any apparel type. You don’t have to be bougie either.  We promise."
-        imageSrc="/image_0.png"
+        imageSrc="/images/image_0.png"
         altText="Hero Image"
       />
       <HeroWithCarousel
         title="Stop searching.  Start creating."
         subtitle="Sometimes you have to do it yourself.  We aren’t here to tell you what fashion is.  The community creates, likes and shares their own flavors.  You don’t need a company telling you what is good.  Let the people choose."
-        imageSrc="/image_0.png"
+        imageSrc="/images/image_0.png"
         altText="Hero Image"
         collection="apparel"
       />
@@ -34,6 +35,7 @@ export default function HomePage() {
         buttonLink="/collections/trending"
       />
       <Stats />
+      <DesignDrawer />
       <Footer />
     </>
   );

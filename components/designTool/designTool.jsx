@@ -14,8 +14,11 @@ import { SERVER_URL } from './constants';
 import { get_generation_image_id_from_url } from './helpers';
 
 
-export default function Preview() {
-  const { generationsGroups } = useWebSocketData();
+export default function DesignTool() {
+  const data = useWebSocketData();
+  console.log('data: ', data);
+  const generationsGroups = data && data.generationsGroups;
+  // const { generationsGroups } = useWebSocketData();
   const dispatch = useWebSocketDispatch();
   const shared_image_id = get_generation_image_id_from_url();
   const { isModalOpen, openModal, closeModal } = useModal();
