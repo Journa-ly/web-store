@@ -23,7 +23,7 @@ export function GridTileImage({
         'group flex h-full items-center justify-center overflow-hidden rounded-lg bg-white',
         {
           relative: label,
-          'border-2 border-blue-600': active,
+          'border-2 border-accent': active,
           'border-neutral-200': !active
         }
       )}

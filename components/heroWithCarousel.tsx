@@ -24,7 +24,6 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText, collect
                 src={imageSrc}
                 alt={altText}
                 className="rounded-lg shadow-lg"
-                layout="responsive"
                 width={800}
                 height={800}
               />
