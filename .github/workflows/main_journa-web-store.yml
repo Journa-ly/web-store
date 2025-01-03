@@ -22,6 +22,9 @@ jobs:
           node-version: '20.x'
 
       - name: npm install, build, and test
+        env:
+          SHOPIFY_REVALIDATION_SECRET: ${{ secrets.SHOPIFY_REVALIDATION_SECRET }}
+          SHOPIFY_STOREFRONT_ACCESS_TOKEN: ${{ secrets.SHOPIFY_STOREFRONT_ACCESS_TOKEN }}
         run: |
           npm install
           npm run build --if-present
