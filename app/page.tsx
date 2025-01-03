@@ -1,4 +1,4 @@
-import DesignDrawer from 'components/designTool/designDrawer';
+import DesignTool from 'components/designTool';
 import Hero from 'components/Hero';
 import HeroWithCarousel from 'components/heroWithCarousel';
 import Footer from 'components/layout/footer';
@@ -35,7 +35,7 @@ export default function HomePage() {
         buttonLink="/collections/trending"
       />
       <Stats />
-      <DesignDrawer />
+      <DesignTool />
       <Footer />
     </>
   );

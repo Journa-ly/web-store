@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import CartFormField from './CartFormField';
 import { useModal } from './ModalContext';
-import SelectImageCarouselContainer from './SelectImageCarouselContainer';
 import SlideOutModal from './SlideModal';
 import SwipeableCards from './SwipeableCards';
 import {
@@ -10,6 +9,7 @@ import {
   useWebSocketData,
   useWebSocketDispatch,
 } from './WebSocketContext';
+import DesignButton from './buttons/DesignButton';
 import { SERVER_URL } from './constants';
 import { get_generation_image_id_from_url } from './helpers';
 
@@ -17,8 +17,7 @@ import { get_generation_image_id_from_url } from './helpers';
 export default function DesignTool() {
   const data = useWebSocketData();
   console.log('data: ', data);
-  const generationsGroups = data && data.generationsGroups;
-  // const { generationsGroups } = useWebSocketData();
+  const { generationsGroups } = useWebSocketData();
   const dispatch = useWebSocketDispatch();
   const shared_image_id = get_generation_image_id_from_url();
   const { isModalOpen, openModal, closeModal } = useModal();
@@ -106,7 +105,8 @@ export default function DesignTool() {
 
   return (
     <div className="app-container locked-component">
-      <SelectImageCarouselContainer />
+      {/* <SelectImageCarouselContainer /> */}
+      <DesignButton onClick={openModal} />
       <SlideOutModal isOpen={isModalOpen} onClose={closeModal} >
         <SwipeableCards />
       </SlideOutModal>

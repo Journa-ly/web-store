@@ -9,7 +9,7 @@ export default function ImageGrid({ handleClose }) {
   const [activeTab, setActiveTab] = useState('all'); // Default to 'all' tab
 
   const handleImageClick = (e, image) => {
-    e.stopImmediatePropagation();
+    e.nativeEvent.stopImmediatePropagation();
     const imageUUID = image.uuid;
     const generationGroupID = image.pipeline_job.generation_group;
     dispatch({
@@ -32,7 +32,7 @@ export default function ImageGrid({ handleClose }) {
           type="button"
           className="hover-grow"
           onClick={(e) => {
-            e.stopImmediatePropagation();
+            e.nativeEvent.stopImmediatePropagation();
             handleClose();
           }}
           style={{

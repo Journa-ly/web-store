@@ -7,7 +7,7 @@ export default function RedHeart() {
       </g>
       <defs>
         <filter id="filter0_d_42_1297" x="0.548706" y="2.99817" width="22.9031" height="20.2318" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
           <feOffset dy="1"/>
           <feGaussianBlur stdDeviation="0.5"/>

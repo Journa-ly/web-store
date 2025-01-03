@@ -8,7 +8,7 @@ export default function WhiteHeart({ classNames }) {
       </g>
       <defs>
         <filter id="filter0_d_131_204" x="0.0487061" y="0.498169" width="23.9031" height="21.2318" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+          <feFlood floodOpacity="0" result="BackgroundImageFix"/>
           <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
           <feOffset dy="1"/>
           <feGaussianBlur stdDeviation="0.5"/>

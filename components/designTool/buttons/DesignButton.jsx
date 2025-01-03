@@ -1,6 +1,6 @@
 import { createPortal } from 'react-dom';
 
-const SiriButton = ({ onClick }) => {
+const DesignButton = ({ onClick }) => {
 
   return createPortal(
     <button className="main-button hover-grow" onClick={onClick}>
@@ -15,4 +15,4 @@ const SiriButton = ({ onClick }) => {
   );
 };
 
-export default SiriButton;
+export default DesignButton;
