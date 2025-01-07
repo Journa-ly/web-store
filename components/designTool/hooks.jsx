@@ -5,19 +5,17 @@ export function useSelectedGenerationGroup() {
   const { generationsGroups } = useWebSocketData();
 
   const selectedGroup = useMemo(() => {
-    return generationsGroups.find(group => group.selected) || null;
+    return generationsGroups.find((group) => group.selected) || null;
   }, [generationsGroups]);
 
   return selectedGroup;
 }
 
-
 export function useSelectedImage() {
-  
   const { generationsGroups } = useWebSocketData();
-  const selectedGroup = generationsGroups.find(group => group.selected);
+  const selectedGroup = generationsGroups.find((group) => group.selected);
   if (selectedGroup) {
-    const selectedImage = selectedGroup.generation_group_images.find(image => image.selected);
+    const selectedImage = selectedGroup.generation_group_images.find((image) => image.selected);
     return selectedImage;
   }
   return null;
@@ -37,4 +35,3 @@ export function useAllGenerationGroupImages() {
 
   return allImages;
 }
-

@@ -7,7 +7,7 @@ export class GlobalError extends Component {
     this.state = {
       hasError: false,
       error: undefined,
-      errorInfo: undefined,
+      errorInfo: undefined
     };
   }
 
@@ -16,7 +16,7 @@ export class GlobalError extends Component {
     this.setState({
       hasError: true,
       error,
-      errorInfo: errorInfo?.componentStack || '',
+      errorInfo: errorInfo?.componentStack || ''
     });
 
     // Post error data to your server
@@ -29,7 +29,7 @@ export class GlobalError extends Component {
       await fetch(`${SERVER_URL}/logging/app/error`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({
           error_message: error.message,
@@ -41,15 +41,14 @@ export class GlobalError extends Component {
           metadata: {
             userAgent: navigator.userAgent,
             appVersion: navigator.appVersion,
-            platform: navigator.platform,
-          },
-        }),
+            platform: navigator.platform
+          }
+        })
       });
     } catch (serverError) {
       console.error('Failed to send error data to server:', serverError);
     }
   }
-  
 
   render() {
     if (this.state.hasError) {
@@ -58,7 +57,8 @@ export class GlobalError extends Component {
         <div style={{ padding: '20px', background: '#fdd', color: '#900' }}>
           <h1>Something went wrong.</h1>
           <p>
-            An unexpected error has occurred. Our team has been notified. Please refresh the page or try again later.
+            An unexpected error has occurred. Our team has been notified. Please refresh the page or
+            try again later.
           </p>
         </div>
       );

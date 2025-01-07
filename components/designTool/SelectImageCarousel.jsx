@@ -16,7 +16,7 @@ export default function SelectImageCarousel({ images = [] }) {
     const generationGroupID = image.pipeline_job.generation_group;
     dispatch({
       type: SELECT_PIPELINE_JOB_AND_IMAGE,
-      data: { imageUUID, generationGroupID },
+      data: { imageUUID, generationGroupID }
     });
   };
 
@@ -34,7 +34,7 @@ export default function SelectImageCarousel({ images = [] }) {
                 width: '35px',
                 borderRadius: '50%',
                 height: '35px',
-                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)',
+                boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)'
               }}
             >
               <span>1</span>
@@ -45,30 +45,31 @@ export default function SelectImageCarousel({ images = [] }) {
             <ImageGridButton />
           </div>
         </div>
-        <div style={{ overflowX: 'auto', display: 'flex', padding: '10px 0', alignItems: "center" }}>
+        <div
+          style={{ overflowX: 'auto', display: 'flex', padding: '10px 0', alignItems: 'center' }}
+        >
           {generatedImages.map((generatedImage) => {
-            const isSelected =
-              selectedImage && generatedImage.uuid === selectedImage.uuid;
+            const isSelected = selectedImage && generatedImage.uuid === selectedImage.uuid;
 
             const imageStyle = {
               flex: '0 0 auto',
               cursor: 'pointer',
               aspectRatio: '1/1',
-              width: "100px",
-              height: "100px",
+              width: '100px',
+              height: '100px',
               objectFit: 'cover',
               margin: '0 5px',
               borderRadius: '12px',
-              filter: isSelected ? 'none' : 'blur(.5px)',
+              filter: isSelected ? 'none' : 'blur(.5px)'
             };
 
             if (isSelected) {
-              imageStyle.transform = "scale(1.1)";
+              imageStyle.transform = 'scale(1.1)';
             }
 
             return (
               <img
-                className={isSelected ? "" : "hover-grow"}
+                className={isSelected ? '' : 'hover-grow'}
                 key={generatedImage.uuid}
                 src={generatedImage.image.image}
                 onClick={() => handleClick(generatedImage)}
@@ -88,7 +89,7 @@ export default function SelectImageCarousel({ images = [] }) {
             borderRadius: '50%',
             width: '35px',
             height: '35px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)',
+            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3), 0 1px 3px rgba(0, 0, 0, 0.1)'
           }}
         >
           <span>2</span>
@@ -103,7 +104,7 @@ export default function SelectImageCarousel({ images = [] }) {
               width: '100%',
               height: 'auto',
               objectFit: 'contain',
-              borderRadius: '12px',
+              borderRadius: '12px'
             }}
           />
         ) : (

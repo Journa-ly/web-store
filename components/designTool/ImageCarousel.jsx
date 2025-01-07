@@ -3,8 +3,8 @@ import CarouselImage from './CarouselImage';
 import { SELECT_IMAGE, useWebSocketDispatch } from './WebSocketContext';
 
 const ImageCarousel = ({ images, generationGroupID }) => {
-  const selectedIndex = images.findIndex(image => image.selected === true);
-  const imageIndex = selectedIndex !== -1 ? selectedIndex : 0
+  const selectedIndex = images.findIndex((image) => image.selected === true);
+  const imageIndex = selectedIndex !== -1 ? selectedIndex : 0;
   const dispatch = useWebSocketDispatch();
 
   function setSelectedImage(imageUUID) {
@@ -27,7 +27,7 @@ const ImageCarousel = ({ images, generationGroupID }) => {
       newIndex = imageIndex + 1;
     }
 
-    setSelectedImage(images[newIndex].uuid);  // Set the selected image in context
+    setSelectedImage(images[newIndex].uuid); // Set the selected image in context
   };
 
   const handleClick = (event) => {
@@ -35,7 +35,7 @@ const ImageCarousel = ({ images, generationGroupID }) => {
     const boundingRect = carousel.getBoundingClientRect(); // Get the bounding box of the carousel
     const clickPosition = event.clientX;
     const middle = boundingRect.left + boundingRect.width / 2; // Calculate the middle relative to the carousel
-  
+
     if (clickPosition < middle) {
       handleNavigation('left');
     } else {
@@ -45,11 +45,11 @@ const ImageCarousel = ({ images, generationGroupID }) => {
 
   const handlers = useSwipeable({
     onSwipedLeft: (eventData) => {
-      eventData.event.stopPropagation();  // Prevent the swipe from affecting parent elements
+      eventData.event.stopPropagation(); // Prevent the swipe from affecting parent elements
       handleNavigation('right');
     },
     onSwipedRight: (eventData) => {
-      eventData.event.stopPropagation();  // Prevent the swipe from affecting parent elements
+      eventData.event.stopPropagation(); // Prevent the swipe from affecting parent elements
       handleNavigation('left');
     },
     onSwiping: (eventData) => {
@@ -60,7 +60,7 @@ const ImageCarousel = ({ images, generationGroupID }) => {
       }
     },
     preventDefaultTouchmoveEvent: true,
-    trackMouse: true,
+    trackMouse: true
   });
 
   return (
@@ -69,15 +69,17 @@ const ImageCarousel = ({ images, generationGroupID }) => {
         className="carousel-images"
         style={{
           transform: `translateX(-${imageIndex * 100}%)`,
-          transition: 'transform 0.5s ease-in-out',
+          transition: 'transform 0.5s ease-in-out'
         }}
       >
         {images.map((imageData) => (
           <CarouselImage key={imageData.uuid} imageData={imageData} />
         ))}
       </div>
-      { images && images.length > 1 && (
-        <div className="image-count">{imageIndex + 1} / {images.length} </div>
+      {images && images.length > 1 && (
+        <div className="image-count">
+          {imageIndex + 1} / {images.length}{' '}
+        </div>
       )}
     </div>
   );

@@ -15,7 +15,7 @@ const Switch = ({ label, name }) => {
           position: 'relative',
           display: 'inline-block',
           width: '42px',
-          height: '24px',
+          height: '24px'
         }}
       >
         <input
@@ -31,7 +31,7 @@ const Switch = ({ label, name }) => {
             top: 0,
             left: 0,
             cursor: 'pointer',
-            zIndex: 2,
+            zIndex: 2
           }}
         />
         <span
@@ -44,7 +44,7 @@ const Switch = ({ label, name }) => {
             backgroundColor: isOn ? '#3182ce' : '#cbd5e0',
             borderRadius: '12px',
             transition: 'background-color 0.2s',
-            zIndex: 1,
+            zIndex: 1
           }}
         ></span>
         <span
@@ -58,7 +58,7 @@ const Switch = ({ label, name }) => {
             borderRadius: '50%',
             boxShadow: '0 0 2px rgba(0, 0, 0, 0.2)',
             transition: 'left 0.2s',
-            zIndex: 3,
+            zIndex: 3
           }}
         ></span>
       </div>

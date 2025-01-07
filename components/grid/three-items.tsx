@@ -42,9 +42,10 @@ function ThreeItemGridItem({
 }
 
 export async function ThreeItemGrid({ collection }: { collection: string }) {
-  const homepageItems = await getCollectionProducts({
-    collection
-  }) || [];
+  const homepageItems =
+    (await getCollectionProducts({
+      collection
+    })) || [];
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 

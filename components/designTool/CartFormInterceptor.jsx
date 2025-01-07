@@ -3,8 +3,10 @@ import { useWebSocketData } from './WebSocketContext';
 
 export default function CartFormField() {
   const { pipelineJobs } = useWebSocketData();
-  const selectedPipleine = Array.isArray(pipelineJobs) && pipelineJobs.find((pipeline) => pipeline.selected);
-  const selectedImage = selectedPipleine && selectedPipleine.product_images.find((image) => image.selected);
+  const selectedPipleine =
+    Array.isArray(pipelineJobs) && pipelineJobs.find((pipeline) => pipeline.selected);
+  const selectedImage =
+    selectedPipleine && selectedPipleine.product_images.find((image) => image.selected);
 
   useEffect(() => {
     const form = document.querySelector('form[action^="/cart/add"]');
@@ -29,19 +31,19 @@ export default function CartFormField() {
         },
         credentials: 'include'
       })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Product added with custom properties', data);
-        // Handle successful addition, like updating a cart UI
-      })
-      .catch(error => {
-        console.error('Error adding product with custom properties:', error);
-        // Handle error
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log('Product added with custom properties', data);
+          // Handle successful addition, like updating a cart UI
+        })
+        .catch((error) => {
+          console.error('Error adding product with custom properties:', error);
+          // Handle error
+        });
     };
 
     if (form) {
-      form.addEventListener('submit', handleAddToCart); 
+      form.addEventListener('submit', handleAddToCart);
     }
 
     return () => {
@@ -51,4 +53,4 @@ export default function CartFormField() {
   }, []);
 
   return null;
-};
+}

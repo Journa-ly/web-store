@@ -38,7 +38,9 @@ const SlideOutModal = ({ isOpen, onClose, children }) => {
   useEffect(() => {
     const handleClickOutside = (event) => {
       const modalElements = document.querySelectorAll('.modal-content');
-      const elementsContainEventTarget = Array.from(modalElements).some((element) => element.contains(event.target));
+      const elementsContainEventTarget = Array.from(modalElements).some((element) =>
+        element.contains(event.target)
+      );
       if (isOpen && modalElements && !elementsContainEventTarget) {
         onClose();
       }
@@ -52,12 +54,7 @@ const SlideOutModal = ({ isOpen, onClose, children }) => {
   const modalClassName = `modal-content ${animationClass}`;
 
   // Render the modal content into a portal
-  return createPortal(
-    <div className={modalClassName}>
-      {children}
-    </div>,
-    document.body
-  );
+  return createPortal(<div className={modalClassName}>{children}</div>, document.body);
 };
 
 export default SlideOutModal;

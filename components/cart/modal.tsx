@@ -109,10 +109,7 @@ export default function CartModal() {
                         );
 
                         return (
-                          <li
-                            key={i}
-                            className="flex w-full flex-col border-b border-neutral-300"
-                          >
+                          <li key={i} className="flex w-full flex-col border-b border-neutral-300">
                             <div className="relative flex w-full flex-row justify-between px-1 py-4">
                               <div className="absolute z-40 -ml-1 -mt-2">
                                 <DeleteItemButton item={item} optimisticUpdate={updateCartItem} />
@@ -140,7 +137,7 @@ export default function CartModal() {
                                       {item.merchandise.product.title}
                                     </span>
                                     {item.merchandise.title !== DEFAULT_OPTION ? (
-                                      <p className="text-sm text-neutral-500 ">
+                                      <p className="text-sm text-neutral-500">
                                         {item.merchandise.title}
                                       </p>
                                     ) : null}

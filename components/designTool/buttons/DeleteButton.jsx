@@ -4,7 +4,7 @@ import IconButton from './IconButton';
 const DeleteButton = () => {
   const handleDelete = () => {
     fetch('https://api.example.com/delete', {
-      method: 'DELETE',
+      method: 'DELETE'
     })
       .then((response) => response.json())
       .then((data) => {
@@ -15,14 +15,8 @@ const DeleteButton = () => {
         console.error('Error:', error);
         alert('Error deleting');
       });
-  }
-  return (
-    <IconButton
-      icon={<TrashcanIcon />}
-      text="Exit"
-      onClick={handleDelete}
-    />
-  );
+  };
+  return <IconButton icon={<TrashcanIcon />} text="Exit" onClick={handleDelete} />;
 };
 
 export default DeleteButton;

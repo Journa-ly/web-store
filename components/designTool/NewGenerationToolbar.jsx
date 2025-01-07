@@ -11,7 +11,7 @@ const NewGenerationToolbar = () => (
       alignItems: 'center',
       backgroundColor: 'transparent',
       padding: '0 20px',
-      marginTop: '18px',
+      marginTop: '18px'
     }}
   >
     <ExitButton />

@@ -4,7 +4,6 @@ import ImageGridButton from './buttons/ImageGridButton';
 import NewGenerationButton from './buttons/NewGenerationButton';
 import ShareButton from './buttons/ShareButton';
 
-
 const Toolbar = () => (
   <div
     style={{
@@ -14,7 +13,7 @@ const Toolbar = () => (
       alignItems: 'center',
       backgroundColor: 'transparent',
       padding: '0 20px',
-      marginTop: '18px',
+      marginTop: '18px'
     }}
   >
     <ExitButton />

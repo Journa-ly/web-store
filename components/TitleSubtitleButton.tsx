@@ -8,12 +8,20 @@ interface CenteredContentProps {
   buttonLink: string;
 }
 
-const TitleSubtitleButton: React.FC<CenteredContentProps> = ({ title, subtitle, buttonText, buttonLink }) => {
+const TitleSubtitleButton: React.FC<CenteredContentProps> = ({
+  title,
+  subtitle,
+  buttonText,
+  buttonLink
+}) => {
   return (
-    <div className="flex py-8 flex-col items-center justify-between px-4 lg:px-0 h-96 mt-16">
-      <h1 className="text-5xl lg:text-7xl font-black mb-4 text-center drop-shadow-md">{title}</h1>
-      <p className="py-4 lg:text-3xl text-2xl text-center mb-6 max-w-lg">{subtitle}</p>
-      <Link className="btn btn-primary px-6 py-3 rounded shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300" href={buttonLink}>
+    <div className="mt-16 flex h-96 flex-col items-center justify-between px-4 py-8 lg:px-0">
+      <h1 className="mb-4 text-center text-5xl font-black drop-shadow-md lg:text-7xl">{title}</h1>
+      <p className="mb-6 max-w-lg py-4 text-center text-2xl lg:text-3xl">{subtitle}</p>
+      <Link
+        className="btn btn-primary transform rounded px-6 py-3 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+        href={buttonLink}
+      >
         {buttonText}
       </Link>
     </div>

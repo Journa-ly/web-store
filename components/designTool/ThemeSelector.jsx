@@ -11,10 +11,10 @@ const ThemeSelector = ({ defaultTheme }) => {
       try {
         const response = await fetch(`${SERVER_URL}/images/themes`, {
           headers: new Headers({
-            'Content-Type': 'application/json',            
+            'Content-Type': 'application/json'
           }),
-          credentials: 'include',
-        })
+          credentials: 'include'
+        });
         const data = await response.json();
         setThemes(data);
         if (data.length > 0) {
@@ -24,7 +24,6 @@ const ThemeSelector = ({ defaultTheme }) => {
             setSelectedTheme(data[0].id);
           }
         }
-        
       } catch (error) {
         console.error('Failed to fetch themes:', error);
       }
@@ -39,7 +38,7 @@ const ThemeSelector = ({ defaultTheme }) => {
     } else if (themes.length > 0) {
       setSelectedTheme(themes[0].id);
     }
-  }, [defaultTheme])
+  }, [defaultTheme]);
 
   const handleThemeChange = (event) => {
     setSelectedTheme(event.target.value);
@@ -50,16 +49,15 @@ const ThemeSelector = ({ defaultTheme }) => {
       <label htmlFor="theme-select">Style (optional)</label>
       <select
         id="theme-select"
-        name='selectedTheme'
+        name="selectedTheme"
         value={selectedTheme}
         onChange={handleThemeChange}
       >
-        <option key={-1} value={null}/>
+        <option key={-1} value={null} />
         {themes.map((theme) => (
           <option key={theme.id} value={theme.id}>
             {theme.name}
           </option>
-
         ))}
       </select>
     </div>

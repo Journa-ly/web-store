@@ -7,17 +7,11 @@ const NewGenerationButton = () => {
 
   const deselect_generations = () => {
     dispatch({
-      type: DESELECT_PIPELINE_JOBS,
+      type: DESELECT_PIPELINE_JOBS
     });
   };
 
-  return (
-    <IconButton
-      icon={<PlusBoxIcon />}
-      text="New"
-      onClick={() => deselect_generations()}
-    />
-  );
-}
+  return <IconButton icon={<PlusBoxIcon />} text="New" onClick={() => deselect_generations()} />;
+};
 
 export default NewGenerationButton;

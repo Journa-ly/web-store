@@ -1,10 +1,8 @@
-
 const ProductLinkButton = () => {
-  const collectionLink = "";
+  const collectionLink = '';
 
   return (
-    <button className="product-link-btn"
-    >
+    <button className="product-link-btn">
       <a href={collectionLink}>Add to Item</a>
     </button>
   );

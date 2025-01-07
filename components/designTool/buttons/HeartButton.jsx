@@ -3,7 +3,12 @@ import { SERVER_URL } from '../constants';
 import WhiteHeart from '../icons/WhiteHeart';
 import { SET_IMAGE, useWebSocketDispatch } from '../WebSocketContext';
 
-export default function HeartButton({ initialHearted, imageUUID, enableHeartInteraction=true, onHeartChange }) {
+export default function HeartButton({
+  initialHearted,
+  imageUUID,
+  enableHeartInteraction = true,
+  onHeartChange
+}) {
   const [hearted, setHearted] = useState(initialHearted);
   const [isLoading, setIsLoading] = useState(false);
   const [animate, setAnimate] = useState(false);
@@ -32,12 +37,15 @@ export default function HeartButton({ initialHearted, imageUUID, enableHeartInte
     setHearted(!hearted);
 
     try {
-      const response = await fetch(`${SERVER_URL}/images/generation_group_image/${imageUUID}/favorite`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const response = await fetch(
+        `${SERVER_URL}/images/generation_group_image/${imageUUID}/favorite`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
         }
-      });
+      );
 
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -53,8 +61,8 @@ export default function HeartButton({ initialHearted, imageUUID, enableHeartInte
 
       dispatch({
         type: SET_IMAGE,
-        data,
-      })
+        data
+      });
     } catch (error) {
       // Revert the hearted state if the fetch fails
       setHearted(previousHearted);
@@ -70,7 +78,9 @@ export default function HeartButton({ initialHearted, imageUUID, enableHeartInte
       aria-pressed={hearted}
       aria-label={hearted ? 'Unheart image' : 'Heart image'}
     >
-      <WhiteHeart classNames={`heart-icon ${hearted ? 'hearted' : ''} ${animate ? 'animate' : ''}`} />
+      <WhiteHeart
+        classNames={`heart-icon ${hearted ? 'hearted' : ''} ${animate ? 'animate' : ''}`}
+      />
     </button>
   );
 }

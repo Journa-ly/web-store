@@ -28,7 +28,7 @@ const Tooltip = ({ label, children }) => {
             boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
             zIndex: 100,
             fontSize: '12px',
-            minWidth: '205px',
+            minWidth: '205px'
           }}
         >
           {label}
@@ -42,7 +42,7 @@ const Tooltip = ({ label, children }) => {
               height: '0',
               borderLeft: '6px solid transparent',
               borderRight: '6px solid transparent',
-              borderTop: '6px solid #333',
+              borderTop: '6px solid #333'
             }}
           ></div>
         </div>

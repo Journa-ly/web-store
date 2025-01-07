@@ -13,9 +13,7 @@ export const ModalProvider = ({ children }) => {
   const closeGridModal = () => setIsGridModalOpen(false);
 
   useEffect(() => {
-    localStorage.getItem('is_open') === 'true'
-      ? setIsModalOpen(true)
-      : setIsModalOpen(false);
+    localStorage.getItem('is_open') === 'true' ? setIsModalOpen(true) : setIsModalOpen(false);
   }, []);
 
   useEffect(() => {
@@ -23,14 +21,16 @@ export const ModalProvider = ({ children }) => {
   }, [isModalOpen]);
 
   return (
-    <ModalContext.Provider value={{ 
-      isModalOpen, 
-      openModal, 
-      closeModal,
-      isGridModalOpen,
-      openGridModal,
-      closeGridModal
-    }}>
+    <ModalContext.Provider
+      value={{
+        isModalOpen,
+        openModal,
+        closeModal,
+        isGridModalOpen,
+        openGridModal,
+        closeGridModal
+      }}
+    >
       {children}
     </ModalContext.Provider>
   );

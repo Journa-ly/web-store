@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
-import { get_generation_image_id_from_url } from "./helpers";
-
+import { get_generation_image_id_from_url } from './helpers';
 
 const HandleMetaTag = () => {
   useEffect(() => {

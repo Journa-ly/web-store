@@ -13,7 +13,7 @@ import {
 const SwipeableCards = () => {
   const dispatch = useWebSocketDispatch();
   const { generationsGroups } = useWebSocketData();
-  const selectedIndex = generationsGroups.findIndex(gen_group => gen_group.selected === true);
+  const selectedIndex = generationsGroups.findIndex((gen_group) => gen_group.selected === true);
   const generationsIndex = selectedIndex !== -1 ? selectedIndex + 1 : 0;
   const containerRef = useRef(null);
   const startPos = useRef({ x: 0, y: 0 });
@@ -27,7 +27,7 @@ const SwipeableCards = () => {
 
   const deselect_generations = () => {
     dispatch({
-      type: DESELECT_PIPELINE_JOBS,
+      type: DESELECT_PIPELINE_JOBS
     });
   };
 
@@ -77,7 +77,7 @@ const SwipeableCards = () => {
       if (containerRef.current) {
         containerRef.current.style.overflowY = 'auto';
       }
-    },
+    }
   });
 
   return (
@@ -86,18 +86,13 @@ const SwipeableCards = () => {
         className="cards-container"
         style={{
           transform: `translateX(-${generationsIndex * 100}%)`,
-          transition: 'transform 0.3s ease-in-out',
+          transition: 'transform 0.3s ease-in-out'
         }}
       >
         {[
-          <CreateGenerationCard 
-            key={-1}
-          />,
+          <CreateGenerationCard key={-1} />,
           ...generationsGroups.map((generation, index) => (
-            <GenerationCard 
-              key={generation.id}
-              generation={generation}
-            />
+            <GenerationCard key={generation.id} generation={generation} />
           ))
         ]}
       </div>

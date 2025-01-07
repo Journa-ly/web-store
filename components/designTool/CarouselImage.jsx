@@ -1,9 +1,8 @@
-import BounceLoader from "react-spinners/BounceLoader";
+import BounceLoader from 'react-spinners/BounceLoader';
 import ShareButton from './ShareButton';
 import HeartButton from './buttons/HeartButton';
 
 const CarouselImage = ({ imageData }) => {
-
   if (imageData.status === 'Pending') {
     return (
       <div className="carousel-image loading">
@@ -27,12 +26,14 @@ const CarouselImage = ({ imageData }) => {
           <AddToCartIconButton />
         </div> */}
         <img src={imageData.image.image} alt="Loaded image" />
-        <div style={{
-          width: 0,
-          height: 0,
-          margin: '0 auto',
-          position: 'relative',
-        }}>
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            margin: '0 auto',
+            position: 'relative'
+          }}
+        >
           <HeartButton imageUUID={imageData.uuid} initialHearted={imageData.favorited} />
           <ShareButton id={imageData.id} imageUrl={imageData.image.image} />
         </div>

@@ -1,5 +1,4 @@
 const ImageText = ({ defaultQuotePrompt }) => {
-
   return (
     <div className="image-text-input">
       <label htmlFor="image-text">Image Text (optional)</label>
@@ -11,7 +10,7 @@ const ImageText = ({ defaultQuotePrompt }) => {
         defaultValue={defaultQuotePrompt}
         placeholder="---"
         style={{
-          textAlign: "center",
+          textAlign: 'center'
         }}
       />
     </div>

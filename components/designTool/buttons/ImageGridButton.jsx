@@ -9,18 +9,14 @@ const ImageGridButton = () => {
 
   return (
     <>
-      <IconButton
-        icon={<ImageGridIcon />}
-        text="Images"
-        onClick={openGridModal}
-      />
+      <IconButton icon={<ImageGridIcon />} text="Images" onClick={openGridModal} />
       <SlideOutModal isOpen={isGridModalOpen} onClose={closeGridModal}>
-        <div style={{ overflow: "scroll", height: "100%"}}>
-          <ImageGrid handleClose={closeGridModal}/>
+        <div style={{ overflow: 'scroll', height: '100%' }}>
+          <ImageGrid handleClose={closeGridModal} />
         </div>
       </SlideOutModal>
     </>
   );
-}
+};
 
 export default ImageGridButton;

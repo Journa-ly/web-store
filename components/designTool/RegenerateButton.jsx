@@ -1,8 +1,9 @@
-
 const RegenerateButton = () => {
   return (
-    <button className="generate-btn" type="submit">Create More</button>
+    <button className="generate-btn" type="submit">
+      Create More
+    </button>
   );
-}
+};
 
 export default RegenerateButton;

@@ -36,12 +36,7 @@ export function GridTileImage({
           {...props}
         />
       ) : null}
-      {label ? (
-        <Label
-          title={label.title}
-          position={label.position}
-        />
-      ) : null}
+      {label ? <Label title={label.title} position={label.position} /> : null}
     </div>
   );
 }

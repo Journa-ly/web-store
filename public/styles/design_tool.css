@@ -8,7 +8,7 @@
 }
 
 .submit-button:hover {
-  background-color: #156CF7;
+  background-color: #156cf7;
 }
 
 .caption-input {
@@ -67,7 +67,7 @@
 }
 
 .upload-card {
-  border: 1px dashed #D5D8E2;
+  border: 1px dashed #d5d8e2;
   border-radius: 8px;
   padding: 20px;
   display: flex;
@@ -128,12 +128,12 @@
 }
 
 .overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(128, 128, 128, 0.5); /* Gray overlay */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(128, 128, 128, 0.5); /* Gray overlay */
 }
 
 .spinner-container {
@@ -150,8 +150,12 @@
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .cards-container {
@@ -200,7 +204,7 @@
   font-size: 12px;
   color: #757575;
   padding-left: 17px;
-  margin-top: -9px
+  margin-top: -9px;
 }
 
 .theme-selector label {
@@ -329,7 +333,7 @@
 }
 
 .help-modal-steps li:before {
-  content: counter(step-counter) ". "; /* Display the counter with a period */
+  content: counter(step-counter) '. '; /* Display the counter with a period */
   position: absolute;
   left: 0;
   top: 0;
@@ -360,7 +364,7 @@
 }
 
 .generate-btn,
-.add-to-cart-btn, 
+.add-to-cart-btn,
 .product-link-btn {
   width: 48%; /* Each button takes almost half the space */
   padding: 12px 0; /* Padding inside the buttons */
@@ -397,7 +401,6 @@
 .add-to-cart-btn:hover {
   opacity: 0.9; /* Slightly dim the button on hover */
 }
-
 
 /* Carousel Container */
 .carousel-container {
@@ -520,7 +523,6 @@
   box-shadow: 0px 4px 4px 0px #00000040;
 }
 
-
 /* Container for the swipeable cards */
 .swipeable-cards {
   height: 100%;
@@ -543,14 +545,16 @@
   justify-content: center;
   cursor: pointer;
   z-index: 2;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    transform 0.3s ease;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .navigation-arrow:hover {
   background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
   transform: scale(1.1); /* Slightly enlarge on hover */
-} 
+}
 
 /* Cards container */
 .cards-container {
@@ -567,7 +571,9 @@
   border-radius: 50%; /* Makes the background round */
   cursor: pointer;
   padding: 4px; /* Adjust padding to make the button size comfortable */
-  transition: transform 0.2s ease, background 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -585,12 +591,12 @@
 
 .heart-icon {
   fill: white;
-  opacity: .9;
+  opacity: 0.9;
   transition: fill 0.3s ease;
 }
 
 .heart-icon.hearted {
-  fill: #EE7A91;
+  fill: #ee7a91;
   opacity: 1;
 }
 
@@ -613,9 +619,8 @@
   }
 }
 
-
 .share-button svg {
-  transition: transform 0.2s ease
+  transition: transform 0.2s ease;
 }
 
 .share-button svg:hover {
@@ -632,7 +637,7 @@
   flex-direction: column;
   gap: 10px;
   padding: 12px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   border: 1px solid #ddd;
   border-radius: 24px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
@@ -648,8 +653,6 @@
   bottom: 58px;
   left: -150px;
 }
-
-
 
 .share-popover button {
   display: flex;
@@ -744,8 +747,9 @@
   border-radius: 50%;
   cursor: pointer;
   outline: none;
-  box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3), /* Main shadow */
-              0 5px 10px rgba(0, 0, 0, 0.22); /* Soft shadow */
+  box-shadow:
+    0 15px 25px rgba(0, 0, 0, 0.3),
+    /* Main shadow */ 0 5px 10px rgba(0, 0, 0, 0.22); /* Soft shadow */
 }
 
 .main-button svg {
@@ -755,7 +759,6 @@
   width: 85px;
   border-radius: 50%;
 }
-
 
 button:disabled {
   cursor: not-allowed;
@@ -796,19 +799,18 @@ button:disabled {
 }
 
 .tab-button.active {
-  border-bottom: 2px solid #757575;; /* Indicate active tab */
+  border-bottom: 2px solid #757575; /* Indicate active tab */
 }
 
 .tab-button:not(:last-child) {
   margin-right: 8px;
 }
 
-
 input.prevent-zoom {
-  font-size: 16px;          /* Prevents zoom */
-  transform: scale(0.875);  /* Scales down to 14px visually (16px * 0.875) */
+  font-size: 16px; /* Prevents zoom */
+  transform: scale(0.875); /* Scales down to 14px visually (16px * 0.875) */
   transform-origin: left center;
-  width: 114%;              /* Adjust width to compensate for scaling */
+  width: 114%; /* Adjust width to compensate for scaling */
 }
 
 textarea.prevent-zoom {

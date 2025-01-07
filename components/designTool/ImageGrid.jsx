@@ -20,7 +20,9 @@ export default function ImageGrid({ handleClose }) {
   };
 
   // Filter images based on the active tab
-  let imagesToDisplay = generationImages.filter((generationImage) => generationImage.image !== null);
+  let imagesToDisplay = generationImages.filter(
+    (generationImage) => generationImage.image !== null
+  );
   if (activeTab === 'favorites') {
     imagesToDisplay = imagesToDisplay.filter((generationImage) => generationImage.favorited);
   }
@@ -28,7 +30,7 @@ export default function ImageGrid({ handleClose }) {
   return (
     <div className="image-grid-container">
       <div>
-        <button 
+        <button
           type="button"
           className="hover-grow"
           onClick={(e) => {
@@ -36,9 +38,9 @@ export default function ImageGrid({ handleClose }) {
             handleClose();
           }}
           style={{
-            background: "none",
-            border: "none",
-            padding: "12px"
+            background: 'none',
+            border: 'none',
+            padding: '12px'
           }}
         >
           <CircleXIcon />
@@ -62,21 +64,26 @@ export default function ImageGrid({ handleClose }) {
       </div>
 
       {imagesToDisplay.length === 0 && (
-        <div style={{ textAlign: "center" }}>
-          <p>{activeTab === 'favorites' ? "You have no favorite images." : "You haven't generated any images."}</p>
+        <div style={{ textAlign: 'center' }}>
+          <p>
+            {activeTab === 'favorites'
+              ? 'You have no favorite images.'
+              : "You haven't generated any images."}
+          </p>
         </div>
       )}
 
       <div className="image-grid">
-        {imagesToDisplay.length > 0 && imagesToDisplay.map((generationImage) => (
-          <div 
-            key={generationImage.uuid}
-            className="image-grid-item"
-            onClick={(e) => handleImageClick(e, generationImage)}
-          >
-            <img src={generationImage.image.image} alt="generated image" />
-          </div>
-        ))}
+        {imagesToDisplay.length > 0 &&
+          imagesToDisplay.map((generationImage) => (
+            <div
+              key={generationImage.uuid}
+              className="image-grid-item"
+              onClick={(e) => handleImageClick(e, generationImage)}
+            >
+              <img src={generationImage.image.image} alt="generated image" />
+            </div>
+          ))}
       </div>
     </div>
   );

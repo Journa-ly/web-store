@@ -1,7 +1,6 @@
-
-export default function IconButton({ icon, text, onClick, type='button', disabled=false }) {
+export default function IconButton({ icon, text, onClick, type = 'button', disabled = false }) {
   return (
-    <button 
+    <button
       className="hover-grow"
       disabled={disabled}
       type={type}
@@ -16,12 +15,10 @@ export default function IconButton({ icon, text, onClick, type='button', disable
         color: '#757575',
         width: '45px'
       }}
-      onClick={e => onClick(e)}
+      onClick={(e) => onClick(e)}
     >
-      <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: '4px' }}>
-        {icon}
-      </div>
+      <div style={{ display: 'flex', justifyContent: 'center', paddingBottom: '4px' }}>{icon}</div>
       <span style={{ textAlign: 'center' }}>{text}</span>
     </button>
   );
-} 
+}

@@ -2,14 +2,13 @@ import {
   DESELECT_PIPELINE_JOBS,
   SELECT_PIPELINE_JOB,
   useWebSocketData,
-  useWebSocketDispatch,
+  useWebSocketDispatch
 } from '../WebSocketContext';
-
 
 export default function NavigationArrows() {
   const dispatch = useWebSocketDispatch();
   const { generationsGroups } = useWebSocketData();
-  const selectedIndex = generationsGroups.findIndex(gen_group => gen_group.selected === true);
+  const selectedIndex = generationsGroups.findIndex((gen_group) => gen_group.selected === true);
   const generationsIndex = selectedIndex !== -1 ? selectedIndex + 1 : 0;
 
   const selectCard = (generation_id) => {
@@ -21,7 +20,7 @@ export default function NavigationArrows() {
 
   const deselect_generations = () => {
     dispatch({
-      type: DESELECT_PIPELINE_JOBS,
+      type: DESELECT_PIPELINE_JOBS
     });
   };
 
@@ -42,26 +41,40 @@ export default function NavigationArrows() {
   };
 
   return (
-    <div style={{
-      display: "flex",
-      justifyContent: "space-between"
-    }}>
-      {(generationsGroups && generationsGroups.length) ? (
-          <>
-            <div style={{ visibility: generationsIndex > 0 ? "initial" : "hidden"}} className="navigation-arrow left-arrow" onClick={() => handleSwipe('right')}>
-              &#10094; {/* Left arrow symbol */}
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-              }}
-            >{generationsIndex + 1}/{generationsGroups.length + 1}</div>
-            <div style={{ visibility: generationsIndex < generationsGroups.length ? "initial" : "hidden" }} className="navigation-arrow right-arrow" onClick={() => handleSwipe('left')}>
-              &#10095; {/* Right arrow symbol */}
-            </div>
-          </>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between'
+      }}
+    >
+      {generationsGroups && generationsGroups.length ? (
+        <>
+          <div
+            style={{ visibility: generationsIndex > 0 ? 'initial' : 'hidden' }}
+            className="navigation-arrow left-arrow"
+            onClick={() => handleSwipe('right')}
+          >
+            &#10094; {/* Left arrow symbol */}
+          </div>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            {generationsIndex + 1}/{generationsGroups.length + 1}
+          </div>
+          <div
+            style={{
+              visibility: generationsIndex < generationsGroups.length ? 'initial' : 'hidden'
+            }}
+            className="navigation-arrow right-arrow"
+            onClick={() => handleSwipe('left')}
+          >
+            &#10095; {/* Right arrow symbol */}
+          </div>
+        </>
       ) : null}
     </div>
-  )
+  );
 }

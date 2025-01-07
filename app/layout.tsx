@@ -13,13 +13,13 @@ const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Journa",
-    template: "Journa"
+    default: 'Journa',
+    template: 'Journa'
   },
   robots: {
     follow: true,
     index: true
-  },
+  }
   // ...(twitterCreator &&
   //   twitterSite && {
   //     twitter: {
@@ -30,7 +30,7 @@ export const metadata = {
   //   })
 };
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ['latin'] });
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
@@ -42,9 +42,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <body>
         <CartProvider cartPromise={cart}>
           <Navbar />
-          <main>
-            {children}
-          </main>
+          <main>{children}</main>
         </CartProvider>
       </body>
     </html>

@@ -10,16 +10,16 @@ interface HeroProps {
 
 const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText }) => {
   return (
-    <div className="mx-2 lg:mx-6 overflow-hidden">
-      <div className="hero bg-primary py-12 rounded-xl">
+    <div className="mx-2 overflow-hidden lg:mx-6">
+      <div className="hero rounded-xl bg-primary py-12">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col lg:flex-row items-center">
+          <div className="flex flex-col items-center lg:flex-row">
             <div className="flex flex-col">
-              <div className="text-center lg:text-left lg:w-2/3 mb-6 lg:mb-0">
-                <h1 className="text-6xl font-black text-white mb-4">{title}</h1>
+              <div className="mb-6 text-center lg:mb-0 lg:w-2/3 lg:text-left">
+                <h1 className="mb-4 text-6xl font-black text-white">{title}</h1>
                 <p className="pt-8 text-xl font-semibold text-neutral">{subtitle}</p>
               </div>
-              <div className="flex gap-4 pt-12 m-auto w-1/2 lg:w-2/3 flex-col lg:flex-row">
+              <div className="m-auto flex w-1/2 flex-col gap-4 pt-12 lg:w-2/3 lg:flex-row">
                 <button className="btn">Shop Trending Designs</button>
                 <button className="btn btn-secondary text-white">Design Your Own</button>
               </div>
@@ -29,7 +29,7 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText }) => {
               <Image
                 src={imageSrc}
                 alt={altText}
-                className="w-full max-w-md mx-auto lg:mx-0 rounded-lg shadow-lg pt-12 lg:pt-0"
+                className="mx-auto w-full max-w-md rounded-lg pt-12 shadow-lg lg:mx-0 lg:pt-0"
                 height={800}
                 width={800}
               />
