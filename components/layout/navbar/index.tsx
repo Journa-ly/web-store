@@ -2,8 +2,6 @@ import CartModal from 'components/cart/modal';
 import { getMenu } from 'lib/shopify';
 import Link from 'next/link';
 
-const { SITE_NAME } = process.env;
-
 export async function Navbar() {
   const menu = await getMenu('mega-menu');
 
@@ -37,7 +35,7 @@ export async function Navbar() {
             </ul>
           </div>
           <Link href="/" className="btn btn-ghost text-xl">
-            {SITE_NAME || 'Store'}
+            Journa
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
