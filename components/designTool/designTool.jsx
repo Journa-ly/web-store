@@ -14,8 +14,6 @@ import { SERVER_URL } from './constants';
 import { get_generation_image_id_from_url } from './helpers';
 
 export default function DesignTool() {
-  const data = useWebSocketData();
-  console.log('data: ', data);
   const { generationsGroups } = useWebSocketData();
   const dispatch = useWebSocketDispatch();
   const shared_image_id = get_generation_image_id_from_url();
