@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
+import { Product } from 'lib/shopify/types';
 
 export async function generateMetadata(props: {
   params: Promise<{ collection: string }>;
@@ -29,7 +30,12 @@ export default async function CategoryPage(props: {
   const params = await props.params;
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-  const products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+  let products: Product[] = [];
+  try {
+    products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
+  } catch (error) {
+    console.error(error);
+  }
 
   return (
     <section>

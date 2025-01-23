@@ -1,5 +1,6 @@
 export default {
   images: {
+    domains: ['journa.ai'],
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
       {

@@ -1,4 +1,5 @@
 import { CartProvider } from 'components/cart/cart-context';
+import Footer from 'components/layout/footer';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
 import { Inter } from 'next/font/google';
@@ -44,6 +45,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <Navbar />
           <main>{children}</main>
         </CartProvider>
+        <Footer />
       </body>
     </html>
   );

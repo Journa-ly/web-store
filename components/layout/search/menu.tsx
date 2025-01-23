@@ -1,19 +1,47 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
 
+import MenuSectionTitle from 'components/menus/menuSectionTitle';
 import { getCollections } from 'lib/shopify';
+import Search from '../navbar/search';
 import FilterList from './filter';
+
+function ListWrapper({ children }: { children: React.ReactNode }) {
+  return <div className="pb-16">{children}</div>;
+}
+
+function DesignList() {
+  return (
+    <ListWrapper>
+      <FilterList
+        list={[
+          { title: 'Trending', path: '/designs/trending' },
+          { title: 'Ready to Ship', path: '/designs/ready-to-ship' },
+          { title: 'Categories', path: '/designs/category' }
+        ]}
+        title={<MenuSectionTitle iconPath="/icons/community.svg" text="Community Designs" />}
+      />
+    </ListWrapper>
+  );
+}
 
 async function CollectionList() {
   const collections = await getCollections();
-  return <FilterList list={collections} title="Collections" />;
+  return (
+    <ListWrapper>
+      <FilterList
+        list={collections}
+        title={<MenuSectionTitle iconPath={'/icons/paint_brush.svg'} text="Create Your Own" />}
+      />
+    </ListWrapper>
+  );
 }
 
 const skeleton = 'mb-3 h-4 w-5/6 animate-pulse rounded';
 const activeAndTitles = 'bg-neutral-800';
 const items = 'bg-neutral-400';
 
-export default function Collections() {
+export default function Menu() {
   return (
     <Suspense
       fallback={
@@ -31,7 +59,9 @@ export default function Collections() {
         </div>
       }
     >
+      <DesignList />
       <CollectionList />
+      <Search />
     </Suspense>
   );
 }

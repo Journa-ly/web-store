@@ -1,4 +1,3 @@
-console.log('NEXT_PUBLIC_SERVER_DOMAIN:', process.env.NEXT_PUBLIC_SERVER_DOMAIN);
 export const SERVER_DOMAIN = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
 export const SERVER_SSL = process.env.NEXT_PUBLIC_SERVER_SSL;
 export const SERVER_URL = `http${SERVER_SSL ? 's' : ''}://${SERVER_DOMAIN}`;

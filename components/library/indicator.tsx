@@ -10,23 +10,11 @@ export interface IndicatorProps {
   className?: string;
 }
 
-const Indicator: React.FC<IndicatorProps> = ({
-  children,
-  value,
-  color = 'primary',
-  className,
-}) => {
+const Indicator: React.FC<IndicatorProps> = ({ children, value, color = 'primary', className }) => {
   return (
     <div className={clsx('indicator', className)}>
       {value !== undefined && (
-        <span
-          className={clsx(
-            'indicator-item badge',
-            `badge-${color}`
-          )}
-        >
-          {value}
-        </span>
+        <span className={clsx('badge indicator-item', `badge-${color}`)}>{value}</span>
       )}
       {children}
     </div>

@@ -3,10 +3,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-type NativeFileInputProps = Omit<
-  React.SelectHTMLAttributes<HTMLInputElement>,
-  'size'
->;
+type NativeFileInputProps = Omit<React.SelectHTMLAttributes<HTMLInputElement>, 'size'>;
 
 export interface FileInputProps extends NativeFileInputProps {
   label?: string;

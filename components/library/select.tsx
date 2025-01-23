@@ -4,10 +4,7 @@ import clsx from 'clsx';
 import React from 'react';
 
 // Omit 'size' because native <select> expects a number for size
-type NativeSelectProps = Omit<
-  React.SelectHTMLAttributes<HTMLSelectElement>,
-  'size'
->;
+type NativeSelectProps = Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'>;
 
 export interface SelectProps extends NativeSelectProps {
   size?: 'lg' | 'md' | 'sm' | 'xs'; // Now this is your custom size
@@ -21,12 +18,7 @@ const Select: React.FC<SelectProps> = ({
   children,
   ...props
 }) => {
-  const classes = clsx(
-    'select',
-    `select-${size}`,
-    bordered && 'select-bordered',
-    className
-  );
+  const classes = clsx('select', `select-${size}`, bordered && 'select-bordered', className);
 
   return (
     <select className={classes} {...props}>

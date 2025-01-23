@@ -13,31 +13,21 @@ export interface TabsProps {
   className?: string;
 }
 
-const Tabs: React.FC<TabsProps> = ({
-  tabs,
-  activeIndex = 0,
-  onChange,
-  className,
-}) => {
+const Tabs: React.FC<TabsProps> = ({ tabs, activeIndex = 0, onChange, className }) => {
   return (
     <div className={clsx('tabs', className)}>
       <div className="flex space-x-2">
         {tabs.map((tab, index) => (
           <a
             key={tab.title}
-            className={clsx(
-              'tab tab-bordered',
-              index === activeIndex && 'tab-active'
-            )}
+            className={clsx('tab-bordered tab', index === activeIndex && 'tab-active')}
             onClick={() => onChange?.(index)}
           >
             {tab.title}
           </a>
         ))}
       </div>
-      <div className="p-4">
-        {tabs[activeIndex] && tabs[activeIndex].content}
-      </div>
+      <div className="p-4">{tabs[activeIndex] && tabs[activeIndex].content}</div>
     </div>
   );
 };

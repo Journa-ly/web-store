@@ -3,16 +3,11 @@
 import clsx from 'clsx';
 import React from 'react';
 
-export interface CheckboxProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface CheckboxProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({
-  label,
-  className,
-  ...props
-}) => {
+const Checkbox: React.FC<CheckboxProps> = ({ label, className, ...props }) => {
   return (
     <label className={clsx('label cursor-pointer', className)}>
       <span className="label-text mr-2">{label}</span>

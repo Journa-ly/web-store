@@ -8,17 +8,8 @@ export interface TooltipProps {
   children: React.ReactNode;
 }
 
-const Tooltip: React.FC<TooltipProps> = ({
-  message,
-  position = 'top',
-  className,
-  children,
-}) => {
-  const classes = clsx(
-    'tooltip',
-    `tooltip-${position}`,
-    className
-  );
+const Tooltip: React.FC<TooltipProps> = ({ message, position = 'top', className, children }) => {
+  const classes = clsx('tooltip', `tooltip-${position}`, className);
 
   return (
     <div className={classes} data-tip={message}>

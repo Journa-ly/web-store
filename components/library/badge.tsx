@@ -4,7 +4,16 @@ import clsx from 'clsx';
 import React from 'react';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
-  color?: 'primary' | 'secondary' | 'accent' | 'ghost' | 'info' | 'success' | 'warning' | 'error' | 'neutral';
+  color?:
+    | 'primary'
+    | 'secondary'
+    | 'accent'
+    | 'ghost'
+    | 'info'
+    | 'success'
+    | 'warning'
+    | 'error'
+    | 'neutral';
   size?: 'xs' | 'sm' | 'md' | 'lg';
   outline?: boolean;
 }

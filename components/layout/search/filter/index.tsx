@@ -16,7 +16,13 @@ function FilterItemList({ list }: { list: ListItem[] }) {
   );
 }
 
-export default function FilterList({ list, title }: { list: ListItem[]; title?: string }) {
+export default function FilterList({
+  list,
+  title
+}: {
+  list: ListItem[];
+  title?: React.ReactElement;
+}) {
   return (
     <>
       <nav>

@@ -8,17 +8,8 @@ export interface ModalProps {
   className?: string;
 }
 
-const Modal: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  children,
-  className,
-}) => {
-  const containerClasses = clsx(
-    'modal',
-    open && 'modal-open',
-    className
-  );
+const Modal: React.FC<ModalProps> = ({ open, onClose, children, className }) => {
+  const containerClasses = clsx('modal', open && 'modal-open', className);
 
   return (
     <div className={containerClasses} onClick={onClose}>

@@ -1,7 +1,6 @@
 import DesignTool from 'components/designTool';
 import Hero from 'components/Hero';
 import HeroWithCarousel from 'components/heroWithCarousel';
-import Footer from 'components/layout/footer';
 import Stats from 'components/stats';
 import TitleSubtitleButton from 'components/TitleSubtitleButton';
 
@@ -36,7 +35,6 @@ export default function HomePage() {
       />
       <Stats />
       <DesignTool />
-      <Footer />
     </>
   );
 }
