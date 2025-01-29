@@ -3,11 +3,10 @@ import { Suspense } from 'react';
 
 import MenuSectionTitle from 'components/menus/menuSectionTitle';
 import { getCollections } from 'lib/shopify';
-import Search from '../navbar/search';
 import FilterList from './filter';
 
 function ListWrapper({ children }: { children: React.ReactNode }) {
-  return <div className="pb-16">{children}</div>;
+  return <div className="pb-12">{children}</div>;
 }
 
 function DesignList() {
@@ -17,7 +16,7 @@ function DesignList() {
         list={[
           { title: 'Trending', path: '/designs/trending' },
           { title: 'Ready to Ship', path: '/designs/ready-to-ship' },
-          { title: 'Categories', path: '/designs/category' }
+          { title: 'Categories', path: '/designs/categories' }
         ]}
         title={<MenuSectionTitle iconPath="/icons/community.svg" text="Community Designs" />}
       />
@@ -59,9 +58,11 @@ export default function Menu() {
         </div>
       }
     >
-      <DesignList />
-      <CollectionList />
-      <Search />
+      <div className="rounded-lg order-first h-full w-full flex-none px-4 pt-12 shadow-xl md:max-w-[300px]">
+        <DesignList />
+        <CollectionList />
+        {/* <Search /> */}
+      </div>
     </Suspense>
   );
 }

@@ -1,9 +1,14 @@
 import CartModal from 'components/cart/modal';
-import { getMenu } from 'lib/shopify';
+import DesignStudioButton from 'components/designStudioButton';
 import Link from 'next/link';
+import Menu from '../search/menu';
 
-export async function Navbar() {
-  const menu = await getMenu('mega-menu');
+export function Navbar() {
+  const menu = [
+    { title: 'Trending', path: '/designs/trending' },
+    { title: 'Ready to Ship', path: '/designs/ready-to-ship' },
+    { title: 'Categories', path: '/designs/categories' }
+  ];
 
   return (
     <div className="mx-2 pb-8 pt-4 lg:mx-6">
@@ -26,16 +31,12 @@ export async function Navbar() {
                 />
               </svg>
             </div>
-            <ul
+            <div
               tabIndex={0}
-              className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+              className="dropdown-content menu-sm z-[1] w-52 bg-base-100 mt-4 rounded-lg mb-12"
             >
-              {menu.map((item) => (
-                <li key={item.title}>
-                  <Link href={item.path}>{item.title}</Link>
-                </li>
-              ))}
-            </ul>
+              <Menu />
+            </div>
           </div>
           <Link href="/" className="btn btn-ghost text-xl">
             Journa
@@ -53,6 +54,7 @@ export async function Navbar() {
           </ul>
         </div>
         <div className="navbar-end">
+          <DesignStudioButton />
           <CartModal />
         </div>
       </div>

@@ -1,4 +1,3 @@
-import DesignTool from 'components/designTool';
 import Hero from 'components/Hero';
 import HeroWithCarousel from 'components/heroWithCarousel';
 import Stats from 'components/stats';
@@ -34,7 +33,6 @@ export default function HomePage() {
         buttonLink="/collections/trending"
       />
       <Stats />
-      <DesignTool />
     </>
   );
 }

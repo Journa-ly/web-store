@@ -37,7 +37,7 @@ export default async function CategoryPage(props: {
   return (
     <section>
       {products.length === 0 ? (
-        <p className="py-3 text-lg h-[400px] text-center pt-[100px]">{`No designs found in this category`}</p>
+        <p className="py-3 text-lg h-[400px] text-center pt-[100px]">{`No categories found.`}</p>
       ) : (
         <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <ProductGridItems products={products} />

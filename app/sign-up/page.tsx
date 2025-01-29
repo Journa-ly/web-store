@@ -1,0 +1,15 @@
+// pages/login.tsx
+import AuthForm from 'components/authForm';
+import { AuthFormType } from 'types/authForm';
+
+const SignUpPage = () => {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-base-100 pb-24">
+      <div className="w-full max-w-xl p-8">
+        <AuthForm formType={AuthFormType.SIGNUP} />
+      </div>
+    </div>
+  );
+};
+
+export default SignUpPage;
