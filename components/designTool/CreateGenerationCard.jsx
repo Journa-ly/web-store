@@ -65,28 +65,6 @@ const CreateGenerationCard = () => {
         console.error('Error:', error);
         setFormError('An error occurred while generating images. Please try again.');
       });
-
-    // const useFaceID = useFaceIDInput ? useFaceIDInput.checked : false;
-    // let base64EncodedFiles = [];
-
-    // if (fileInput) {
-    //   const files = Array.from(fileInput.files); // Convert FileList to Array
-    //   const base64Promises = files.map(readFileAsBase64);
-
-    //   await Promise.all(base64Promises).then(encodedFiles => {
-    //     base64EncodedFiles = encodedFiles;
-    //   }).catch(error => {
-    //     console.error("Error reading files:", error);
-    //     setFormError('Error reading image file. Please try again.');
-    //   });
-
-    //   if (!base64EncodedFiles.length && !promptText) {
-    //     setFormError('Please upload an image or enter a prompt');
-    //     return;
-    //   } else {
-    //     setFormError(null);
-    //   }
-    // }
   };
 
   return (

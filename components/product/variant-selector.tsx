@@ -41,6 +41,7 @@ export function VariantSelector({
         <dt className="mb-4 text-sm uppercase tracking-wide">{option.name}</dt>
         <dd className="flex flex-wrap gap-3">
           {option.values.map((value) => {
+            console.log('option', option);
             const optionNameLowerCase = option.name.toLowerCase();
 
             // Base option params on current selectedOptions so we can preserve any other param state.

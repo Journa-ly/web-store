@@ -1,10 +1,15 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
+import { AddToCart } from 'components/cart/add-to-cart';
+import DesignForm from 'components/forms/generateForm';
 import { GridTileImage } from 'components/grid/tile';
+import NumberLabel from 'components/numberLabel';
 import { Gallery } from 'components/product/gallery';
 import { ProductProvider } from 'components/product/product-context';
 import { ProductDescription } from 'components/product/product-description';
+import ProductTitleWithPrice from 'components/product/productTitleWithPrice';
+import { VariantSelector } from 'components/product/variant-selector';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct, getProductRecommendations } from 'lib/shopify';
 import { Image } from 'lib/shopify/types';
@@ -79,28 +84,53 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl px-4">
-        <div className="flex flex-col rounded-lg border border-neutral-200 bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
-          <div className="h-full w-full basis-full lg:basis-4/6">
+      <div className="mx-auto max-w-screen-2xl rounded-2xl shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.10)] shadow">
+        <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
+          <div className="basis-full lg:basis-1/2">
+            <ProductTitleWithPrice product={product} />
+            <div>
+              <NumberLabel>1</NumberLabel>
+              <DesignForm />
+              <NumberLabel>2</NumberLabel>
+            </div>
+          </div>
+          <div className="h-full w-full basis-full lg:basis-1/2">
             <Suspense
               fallback={
                 <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
               }
             >
               <Gallery
-                images={product.images.slice(0, 5).map((image: Image) => ({
+                images={product.images.slice(0, 1).map((image: Image) => ({
                   src: image.url,
                   altText: image.altText
                 }))}
               />
+              <VariantSelector options={product.options} variants={product.variants} />
+              <AddToCart product={product} />
             </Suspense>
           </div>
-
-          <div className="basis-full lg:basis-2/6">
-            <Suspense fallback={null}>
+        </div>
+        <div className="flex flex-col lg:flex-row pt-8">
+          <Suspense
+            fallback={
+              <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
+            }
+          >
+            {/* Gallery container */}
+            <div className="w-full lg:w-2/6">
+              <Gallery
+                images={product.images.map((image: Image) => ({
+                  src: image.url,
+                  altText: image.altText,
+                }))}
+              />
+            </div>
+            {/* Product description container */}
+            <div className="w-full lg:w-4/6">
               <ProductDescription product={product} />
-            </Suspense>
-          </div>
+            </div>
+          </Suspense>
         </div>
         <RelatedProducts id={product.id} />
       </div>

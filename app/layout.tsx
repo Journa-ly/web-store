@@ -46,6 +46,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           <main>{children}</main>
         </CartProvider>
         <Footer />
+        {/* <GoogleAnalytics gaId="G-XYZ" /> */}
       </body>
     </html>
   );
