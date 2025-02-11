@@ -15,6 +15,7 @@ import { getProduct, getProductRecommendations } from 'lib/shopify';
 import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
+import MyDesignsCarousel from 'components/carousel/MyDesignsCarousel';
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -57,6 +58,8 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
   const params = await props.params;
   const product = await getProduct(params.handle);
 
+  console.log(product);
+
   if (!product) return notFound();
 
   const productJsonLd = {
@@ -84,14 +87,17 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl rounded-2xl shadow-[0px_1px_2px_-1px_rgba(0,0,0,0.10)] shadow">
+      <div className="mx-auto max-w-screen-2xl rounded-2xl shadow">
         <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
-          <div className="basis-full lg:basis-1/2">
+          <div className="w-full lg:w-1/2 lg:max-w-xl">
             <ProductTitleWithPrice product={product} />
-            <div>
-              <NumberLabel>1</NumberLabel>
+            <div className="w-full">
+              <NumberLabel label="Describe your design">1</NumberLabel>
               <DesignForm />
-              <NumberLabel>2</NumberLabel>
+              <NumberLabel label="Select a design">2</NumberLabel>
+              <div className="w-full overflow-hidden">
+                <MyDesignsCarousel />
+              </div>
             </div>
           </div>
           <div className="h-full w-full basis-full lg:basis-1/2">
@@ -101,33 +107,41 @@ export default async function ProductPage(props: { params: Promise<{ handle: str
               }
             >
               <Gallery
-                images={product.images.slice(0, 1).map((image: Image) => ({
+                images={[product.featuredImage].map((image: Image) => ({
                   src: image.url,
                   altText: image.altText
                 }))}
+                useQueryParams={false}
+                showDesignOverlay={true}
               />
               <VariantSelector options={product.options} variants={product.variants} />
-              <AddToCart product={product} />
+              <div className="mt-4">
+                <AddToCart product={product} />
+              </div>
             </Suspense>
           </div>
         </div>
-        <div className="flex flex-col lg:flex-row pt-8">
+        <div className="flex flex-col border-t border-neutral-200 pt-8 lg:flex-row">
           <Suspense
             fallback={
               <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
             }
           >
             {/* Gallery container */}
-            <div className="w-full lg:w-2/6">
-              <Gallery
-                images={product.images.map((image: Image) => ({
-                  src: image.url,
-                  altText: image.altText,
-                }))}
-              />
+            <div className="w-full lg:w-1/2 lg:border-r">
+              <div className="px-10">
+                <Gallery
+                  images={product.images.map((image: Image) => ({
+                    src: image.url,
+                    altText: image.altText
+                  }))}
+                  useQueryParams={true}
+                  showDesignOverlay={false}
+                />
+              </div>
             </div>
             {/* Product description container */}
-            <div className="w-full lg:w-4/6">
+            <div className="w-full px-4 lg:w-1/2">
               <ProductDescription product={product} />
             </div>
           </Suspense>

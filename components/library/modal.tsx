@@ -9,20 +9,16 @@ export interface ModalProps {
 }
 
 const Modal: React.FC<ModalProps> = ({ open, onClose, children, className }) => {
-  const containerClasses = clsx('modal', open && 'modal-open', className);
+  const containerClasses = clsx('modal', open && 'modal-open');
+  const modalClasses = clsx('modal-box p-0', className);
 
   return (
     <div className={containerClasses} onClick={onClose}>
       <div
-        className="modal-box"
+        className={modalClasses}
         onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
       >
         {children}
-        <div className="modal-action">
-          <label className="btn" onClick={onClose}>
-            Close
-          </label>
-        </div>
       </div>
     </div>
   );

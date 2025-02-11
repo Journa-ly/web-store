@@ -1,9 +1,9 @@
 // lib/apiClient.ts
-import axios from "axios";
+import axios from 'axios';
 
 /**
  * A pre-configured Axios instance for calling internal Next.js API routes.
- * 
+ *
  * By default, we set the baseURL to '/api', so calls like apiClient.post("/some-route")
  * become POST requests to "/api/some-route".
  *
@@ -12,7 +12,7 @@ import axios from "axios";
 const baseURL = process.env.NEXT_PUBLIC_APP_URL;
 
 export const apiClient = axios.create({
-  baseURL: `${baseURL}/api`,
+  baseURL: `${baseURL}/api`
 });
 
 // Optional: Add an example interceptor (e.g., to add auth headers or handle errors).

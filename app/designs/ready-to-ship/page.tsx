@@ -1,4 +1,3 @@
-
 import Grid from 'components/grid';
 import ProductGridItems from 'components/layout/product-grid-items';
 import { defaultSort, sorting } from 'lib/constants';
@@ -37,7 +36,7 @@ export default async function CategoryPage(props: {
   return (
     <section>
       {products.length === 0 ? (
-        <p className="py-3 text-lg h-[400px] text-center pt-[100px]">{`No designs found in this category`}</p>
+        <p className="h-[400px] py-3 pt-[100px] text-center text-lg">{`No designs found in this category`}</p>
       ) : (
         <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           <ProductGridItems products={products} />

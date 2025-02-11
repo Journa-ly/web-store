@@ -46,14 +46,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         firstName,
         lastName,
         password,
-        acceptsMarketing,
-      },
+        acceptsMarketing
+      }
     });
 
     const { customerCreate } = data.data;
     if (customerCreate?.customerUserErrors?.length) {
       return res.status(400).json({
-        errors: customerCreate.customerUserErrors,
+        errors: customerCreate.customerUserErrors
       });
     }
 

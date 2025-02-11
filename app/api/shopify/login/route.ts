@@ -37,13 +37,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         };
       };
     }>(CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION, {
-      input: { email, password },
+      input: { email, password }
     });
 
     const { customerAccessTokenCreate } = data.data;
     if (customerAccessTokenCreate?.customerUserErrors?.length) {
       return res.status(400).json({
-        errors: customerAccessTokenCreate.customerUserErrors,
+        errors: customerAccessTokenCreate.customerUserErrors
       });
     }
 

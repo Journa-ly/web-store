@@ -11,7 +11,15 @@ export default {
         protocol: 'https',
         hostname: 'journa.ai',
         pathname: '/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'journatest.blob.core.windows.net',
+        pathname: '/**'
       }
     ]
+  },
+  env: {
+    PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY
   }
 };

@@ -18,7 +18,6 @@ const menu = [
   }
 ];
 
-
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
@@ -26,7 +25,7 @@ export default function Footer() {
 
   return (
     <footer className="footer grid-rows-2 bg-neutral text-neutral-content">
-      <div className="mx-auto w-full max-w-7xl flex flex-col gap-6 px-6 py-12 text-sm md:px-4 min-[1320px]:px-0">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-12 text-sm md:px-4 min-[1320px]:px-0">
         <div className="flex w-full justify-end">
           <SocialLinks />
         </div>

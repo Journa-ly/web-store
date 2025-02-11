@@ -2,6 +2,7 @@ import CartModal from 'components/cart/modal';
 import DesignStudioButton from 'components/designStudioButton';
 import Link from 'next/link';
 import Menu from '../search/menu';
+import UserMenu from './UserMenu';
 
 export function Navbar() {
   const menu = [
@@ -33,7 +34,7 @@ export function Navbar() {
             </div>
             <div
               tabIndex={0}
-              className="dropdown-content menu-sm z-[1] w-52 bg-base-100 mt-4 rounded-lg mb-12"
+              className="dropdown-content menu-sm z-[1] mb-12 mt-4 w-52 rounded-lg bg-base-100"
             >
               <Menu />
             </div>
@@ -53,7 +54,8 @@ export function Navbar() {
               : null}
           </ul>
         </div>
-        <div className="navbar-end">
+        <div className="navbar-end gap-2">
+          <UserMenu />
           <DesignStudioButton />
           <CartModal />
         </div>

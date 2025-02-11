@@ -1,4 +1,3 @@
-
 const SocialLinks = () => {
   return (
     <ul className="flex space-x-4" role="list">
@@ -6,13 +5,13 @@ const SocialLinks = () => {
       <li>
         <a
           href="https://facebook.com/journa_ai"
-          className="btn btn-ghost p-0 min-h-0 h-auto"
+          className="btn btn-ghost h-auto min-h-0 p-0"
           aria-label="Facebook"
         >
           <svg
             aria-hidden="true"
             focusable="false"
-            className="w-6 h-6"
+            className="h-6 w-6"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -26,13 +25,13 @@ const SocialLinks = () => {
       <li>
         <a
           href="https://instagram.com/journa_ai"
-          className="btn btn-ghost p-0 min-h-0 h-auto"
+          className="btn btn-ghost h-auto min-h-0 p-0"
           aria-label="Instagram"
         >
           <svg
             aria-hidden="true"
             focusable="false"
-            className="w-6 h-6"
+            className="h-6 w-6"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -50,13 +49,13 @@ const SocialLinks = () => {
       <li>
         <a
           href="https://www.tiktok.com/@journa_ai"
-          className="btn btn-ghost p-0 min-h-0 h-auto"
+          className="btn btn-ghost h-auto min-h-0 p-0"
           aria-label="TikTok"
         >
           <svg
             aria-hidden="true"
             focusable="false"
-            className="w-6 h-6"
+            className="h-6 w-6"
             viewBox="0 0 20 20"
             fill="currentColor"
           >
@@ -70,13 +69,13 @@ const SocialLinks = () => {
       <li>
         <a
           href="https://www.pinterest.com/journa_ai"
-          className="btn btn-ghost p-0 min-h-0 h-auto"
+          className="btn btn-ghost h-auto min-h-0 p-0"
           aria-label="Pinterest"
         >
           <svg
             aria-hidden="true"
             focusable="false"
-            className="w-6 h-6"
+            className="h-6 w-6"
             viewBox="0 0 20 20"
             fill="currentColor"
           >

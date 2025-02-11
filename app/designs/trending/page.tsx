@@ -1,8 +1,10 @@
+'use client';
 
-import Grid from 'components/grid';
-import ProductGridItems from 'components/layout/product-grid-items';
-import { defaultSort, sorting } from 'lib/constants';
-import { Product } from 'lib/shopify/types';
+import { usePaginatedTrendingDesigns } from 'requests/designs';
+import { ClipLoader } from 'react-spinners';
+import DesignCard from 'components/designs/DesignCard';
+import { useEffect } from 'react';
+import { useInView } from 'react-intersection-observer';
 
 // export async function generateMetadata(props: {
 //   params: Promise<{ category: string }>;
@@ -19,29 +21,45 @@ import { Product } from 'lib/shopify/types';
 //   };
 // }
 
-export default async function CategoryPage(props: {
-  params: Promise<{ category: string }>;
-  searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
-}) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
-  const { sort } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
-  let products: Product[] = [];
-  // try {
-  //   products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
-  // } catch (error) {
-  //   console.error(error);
-  // }
+export default function TrendingPage() {
+  const { trendingDesigns, isLoading, isError, size, setSize, pages } =
+    usePaginatedTrendingDesigns();
+  const { ref, inView } = useInView();
+
+  const isLastPage = pages && pages[pages.length - 1]?.next === null;
+
+  useEffect(() => {
+    if (inView && !isLastPage && !isLoading) {
+      setSize(size + 1);
+    }
+  }, [inView, isLastPage, isLoading, setSize, size]);
+
+  if (isError) {
+    return (
+      <div className="flex h-[400px] items-center justify-center">
+        <p className="text-lg text-red-500">Failed to load trending designs</p>
+      </div>
+    );
+  }
 
   return (
-    <section>
-      {products.length === 0 ? (
-        <p className="py-3 text-lg h-[400px] text-center pt-[100px]">{`No designs found in this category`}</p>
+    <section className="container mx-auto px-4 py-8">
+      <h1 className="mb-8 text-3xl font-bold">Trending Designs</h1>
+
+      {trendingDesigns.length === 0 && !isLoading ? (
+        <p className="py-3 text-center text-lg">No trending designs found</p>
       ) : (
-        <Grid className="grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          <ProductGridItems products={products} />
-        </Grid>
+        <>
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {trendingDesigns.map((design) => (
+              <DesignCard key={design.uuid} design={design} />
+            ))}
+          </div>
+
+          <div ref={ref} className="mt-8 flex items-center justify-center">
+            {isLoading && !isLastPage && <ClipLoader color="#000000" size={40} />}
+          </div>
+        </>
       )}
     </section>
   );

@@ -1,41 +1,36 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { apiClient } from "clients/api"; // <-- Import our shared Axios client
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { EmailSignupSchema, EmailSignupType } from "validations/emailSignupSchema";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { apiClient } from 'clients/api'; // <-- Import our shared Axios client
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { EmailSignupSchema, EmailSignupType } from 'validations/emailSignupSchema';
 
 const EmailIntake: React.FC = () => {
-  const [serverError, setServerError] = useState("");
+  const [serverError, setServerError] = useState('');
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting, isSubmitSuccessful },
-    reset,
+    reset
   } = useForm<EmailSignupType>({
-    resolver: zodResolver(EmailSignupSchema),
+    resolver: zodResolver(EmailSignupSchema)
   });
 
   const onSubmit = async (data: EmailSignupType) => {
-    setServerError("");
+    setServerError('');
     try {
-      await apiClient.post("/shopify-create-customer", { email: data.email });
+      await apiClient.post('/shopify-create-customer', { email: data.email });
       reset();
     } catch (error: any) {
       const message =
-        error?.response?.data?.error || 
-        error.message || 
-        "An unexpected error occurred.";
+        error?.response?.data?.error || error.message || 'An unexpected error occurred.';
       setServerError(message);
     }
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="flex flex-col w-full max-w-sm space-y-3"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="flex w-full max-w-sm flex-col space-y-3">
       <label className="text-sm font-medium" htmlFor="email">
         Sign up for our newsletter
       </label>
@@ -46,31 +41,22 @@ const EmailIntake: React.FC = () => {
           id="email"
           type="email"
           placeholder="Enter your email"
-          className=" text-base-content input input-bordered w-full pr-10" 
+          className="input input-bordered w-full pr-10 text-base-content"
           disabled={isSubmitting}
-          {...register("email")}
+          {...register('email')}
         />
 
         {/* The icon button positioned at the right, centered vertically */}
         <button
           type="submit"
           disabled={isSubmitting}
-          className="
-            absolute
-            right-2
-            top-1/2
-            -translate-y-1/2
-            text-gray-500
-            hover:text-gray-700
-            active:scale-95
-            transition-transform
-          "
-          style={{ background: "none" }} // Ensures no background
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-500 transition-transform hover:text-gray-700 active:scale-95"
+          style={{ background: 'none' }} // Ensures no background
         >
           {isSubmitting ? (
             /* Spinner icon while submitting */
             <svg
-              className="animate-spin h-5 w-5"
+              className="h-5 w-5 animate-spin"
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
@@ -83,18 +69,14 @@ const EmailIntake: React.FC = () => {
                 stroke="currentColor"
                 strokeWidth="4"
               ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8H4z"
-              ></path>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
             </svg>
           ) : (
             /* Send (paper airplane) icon */
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
-              className="w-5 h-5"
+              className="h-5 w-5"
               viewBox="0 0 24 24"
               strokeWidth={1.5}
               stroke="currentColor"
@@ -110,17 +92,13 @@ const EmailIntake: React.FC = () => {
       </div>
 
       {/* Validation error */}
-      {errors.email && (
-        <p className="text-red-500 text-sm">{errors.email.message}</p>
-      )}
+      {errors.email && <p className="text-sm text-red-500">{errors.email.message}</p>}
 
       {/* Success / Error messages */}
       {isSubmitSuccessful && !serverError && (
-        <p className="text-green-500 text-sm">Thank you for subscribing!</p>
+        <p className="text-sm text-green-500">Thank you for subscribing!</p>
       )}
-      {serverError && (
-        <p className="text-red-500 text-sm">Error: {serverError}</p>
-      )}
+      {serverError && <p className="text-sm text-red-500">Error: {serverError}</p>}
     </form>
   );
 };

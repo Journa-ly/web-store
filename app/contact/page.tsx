@@ -1,9 +1,8 @@
-
 const ContactPage = () => {
   return (
-    <div className="w-full max-w-md bg-base-100 p-6 mx-auto">
-      <h1 className="text-4xl font-bold mb-4">Contact information</h1>
-      <div className="text-xl flex flex-col space-y-2 text-gray-700">
+    <div className="mx-auto w-full max-w-md bg-base-100 p-6">
+      <h1 className="mb-4 text-4xl font-bold">Contact information</h1>
+      <div className="flex flex-col space-y-2 text-xl text-gray-700">
         <a href="mailto:team@journa.ai" className="link link-primary">
           team@journa.ai
         </a>
