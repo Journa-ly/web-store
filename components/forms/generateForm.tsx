@@ -84,7 +84,9 @@ const DesignForm = () => {
       } else if (typeof error === 'string') {
         setErrorMessage(error);
       } else {
-        setErrorMessage('An unexpected error occurred while creating your design. Please try again.');
+        setErrorMessage(
+          'An unexpected error occurred while creating your design. Please try again.'
+        );
       }
     } finally {
       setTimeout(() => {
@@ -116,7 +118,9 @@ const DesignForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4 p-6">
         {/* Description Field */}
         <div>
-          <label className="block text-sm font-medium text-base-content">Describe your design</label>
+          <label className="block text-sm font-medium text-base-content">
+            Describe your design
+          </label>
           <textarea
             {...register('prompt')}
             ref={(e) => {
@@ -131,7 +135,9 @@ const DesignForm = () => {
 
         {/* Text Field (Optional) */}
         <div>
-          <label className="block text-sm font-medium text-base-content">Image Text (Optional)</label>
+          <label className="block text-sm font-medium text-base-content">
+            Image Text (Optional)
+          </label>
           <input
             {...register('imageText')}
             type="text"
