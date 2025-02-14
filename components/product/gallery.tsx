@@ -4,7 +4,6 @@ import { ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { GridTileImage } from 'components/grid/tile';
 import { useProduct, useUpdateURL } from 'components/product/product-context';
 import Image from 'next/image';
-import { usePrintfulPrintArea } from '../../hooks/usePrintfulPrintArea';
 import { useState } from 'react';
 import clsx from 'clsx';
 
@@ -23,9 +22,6 @@ export function Gallery({
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const updateURL = useUpdateURL();
 
-  // Get print area data using the variant's SKU
-  const { printArea, isLoading: isPrintAreaLoading } = usePrintfulPrintArea(selectedVariant?.sku);
-
   const selectedImage = images[selectedImageIndex] || images[0];
   if (!selectedImage) return null;
 
@@ -34,36 +30,6 @@ export function Gallery({
     if (!image) return { image: null, variant: null, previewImage: null };
     setSelectedImageIndex(index);
     return updateImage(image.src);
-  };
-
-  // Calculate design overlay position and size
-  const getDesignOverlayStyle = () => {
-    if (!printArea || !showDesignOverlay) return {};
-
-    // Calculate the scaling factor based on the container size
-    // These values should match your container's dimensions
-    const containerWidth = 550; // max container width
-    const containerHeight = 550; // max container height
-
-    // Calculate scale factors
-    const scaleX = containerWidth / printArea.width;
-    const scaleY = containerHeight / printArea.height;
-    const scale = Math.min(scaleX, scaleY);
-
-    // Calculate centered position
-    const scaledWidth = printArea.width * scale;
-    const scaledHeight = printArea.height * scale;
-    const left = (containerWidth - scaledWidth) / 2 + printArea.left * scale;
-    const top = (containerHeight - scaledHeight) / 2 + printArea.top * scale;
-
-    return {
-      position: 'absolute' as const,
-      top: `${top}px`,
-      left: `${left}px`,
-      width: `${scaledWidth}px`,
-      height: `${scaledHeight}px`,
-      pointerEvents: 'none' as const
-    };
   };
 
   const buttonClassName =
@@ -84,7 +50,7 @@ export function Gallery({
 
         {/* Design Overlay */}
         {showDesignOverlay && previewImage && (
-          <div className="absolute" style={getDesignOverlayStyle()}>
+          <div className="absolute">
             <Image
               src={previewImage}
               alt="Design Preview"

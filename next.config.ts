@@ -18,8 +18,5 @@ export default {
         pathname: '/**'
       }
     ]
-  },
-  env: {
-    PRINTFUL_API_KEY: process.env.PRINTFUL_API_KEY
   }
 };

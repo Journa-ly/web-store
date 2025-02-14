@@ -1,8 +1,8 @@
 'use client';
 
-import { usePaginatedTrendingDesigns } from 'requests/designs';
+import { usePaginatedTrendingDesigns } from '@/requests/designs';
 import { ClipLoader } from 'react-spinners';
-import DesignCard from 'components/designs/DesignCard';
+import DesignCard from '@/components/designs/DesignCard';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 
