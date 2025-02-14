@@ -6,17 +6,19 @@ import { getCollection, getCollectionProducts } from 'lib/shopify';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
-
 export async function generateMetadata(props: {
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
-  const collection = await getCollection("ready-to-ship");
+  const collection = await getCollection('ready-to-ship');
 
   return {
-    title: collection.seo?.title || collection.title || "Ready to Ship",
+    title: collection.seo?.title || collection.title || 'Ready to Ship',
     description:
-      collection.seo?.description || collection.description || `${collection.title}` || "Ready to Ship products"
+      collection.seo?.description ||
+      collection.description ||
+      `${collection.title}` ||
+      'Ready to Ship products'
   };
 }
 
@@ -29,7 +31,7 @@ export default async function CategoryPage(props: {
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   let products: Product[] = [];
   try {
-    products = await getCollectionProducts({ collection: "ready-to-ship", sortKey, reverse });
+    products = await getCollectionProducts({ collection: 'ready-to-ship', sortKey, reverse });
   } catch (error) {
     console.error(error);
   }
