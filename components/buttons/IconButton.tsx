@@ -6,7 +6,13 @@ interface IconButtonProps {
   disabled?: boolean;
 }
 
-export default function IconButton({ icon, text, onClick, type = 'button', disabled = false }: IconButtonProps) {
+export default function IconButton({
+  icon,
+  text,
+  onClick,
+  type = 'button',
+  disabled = false
+}: IconButtonProps) {
   return (
     <button
       className="hover-grow"
