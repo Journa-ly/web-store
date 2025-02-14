@@ -9,16 +9,14 @@ import { notFound } from 'next/navigation';
 export async function generateMetadata(props: {
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
-  const params = await props.params;
   const collection = await getCollection('ready-to-ship');
 
+  if (!collection) return notFound();
+
   return {
-    title: collection.seo?.title || collection.title || 'Ready to Ship',
+    title: collection.seo?.title || collection.title,
     description:
-      collection.seo?.description ||
-      collection.description ||
-      `${collection.title}` ||
-      'Ready to Ship products'
+      collection.seo?.description || collection.description || `${collection.title} products`
   };
 }
 
@@ -27,6 +25,7 @@ export default async function CategoryPage(props: {
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const searchParams = await props.searchParams;
+
   const { sort } = searchParams as { [key: string]: string };
   const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   let products: Product[] = [];
