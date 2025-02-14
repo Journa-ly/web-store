@@ -8,9 +8,7 @@ import { cookies, headers } from 'next/headers';
 import { ReactNode } from 'react';
 import './globals.css';
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL
-  ? `process.env.NEXT_PUBLIC_APP_URL`
-  : 'http://localhost:3000';
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "";
 
 export const metadata = {
   metadataBase: new URL(baseUrl),
