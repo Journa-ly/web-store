@@ -3,24 +3,32 @@
 import { useAuth } from 'requests/users';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export default function UserMenu() {
   const { user, isAuthenticated, logout, isLoading } = useAuth();
   const router = useRouter();
+  const [isMounted, setIsMounted] = useState(false);
 
-  // Show nothing while initially loading to prevent flash
-  if (isLoading) {
-    return null;
-  }
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleLogout = async () => {
     const result = await logout();
     if (result.success) {
-      router.push('/');
+      // No need to navigate since the state change will trigger a re-render
+      // router.push('/');
     }
   };
 
-  if (!isAuthenticated) {
+  // Don't render anything during SSR or initial mount
+  if (!isMounted) {
+    return null;
+  }
+
+  // Show login/signup menu when not authenticated
+  if (!isAuthenticated || !user) {
     return (
       <div className="dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost">
@@ -57,7 +65,7 @@ export default function UserMenu() {
   return (
     <div className="dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost">
-        <span>Hi, {user?.first_name}</span>
+        <span>Hi, {user.first_name}</span>
       </div>
       <ul
         tabIndex={0}

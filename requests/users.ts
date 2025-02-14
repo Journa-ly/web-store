@@ -102,7 +102,9 @@ export function useAuth() {
   const logout = async () => {
     try {
       await userRequests.logout();
-      await mutate();
+      // Clear the user data from the cache by setting it to null/undefined
+      await mutate(undefined, { revalidate: false });
+
       return { success: true };
     } catch (error) {
       return { success: false, error };

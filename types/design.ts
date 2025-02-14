@@ -106,9 +106,7 @@ export interface Design {
   name?: string;
   prompt?: string;
   quote_prompt?: string;
-  product_image?: {
-    image: string;
-  };
+  product_image: ProductImage | null;
   heart_count: number;
   laugh_count: number;
   fire_count: number;

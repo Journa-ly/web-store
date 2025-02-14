@@ -8,6 +8,10 @@ import { createDesign, usePaginatedMyDesigns } from 'requests/designs';
 import { z } from 'zod';
 import { CreateDesignRequest } from 'types/design';
 import MyDesignsButton from 'components/buttons/MyDesignsButton';
+import ShareButton from 'components/buttons/ShareButton';
+import { useDesign } from 'components/designs/design-context';
+import { useEffect, useRef, useState } from 'react';
+import clsx from 'clsx';
 
 // Define the form schema
 const formSchema = z.object({
@@ -19,10 +23,14 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const DesignForm = () => {
+  const { selectedDesign } = useDesign();
+  const promptRef = useRef<HTMLTextAreaElement>(null);
+  const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const {
     register,
     handleSubmit,
     reset,
+    setValue,
     formState: { errors, isSubmitting }
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema)
@@ -30,7 +38,18 @@ const DesignForm = () => {
 
   const { mutate } = usePaginatedMyDesigns();
 
+  // Update form when selected design changes
+  useEffect(() => {
+    if (selectedDesign) {
+      setValue('prompt', selectedDesign.prompt || '');
+      setValue('imageText', selectedDesign.quote_prompt || '');
+    }
+  }, [selectedDesign, setValue]);
+
   const onSubmit = async (data: FormValues) => {
+    if (isSubmitDisabled) return;
+
+    setIsSubmitDisabled(true);
     try {
       const designData: CreateDesignRequest = {
         prompt: data.prompt,
@@ -41,13 +60,25 @@ const DesignForm = () => {
 
       // Trigger a revalidation of the my designs data
       await mutate();
-
-      // Reset the form on success
-      reset();
     } catch (error) {
       console.error('Error creating design:', error);
       // Optionally, display an error message to the user
+    } finally {
+      // Enable the submit button after 3 seconds
+      setTimeout(() => {
+        setIsSubmitDisabled(false);
+      }, 3000);
     }
+  };
+
+  const handleNewGeneration = () => {
+    reset({
+      prompt: '',
+      imageText: '',
+      style: ''
+    });
+    // Focus the prompt textarea after reset
+    promptRef.current?.focus();
   };
 
   return (
@@ -57,6 +88,10 @@ const DesignForm = () => {
         <label className="block text-sm font-medium text-base-content">Describe your design</label>
         <textarea
           {...register('prompt')}
+          ref={(e) => {
+            register('prompt').ref(e);
+            promptRef.current = e;
+          }}
           className="textarea mt-1 w-full bg-neutral-100"
           placeholder="Enter your design description..."
         />
@@ -90,14 +125,22 @@ const DesignForm = () => {
       </div> */}
 
       <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <NewGenerationButton onClick={() => reset()} />
+        <div className="flex items-center gap-5">
+          <NewGenerationButton onClick={handleNewGeneration} />
           <MyDesignsButton />
+          <ShareButton />
         </div>
 
-        <button type="submit" className="btn btn-secondary flex items-center gap-2 text-white">
+        <button
+          type="submit"
+          disabled={isSubmitting || isSubmitDisabled}
+          className={clsx(
+            'btn btn-secondary flex items-center gap-2 text-white',
+            (isSubmitting || isSubmitDisabled) && 'cursor-not-allowed opacity-50'
+          )}
+        >
           <PaintBrushIcon width={24} height={24} />
-          Generate
+          {isSubmitting ? 'Generating...' : 'Generate'}
         </button>
       </div>
     </form>

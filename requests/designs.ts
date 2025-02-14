@@ -51,8 +51,14 @@ export const usePaginatedDesigns = () => {
  */
 export const usePaginatedTrendingDesigns = () => {
   const getKey = (pageIndex: number, previousPageData: TrendingDesignListResponse | null) => {
-    if (previousPageData && !previousPageData.next) return null;
-    return `/designs/trending/?page=${pageIndex + 1}&page_size=${PAGE_SIZE}`;
+    // First page, no cursor needed
+    if (pageIndex === 0) return `/designs/trending/?page_size=${PAGE_SIZE}`;
+
+    // If the previous page is empty or doesn't have next cursor, we've reached the end
+    if (!previousPageData || !previousPageData.next) return null;
+
+    // Use the cursor value directly
+    return `/designs/trending/?cursor=${previousPageData.next}&page_size=${PAGE_SIZE}`;
   };
 
   const { data, error, size, setSize } = useSWRInfinite<TrendingDesignListResponse>(
@@ -63,6 +69,10 @@ export const usePaginatedTrendingDesigns = () => {
   const trendingDesigns = data ? data.map((page) => page.results).flat() : [];
   const totalCount = data && data[0] ? data[0].count : 0;
 
+  // Add isLoadingMore and hasNextPage helpers
+  const isLoadingMore = data && typeof data[size - 1] === 'undefined';
+  const hasNextPage = data ? data[data.length - 1]?.next !== null : false;
+
   return {
     trendingDesigns,
     totalCount,
@@ -70,7 +80,9 @@ export const usePaginatedTrendingDesigns = () => {
     isError: error,
     size,
     setSize,
-    pages: data
+    pages: data,
+    isLoadingMore,
+    hasNextPage
   };
 };
 
@@ -79,8 +91,14 @@ export const usePaginatedTrendingDesigns = () => {
  */
 export const usePaginatedMyDesigns = () => {
   const getKey = (pageIndex: number, previousPageData: UserDesignListResponse | null) => {
-    if (previousPageData && !previousPageData.next) return null;
-    return `/designs/designs/my_designs/?page=${pageIndex + 1}&page_size=${PAGE_SIZE}`;
+    // First page, no cursor needed
+    if (pageIndex === 0) return `/designs/designs/my_designs/?page_size=${PAGE_SIZE}`;
+
+    // If the previous page is empty or doesn't have next cursor, we've reached the end
+    if (!previousPageData || !previousPageData.next) return null;
+
+    // Use the cursor value directly
+    return `/designs/designs/my_designs/?cursor=${previousPageData.next}&page_size=${PAGE_SIZE}`;
   };
 
   const { data, error, size, setSize, mutate } = useSWRInfinite<UserDesignListResponse>(
@@ -91,6 +109,10 @@ export const usePaginatedMyDesigns = () => {
   const myDesigns = data ? data.map((page) => page.results).flat() : [];
   const totalCount = data && data[0] ? data[0].count : 0;
 
+  // Add isLoadingMore and hasNextPage helpers
+  const isLoadingMore = data && typeof data[size - 1] === 'undefined';
+  const hasNextPage = data ? data[data.length - 1]?.next !== null : false;
+
   return {
     myDesigns,
     totalCount,
@@ -99,7 +121,9 @@ export const usePaginatedMyDesigns = () => {
     size,
     setSize,
     pages: data,
-    mutate
+    mutate,
+    isLoadingMore,
+    hasNextPage
   };
 };
 
@@ -117,11 +141,16 @@ export const toggleInteraction = async (
 };
 
 /**
- * shareDesign - shares a design by adding the current user to the design's many-to-many 'users' field.
+ * shareDesign - shares a design by adding the current user or session to the design.
  */
 export const shareDesign = async (uuid: string): Promise<ShareDesignResponse> => {
-  const response = await serverClient.post(`/designs/trending/${uuid}/share/`);
-  return response.data;
+  try {
+    const response = await serverClient.post(`/designs/designs/${uuid}/share/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error sharing design:', error);
+    throw error;
+  }
 };
 
 /**
@@ -209,6 +238,11 @@ export const attachUserToSession = async (sessionId: string): Promise<AttachUser
 };
 
 export async function addToMyDesigns(designId: string) {
-  const response = await axios.post(`/api/designs/${designId}/share`);
-  return response.data;
+  try {
+    const response = await serverClient.post(`/designs/designs/${designId}/share/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error adding design to my designs:', error);
+    throw error;
+  }
 }

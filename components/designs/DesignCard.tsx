@@ -1,5 +1,6 @@
 import { Design } from 'types/design';
 import Image from 'next/image';
+import Link from 'next/link';
 import { HeartIcon, FireIcon, FaceSmileIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {
   HeartIcon as HeartIconSolid,
@@ -7,12 +8,12 @@ import {
   FaceSmileIcon as FaceSmileIconSolid
 } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
-import { toggleInteraction, addToMyDesigns } from 'requests/designs';
+import { toggleInteraction } from 'requests/designs';
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { ClipLoader } from 'react-spinners';
 import { useAuth } from 'requests/users';
-import dynamic from 'next/dynamic';
 import { isMobile } from 'react-device-detect';
+import dynamic from 'next/dynamic';
 
 // Dynamically import AuthModal to avoid SSR issues
 const AuthModal = dynamic(() => import('components/modals/AuthModal'), {
@@ -43,11 +44,16 @@ export default function DesignCard({ design }: DesignCardProps) {
     fire_count: design.fire_count || 0
   });
   const [isLoading, setIsLoading] = useState<{ [key: string]: boolean }>({});
-  const [isAddingToDesigns, setIsAddingToDesigns] = useState(false);
-  const [showAuthModal, setShowAuthModal] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [pendingReaction, setPendingReaction] = useState<string | null>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
+  const [authModalTitle, setAuthModalTitle] = useState<string>('');
+
+  // Create share URL once when component mounts
+  const returnUrl = '/designs/studio';
+  const shareUrl = `/share?design=${design.uuid}&return=${encodeURIComponent(returnUrl)}`;
 
   // Close overlay when clicking outside
   useEffect(() => {
@@ -69,6 +75,17 @@ export default function DesignCard({ design }: DesignCardProps) {
   }, [showOverlay]);
 
   const handleReaction = async (reactionType: string) => {
+    if (!user) {
+      setPendingReaction(reactionType);
+      setAuthModalTitle('Sign in to interact with designs');
+      setShowAuthModal(true);
+      return;
+    }
+
+    await processReaction(reactionType);
+  };
+
+  const processReaction = async (reactionType: string) => {
     const countKey = reactionToCountKey[reactionType];
     const isAdding = !reactions.includes(reactionType);
 
@@ -104,27 +121,12 @@ export default function DesignCard({ design }: DesignCardProps) {
     }
   };
 
-  const handleAddToMyDesigns = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-
-    if (!user) {
-      setShowAuthModal(true);
-      return;
-    }
-
-    setIsAddingToDesigns(true);
-    try {
-      await addToMyDesigns(design.uuid);
-      // Show success message or update UI as needed
-    } catch (error) {
-      console.error('Failed to add to my designs:', error);
-    } finally {
-      setIsAddingToDesigns(false);
-    }
-  };
-
   const handleAuthSuccess = async () => {
-    await handleAddToMyDesigns({ stopPropagation: () => {} } as React.MouseEvent);
+    setShowAuthModal(false);
+    if (pendingReaction) {
+      await processReaction(pendingReaction);
+      setPendingReaction(null);
+    }
   };
 
   const toggleOverlay = useCallback((e: React.MouseEvent | React.TouchEvent) => {
@@ -133,6 +135,16 @@ export default function DesignCard({ design }: DesignCardProps) {
     e.stopPropagation();
     setShowOverlay((prev) => !prev);
   }, []);
+
+  const handleAddToMyDesigns = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!user) {
+      setAuthModalTitle('Sign in to add designs to your collection');
+      setShowAuthModal(true);
+      return;
+    }
+    // ... rest of add to designs logic ...
+  };
 
   return (
     <>
@@ -158,18 +170,14 @@ export default function DesignCard({ design }: DesignCardProps) {
           <div className="overlay-content flex h-full flex-col">
             {/* Top Section with Add Button */}
             <div className="mb-4">
-              <button
-                onClick={handleAddToMyDesigns}
-                disabled={isAddingToDesigns}
+              <Link
+                href={shareUrl}
                 className="inline-flex items-center rounded-md bg-white/90 px-4 py-2 text-sm font-medium text-black backdrop-blur-sm transition-colors hover:bg-white active:bg-white"
+                onClick={handleAddToMyDesigns}
               >
-                {isAddingToDesigns ? (
-                  <ClipLoader color="#000000" size={16} className="mr-2" />
-                ) : (
-                  <PlusIcon className="mr-2 h-5 w-5" />
-                )}
+                <PlusIcon className="mr-2 h-5 w-5" />
                 Add to My Designs
-              </button>
+              </Link>
             </div>
 
             {/* Middle Section with Prompts */}
@@ -264,10 +272,16 @@ export default function DesignCard({ design }: DesignCardProps) {
         </div>
       </div>
 
+      {/* Auth Modal */}
       <AuthModal
         isOpen={showAuthModal}
-        onClose={() => setShowAuthModal(false)}
+        onClose={() => {
+          setShowAuthModal(false);
+          setPendingReaction(null);
+          setAuthModalTitle('');
+        }}
         onSuccess={handleAuthSuccess}
+        title={authModalTitle}
       />
     </>
   );

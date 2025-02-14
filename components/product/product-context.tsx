@@ -16,19 +16,16 @@ import { ProductVariant } from 'lib/shopify/types';
 interface State {
   image: string | null;
   variant: string | null;
-  previewImage: string | null;
   [key: string]: string | null;
 }
 
 type Action =
   | { type: 'UPDATE_IMAGE'; payload: string }
-  | { type: 'UPDATE_VARIANT'; payload: string }
-  | { type: 'SET_PREVIEW_IMAGE'; payload: string | null };
+  | { type: 'UPDATE_VARIANT'; payload: string };
 
 const initialState: State = {
   image: null,
-  variant: null,
-  previewImage: null
+  variant: null
 };
 
 function reducer(state: State, action: Action): State {
@@ -37,8 +34,6 @@ function reducer(state: State, action: Action): State {
       return { ...state, image: action.payload };
     case 'UPDATE_VARIANT':
       return { ...state, variant: action.payload };
-    case 'SET_PREVIEW_IMAGE':
-      return { ...state, previewImage: action.payload };
     default:
       return state;
   }
@@ -47,8 +42,6 @@ function reducer(state: State, action: Action): State {
 interface ProductContextType {
   selectedVariant: ProductVariant | null;
   setSelectedVariant: (variant: ProductVariant | null) => void;
-  previewImage: string | null;
-  setPreviewImage: (image: string | null) => void;
   state: State;
   updateImage: (image: string) => State;
   updateVariant: (variant: string) => State;
@@ -60,7 +53,6 @@ const ProductContext = createContext<ProductContextType | undefined>(undefined);
 export function ProductProvider({ children }: { children: ReactNode }) {
   const searchParams = useSearchParams();
   const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
@@ -81,8 +73,6 @@ export function ProductProvider({ children }: { children: ReactNode }) {
     () => ({
       selectedVariant,
       setSelectedVariant,
-      previewImage,
-      setPreviewImage,
       state,
       updateImage: (image: string) => {
         dispatch({ type: 'UPDATE_IMAGE', payload: image });
@@ -97,7 +87,7 @@ export function ProductProvider({ children }: { children: ReactNode }) {
         return { ...state, [name]: value };
       }
     }),
-    [selectedVariant, previewImage, state]
+    [selectedVariant, state]
   );
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;

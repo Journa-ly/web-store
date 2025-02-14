@@ -3,21 +3,22 @@ import { Fragment, useState } from 'react';
 import { AuthFormType } from 'types/authForm';
 import AuthForm from 'components/forms/authForm';
 import clsx from 'clsx';
+import { XMarkIcon } from '@heroicons/react/24/solid';
 
 interface AuthModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSuccess: () => void;
-  initialTab?: AuthFormType;
+  title?: string;
 }
 
 export default function AuthModal({
   isOpen,
   onClose,
   onSuccess,
-  initialTab = AuthFormType.LOGIN
+  title = 'Sign in to your account'
 }: AuthModalProps) {
-  const [activeTab, setActiveTab] = useState(initialTab);
+  const [activeTab, setActiveTab] = useState(AuthFormType.LOGIN);
 
   return (
     <Transition show={isOpen} as={Fragment}>
@@ -45,7 +46,33 @@ export default function AuthModal({
               leaveFrom="opacity-100 scale-100"
               leaveTo="opacity-0 scale-95"
             >
-              <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all">
+              <Dialog.Panel className="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 shadow-xl transition-all">
+                <button
+                  onClick={onClose}
+                  className="absolute right-2 top-2 rounded-full p-1 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+                >
+                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                  <span className="sr-only">Close</span>
+                </button>
+
+                <div className="mb-6 text-center">
+                  <Dialog.Title className="relative">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-200" />
+                    </div>
+                    <div className="relative flex justify-center">
+                      <span className="bg-white px-4 text-lg font-semibold text-gray-900">
+                        {title}
+                      </span>
+                    </div>
+                  </Dialog.Title>
+                  <p className="mt-2 text-sm text-gray-500">
+                    {activeTab === AuthFormType.LOGIN
+                      ? 'Welcome back! Please enter your details'
+                      : 'Create an account to get started'}
+                  </p>
+                </div>
+
                 <Tab.Group
                   selectedIndex={activeTab === AuthFormType.LOGIN ? 0 : 1}
                   onChange={(index) =>

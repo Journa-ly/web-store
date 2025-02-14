@@ -1,38 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
-import { usePaginatedMyDesigns, useToggleFavorite } from 'requests/designs';
-import { ClipLoader } from 'react-spinners';
-import { StarIcon } from '@heroicons/react/24/solid';
-import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
-import Image from 'next/image';
-import clsx from 'clsx';
+import { useState, useRef } from 'react';
+import { useToggleFavorite, usePaginatedMyDesigns, deleteDesign } from 'requests/designs';
+import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
 import { UserDesign } from 'types/design';
+import { useDesign } from 'components/designs/design-context';
+import DesignCarousel from './DesignCarousel';
 
-interface DesignStudioCarouselProps {
-  onDesignSelect?: (design: UserDesign) => void;
-  selectedDesign?: UserDesign | null;
-}
-
-export default function DesignStudioCarousel({
-  onDesignSelect,
-  selectedDesign
-}: DesignStudioCarouselProps) {
-  const { myDesigns, isLoading, isError } = usePaginatedMyDesigns();
+export default function DesignStudioCarousel() {
+  const { myDesigns, isLoading, isError, size, setSize, pages, mutate } = usePaginatedMyDesigns();
   const { toggleFavorite } = useToggleFavorite();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
-  const selectedImageRef = useRef<HTMLDivElement>(null);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const { selectedDesign, setSelectedDesign, setPreviewImage } = useDesign();
 
-  // Scroll selected design into view
-  useEffect(() => {
-    if (selectedImageRef.current) {
-      selectedImageRef.current.scrollIntoView({
-        behavior: 'smooth',
-        block: 'nearest',
-        inline: 'center'
-      });
-    }
-  }, [selectedDesign]);
+  const isLastPage = pages && pages[pages.length - 1]?.next === null;
 
   const handleFavoriteClick = async (uuid: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -43,10 +22,40 @@ export default function DesignStudioCarousel({
     }
   };
 
-  const handleScroll = (direction: 'left' | 'right') => {
-    if (containerRef.current) {
-      const scrollAmount = direction === 'left' ? -300 : 300;
-      containerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  const handleDeleteDesign = async (uuid: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      // Optimistically update UI
+      const optimisticData = (pages: any) =>
+        pages?.map((page: any) => ({
+          ...page,
+          results: page.results.filter((design: UserDesign) => design.uuid !== uuid)
+        }));
+
+      await mutate(optimisticData, false);
+
+      // Make the API call
+      await deleteDesign(uuid);
+
+      // If the deleted design was selected, clear the selection
+      if (selectedDesign?.uuid === uuid) {
+        setSelectedDesign(null);
+        setPreviewImage(null);
+      }
+
+      // Revalidate the data
+      await mutate();
+    } catch (error) {
+      console.error('Error deleting design:', error);
+      // Revalidate on error to ensure cache is correct
+      await mutate();
+    }
+  };
+
+  const handleSelectDesign = (design: UserDesign) => {
+    setSelectedDesign(design);
+    if (design.image?.image?.image) {
+      setPreviewImage(design.image.image.image);
     }
   };
 
@@ -58,105 +67,26 @@ export default function DesignStudioCarousel({
     setLoadingImages((prev) => ({ ...prev, [uuid]: true }));
   };
 
-  if (isError) {
-    return <div className="py-8 text-center text-sm text-red-500">Error loading designs</div>;
-  }
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <ClipLoader color="#6B7280" size={32} />
-      </div>
-    );
-  }
-
-  if (!myDesigns?.length) {
-    return (
-      <div className="py-8 text-center text-sm text-gray-500">
-        No designs yet. Create your first design above!
-      </div>
-    );
-  }
+  const handleLoadMore = () => {
+    if (!isLastPage && !isLoading) {
+      setSize(size + 1);
+    }
+  };
 
   return (
-    <div className="relative w-full">
-      {/* Fixed Height Container */}
-      <div className="relative h-[200px]">
-        {/* Designs Scroll Container */}
-        <div ref={containerRef} className="hide-scrollbar absolute inset-0 overflow-x-auto px-8">
-          <div className="inline-flex h-full items-center gap-4">
-            {myDesigns.map((design) => {
-              const isGenerating = design.image?.status !== 'Succeeded';
-              const isSelected = selectedDesign?.uuid === design.uuid;
-
-              return (
-                <div
-                  key={design.uuid}
-                  ref={isSelected ? selectedImageRef : null}
-                  onClick={() => onDesignSelect?.(design)}
-                  className={clsx(
-                    'relative flex-shrink-0 cursor-pointer overflow-hidden rounded-xl transition-transform duration-200',
-                    'group aspect-square shadow-sm hover:shadow-md',
-                    'h-[176px] w-[176px]',
-                    isSelected && 'scale-110'
-                  )}
-                >
-                  {/* Loading or Generating State */}
-                  {(isGenerating || loadingImages[design.uuid]) && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-                      <div className="flex flex-col items-center gap-2">
-                        <ClipLoader color="#6B7280" size={24} />
-                        <p className="text-sm text-gray-600">
-                          {isGenerating ? 'Generating...' : 'Loading...'}
-                        </p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Image */}
-                  <Image
-                    src={design.product_image?.image || design.image?.image?.image || ''}
-                    alt={design.name || 'Design'}
-                    fill
-                    className={clsx(
-                      'object-cover transition-all duration-500',
-                      'group-hover:scale-105',
-                      isGenerating || loadingImages[design.uuid] ? 'opacity-0' : 'opacity-100'
-                    )}
-                    sizes="176px"
-                    onLoadStart={() => handleImageLoadStart(design.uuid)}
-                    onLoad={() => handleImageLoad(design.uuid)}
-                    priority={isSelected}
-                  />
-
-                  {/* Selection Ring */}
-                  <div
-                    className={clsx(
-                      'absolute inset-0 ring-2 transition-colors duration-200',
-                      isSelected ? 'ring-primary' : 'ring-black/5 group-hover:ring-black/10'
-                    )}
-                  />
-
-                  {/* Hover Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                  {/* Favorite Button */}
-                  <button
-                    onClick={(e) => handleFavoriteClick(design.uuid, e)}
-                    className="absolute right-2 top-2 transform rounded-full bg-white/95 p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
-                  >
-                    {design.favorite ? (
-                      <StarIcon className="h-3.5 w-3.5 text-yellow-500" />
-                    ) : (
-                      <StarIconOutline className="h-3.5 w-3.5 text-gray-600 hover:text-yellow-500" />
-                    )}
-                  </button>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-    </div>
+    <DesignCarousel
+      designs={myDesigns}
+      selectedDesign={selectedDesign}
+      isLoading={isLoading}
+      error={isError}
+      onSelectDesign={handleSelectDesign}
+      onFavoriteClick={handleFavoriteClick}
+      onDeleteDesign={handleDeleteDesign}
+      loadingImages={loadingImages}
+      onImageLoad={handleImageLoad}
+      onImageLoadStart={handleImageLoadStart}
+      onLoadMore={handleLoadMore}
+      hasMore={!isLastPage}
+    />
   );
 }

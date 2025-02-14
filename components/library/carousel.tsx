@@ -46,44 +46,63 @@ const Carousel: React.FC<CarouselProps> = ({
   if (!items || items.length === 0) return null;
 
   return (
-    <div className={clsx('carousel relative w-full', className)}>
-      {/* Slides */}
-      <div className="relative h-64 overflow-hidden">
-        {items.map((item, index) => (
-          <div
-            key={item.id}
-            className={clsx(
-              'absolute flex h-full w-full items-center justify-center transition-transform duration-700',
-              index === currentIndex ? 'translate-x-0' : 'translate-x-full'
-            )}
-            style={{
-              transform: `translateX(${(index - currentIndex) * 100}%)`
-            }}
-          >
-            {item.content}
-          </div>
-        ))}
+    <div className={clsx('relative w-full', className)}>
+      {/* Slides Container */}
+      <div className="relative w-full overflow-hidden">
+        <div className="aspect-square w-full">
+          {items.map((item, index) => (
+            <div
+              key={item.id}
+              className={clsx(
+                'absolute inset-0 h-full w-full transition-all duration-500 ease-in-out',
+                {
+                  'translate-x-0 opacity-100': index === currentIndex,
+                  'translate-x-full opacity-0': index > currentIndex,
+                  '-translate-x-full opacity-0': index < currentIndex
+                }
+              )}
+            >
+              <div className="h-full w-full">{item.content}</div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Navigation */}
-      <div className="absolute left-5 right-5 top-1/2 flex -translate-y-1/2 transform justify-between">
-        <button className="btn btn-circle" onClick={handlePrev}>
+      {/* Navigation Buttons */}
+      <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-4">
+        <button
+          onClick={handlePrev}
+          className="btn btn-circle btn-ghost btn-sm text-base-content"
+          aria-label="Previous slide"
+        >
           ❮
         </button>
-        <button className="btn btn-circle" onClick={handleNext}>
+        <button
+          onClick={handleNext}
+          className="btn btn-circle btn-ghost btn-sm text-base-content"
+          aria-label="Next slide"
+        >
           ❯
         </button>
       </div>
 
       {/* Indicators */}
-      <div className="flex w-full justify-center gap-2 py-2">
-        {items.map((_, idx) => (
-          <button
-            key={idx}
-            className={clsx('btn btn-xs', idx === currentIndex ? 'btn-active' : 'btn-ghost')}
-            onClick={() => setCurrentIndex(idx)}
-          />
-        ))}
+      <div className="absolute bottom-2 left-0 right-0">
+        <div className="flex justify-center gap-1">
+          {items.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentIndex(idx)}
+              className={clsx(
+                'h-1.5 rounded-full transition-all duration-300',
+                idx === currentIndex
+                  ? 'w-6 bg-accent'
+                  : 'w-1.5 bg-base-300 hover:bg-base-content/50'
+              )}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

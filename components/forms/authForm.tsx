@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthFormType } from 'types/authForm';
 import { z } from 'zod';
 import { useAuth } from '../../requests/users';
+import { FieldErrorsImpl } from 'react-hook-form';
 
 // Update the schemas to match backend expectations
 const loginSchema = z.object({
@@ -40,11 +41,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm<LoginFormValues | SignUpFormValues>({
-    resolver: zodResolver(isLogin ? loginSchema : signUpSchema)
+  } = useForm<SignUpFormValues>({
+    resolver: zodResolver(isLogin ? loginSchema : signUpSchema) as any
   });
 
-  const onSubmit: SubmitHandler<LoginFormValues | SignUpFormValues> = async (values) => {
+  const onSubmit: SubmitHandler<SignUpFormValues> = async (values) => {
     try {
       if (isLogin) {
         const result = await login(values as LoginFormValues);
@@ -133,7 +134,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               className="input input-bordered w-full"
               {...register('first_name')}
             />
-            {errors.first_name && (
+            {!isLogin && errors.first_name && (
               <p className="mt-1 text-sm text-error">{errors.first_name.message}</p>
             )}
           </div>
@@ -149,7 +150,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               className="input input-bordered w-full"
               {...register('last_name')}
             />
-            {errors.last_name && (
+            {!isLogin && errors.last_name && (
               <p className="mt-1 text-sm text-error">{errors.last_name.message}</p>
             )}
           </div>

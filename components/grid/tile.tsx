@@ -19,24 +19,37 @@ export function GridTileImage({
 } & React.ComponentProps<typeof Image>) {
   return (
     <div
-      className={clsx(
-        'group flex h-full items-center justify-center overflow-hidden rounded-lg bg-white',
-        {
-          relative: label,
-          'border-2 border-accent': active,
-          'border-neutral-200': !active
-        }
-      )}
+      className={clsx('group card h-full w-full bg-base-100 p-2', {
+        'transition-shadow duration-300 hover:shadow-sm': isInteractive,
+        'border-2 border-accent': active,
+        'border border-base-200': !active
+      })}
     >
-      {props.src ? (
-        <Image
-          className={clsx('relative h-full w-full object-contain', {
-            'transition duration-300 ease-in-out group-hover:scale-105': isInteractive
-          })}
-          {...props}
-        />
-      ) : null}
-      {label ? <Label title={label.title} position={label.position} /> : null}
+      <figure className="relative aspect-[5/4] w-full">
+        {props.src ? (
+          <Image
+            className={clsx('h-full w-full object-contain transition-transform duration-300', {
+              'hover:scale-[1.02]': isInteractive
+            })}
+            {...props}
+          />
+        ) : null}
+      </figure>
+
+      {label && (
+        <div className="p-0 pt-2">
+          <div
+            className={clsx('flex flex-col', {
+              'justify-center text-center': label.position === 'center',
+              'justify-start': label.position === 'bottom'
+            })}
+          >
+            <h3 className="line-clamp-2 text-xs font-medium leading-tight text-base-content/80">
+              {label.title}
+            </h3>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

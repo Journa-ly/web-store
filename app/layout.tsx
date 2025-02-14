@@ -1,4 +1,5 @@
 import { CartProvider } from 'components/cart/cart-context';
+import { DesignProvider } from 'components/designs/design-context';
 import Footer from 'components/layout/footer';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
@@ -42,8 +43,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
     <html lang="en" data-theme="journaTheme" className={inter.className}>
       <body>
         <CartProvider cartPromise={cart}>
-          <Navbar />
-          <main>{children}</main>
+          <DesignProvider>
+            <Navbar />
+            <main>{children}</main>
+          </DesignProvider>
         </CartProvider>
         <Footer />
         {/* <GoogleAnalytics gaId="G-XYZ" /> */}

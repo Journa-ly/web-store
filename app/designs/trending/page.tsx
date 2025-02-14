@@ -22,17 +22,19 @@ import { useInView } from 'react-intersection-observer';
 // }
 
 export default function TrendingPage() {
-  const { trendingDesigns, isLoading, isError, size, setSize, pages } =
+  const { trendingDesigns, isLoading, isError, size, setSize, hasNextPage, isLoadingMore } =
     usePaginatedTrendingDesigns();
-  const { ref, inView } = useInView();
 
-  const isLastPage = pages && pages[pages.length - 1]?.next === null;
+  const { ref, inView } = useInView({
+    threshold: 0,
+    rootMargin: '100px'
+  });
 
   useEffect(() => {
-    if (inView && !isLastPage && !isLoading) {
-      setSize(size + 1);
+    if (inView && hasNextPage && !isLoadingMore) {
+      setSize((currentSize) => currentSize + 1);
     }
-  }, [inView, isLastPage, isLoading, setSize, size]);
+  }, [inView, hasNextPage, isLoadingMore, setSize]);
 
   if (isError) {
     return (
@@ -56,8 +58,8 @@ export default function TrendingPage() {
             ))}
           </div>
 
-          <div ref={ref} className="mt-8 flex items-center justify-center">
-            {isLoading && !isLastPage && <ClipLoader color="#000000" size={40} />}
+          <div ref={ref} className="mt-8 flex items-center justify-center py-4">
+            {(isLoading || isLoadingMore) && <ClipLoader color="#000000" size={40} />}
           </div>
         </>
       )}
