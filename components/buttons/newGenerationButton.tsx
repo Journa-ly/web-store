@@ -1,5 +1,5 @@
-import IconButton from '../designTool/buttons/IconButton';
-import PlusBoxIcon from '../designTool/icons/PlusBoxIcon';
+import IconButton from 'components/buttons/IconButton';
+import PlusBoxIcon from 'icons/PlusBoxIcon';
 
 const NewGenerationButton = ({ onClick }: { onClick: () => void }) => {
   return <IconButton icon={<PlusBoxIcon />} text="New" onClick={onClick} />;

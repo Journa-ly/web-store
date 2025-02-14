@@ -1,6 +1,6 @@
 'use client';
 
-import IconButton from 'components/designTool/buttons/IconButton';
+import IconButton from 'components/buttons/IconButton';
 import ShareIcon from 'icons/Share';
 import { useDesign } from 'components/designs/design-context';
 import {

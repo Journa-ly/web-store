@@ -1,4 +1,4 @@
-import IconButton from 'components/designTool/buttons/IconButton';
+import IconButton from 'components/buttons/IconButton';
 import ImageGrid from 'icons/ImageGrid';
 import MyDesignsModal from 'components/modals/MyDesignsModal';
 import { useState } from 'react';
