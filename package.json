@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "next dev --turbo --port=3000",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev --turbo --port=3000",
-    "build": "next build",
+    "build": "next build --debug",
     "start": "node_modules/next/dist/bin/next start --port=8080",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
