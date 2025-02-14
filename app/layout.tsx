@@ -7,17 +7,19 @@ import { Inter } from 'next/font/google';
 import { cookies, headers } from 'next/headers';
 import { ReactNode } from 'react';
 import './globals.css';
+import { Metadata } from 'next';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
   ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
   : 'http://localhost:3000';
 
-export const metadata = {
-  metadataBase: new URL(baseUrl),
+export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'),
   title: {
-    default: 'Journa',
-    template: 'Journa'
+    default: 'Journa - AI-Powered Design Studio',
+    template: '%s | Journa'
   },
+  description: 'Create beautiful, custom designs with AI',
   robots: {
     follow: true,
     index: true
