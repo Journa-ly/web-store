@@ -12,6 +12,7 @@ import ConfirmationModal from 'components/library/ConfirmationModal';
 import { isMobile } from 'react-device-detect';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
 import { CheckIcon } from '@heroicons/react/24/outline';
+import { UserDesign } from 'types/design';
 
 interface MyDesignsModalProps {
   open: boolean;

@@ -137,13 +137,7 @@ export default function DesignCard({ design }: DesignCardProps) {
   }, []);
 
   const handleAddToMyDesigns = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!user) {
-      setAuthModalTitle('Sign in to add designs to your collection');
-      setShowAuthModal(true);
-      return;
-    }
-    // ... rest of add to designs logic ...
+    e.stopPropagation(); // Just stop propagation, don't prevent default
   };
 
   return (

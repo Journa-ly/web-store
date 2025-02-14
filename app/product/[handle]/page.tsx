@@ -58,12 +58,10 @@ export async function generateMetadata(props: {
 
 interface ProductPageProps {
   params: Promise<{ handle: string }>;
-  searchParams: { selected?: string };
 }
 
-export default async function ProductPage({ params, searchParams }: ProductPageProps) {
+export default async function ProductPage({ params }: ProductPageProps) {
   const { handle } = await params;
-  const selectedDesignId = searchParams.selected;
   const product = await getProduct(handle);
 
   if (!product) return notFound();
@@ -102,7 +100,7 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
               <DesignForm />
               <NumberLabel label="Select a design">2</NumberLabel>
               <div className="w-full overflow-hidden">
-                <MyDesignsCarousel initialSelectedDesign={selectedDesignId} />
+                <MyDesignsCarousel />
               </div>
             </div>
           </div>

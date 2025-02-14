@@ -5,7 +5,10 @@ import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
 
 interface StudioPageProps {
-  searchParams: { selected?: string };
+  searchParams: Promise<{
+    selected?: string;
+    [key: string]: string | string[] | undefined;
+  }>;
 }
 
 export default async function StudioPage({ searchParams }: StudioPageProps) {

@@ -51,6 +51,8 @@ export interface BaseDesign {
   last_score_update: string;
   user_reactions: string[];
   product_image: ProductImage | null;
+  prompt: string;
+  quote_prompt: string;
 }
 
 // Interface for trending designs (uses DesignSerializer)
@@ -60,6 +62,7 @@ export interface TrendingDesign extends BaseDesign {}
 export interface UserDesign extends BaseDesign {
   image: GenerationImage;
   favorite: boolean;
+
 }
 
 // Response interfaces for different endpoints

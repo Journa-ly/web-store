@@ -41,6 +41,7 @@ function reducer(state: State, action: Action): State {
 
 interface ProductContextType {
   selectedVariant: ProductVariant | null;
+  previewImage: string | null;
   setSelectedVariant: (variant: ProductVariant | null) => void;
   state: State;
   updateImage: (image: string) => State;
@@ -85,7 +86,8 @@ export function ProductProvider({ children }: { children: ReactNode }) {
       updateOption: (name: string, value: string) => {
         dispatch({ type: 'UPDATE_VARIANT', payload: value });
         return { ...state, [name]: value };
-      }
+      },
+      previewImage: state.image
     }),
     [selectedVariant, state]
   );

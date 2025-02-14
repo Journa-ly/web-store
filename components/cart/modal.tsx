@@ -193,7 +193,12 @@ export default function CartModal() {
                       />
                     </div>
                   </div>
-                  <form action={redirectToCheckout}>
+                  <form action={async (formData: FormData) => {
+                    const result = await redirectToCheckout();
+                    if (result === "Missing cart ID" || result === "Error fetching cart") {
+                      console.error(result);
+                    }
+                  }}>
                     <CheckoutButton />
                   </form>
                 </div>
