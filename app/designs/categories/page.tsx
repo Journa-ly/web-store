@@ -22,10 +22,10 @@ export default async function CategoryPage(props: {
   params: Promise<{ category: string }>;
   searchParams?: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const searchParams = await props.searchParams;
-  const params = await props.params;
-  const { sort } = searchParams as { [key: string]: string };
-  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
+  // const searchParams = await props.searchParams;
+  // const params = await props.params;
+  // const { sort } = searchParams as { [key: string]: string };
+  // const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
   let products: Product[] = [];
   // try {
   //   products = await getCollectionProducts({ collection: params.collection, sortKey, reverse });
