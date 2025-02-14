@@ -1,5 +1,5 @@
 import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
-import { WEBSOCKET_URL } from '../components/designTool/constants';
+import { WEBSOCKET_URL } from 'lib/constants';
 import { Design } from 'types/design';
 
 interface WebSocketMessage {

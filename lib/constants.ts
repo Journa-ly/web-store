@@ -29,3 +29,7 @@ export const TAGS = {
 export const HIDDEN_PRODUCT_TAG = 'nextjs-frontend-hidden';
 export const DEFAULT_OPTION = 'Default Title';
 export const SHOPIFY_GRAPHQL_API_ENDPOINT = '/api/2024-01/graphql.json';
+export const SERVER_DOMAIN = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
+export const SERVER_SSL = process.env.NEXT_PUBLIC_SERVER_SSL;
+export const SERVER_URL = `http${SERVER_SSL ? 's' : ''}://${SERVER_DOMAIN}`;
+export const WEBSOCKET_URL = `ws${SERVER_SSL ? 's' : ''}://${SERVER_DOMAIN}`;
