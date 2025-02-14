@@ -22,12 +22,11 @@ export default async function StudioPage({ searchParams }: StudioPageProps) {
           <div className="p-4 md:p-6 lg:p-8">
             <DesignStudioContent initialSelectedDesign={selectedDesignId} />
             <div className="pt-8">
-              <Suspense fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}>
+              <Suspense
+                fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}
+              >
                 <div className="mx-auto max-w-4xl">
-                  <ProductCarousel
-                    collectionHandle="apparel"
-                    className="w-full md:max-w-none"
-                  />
+                  <ProductCarousel collectionHandle="apparel" className="w-full md:max-w-none" />
                 </div>
               </Suspense>
             </div>

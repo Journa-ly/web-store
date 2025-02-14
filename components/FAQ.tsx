@@ -7,31 +7,38 @@ import clsx from 'clsx';
 const faqs = [
   {
     question: 'How does the AI design generation work?',
-    answer: 'Our AI system takes your text description and converts it into unique apparel designs. Simply describe what you want to see, add optional text if desired, and click Generate. The AI will create a custom design based on your input that you can then apply to various products.'
+    answer:
+      'Our AI system takes your text description and converts it into unique apparel designs. Simply describe what you want to see, add optional text if desired, and click Generate. The AI will create a custom design based on your input that you can then apply to various products.'
   },
   {
     question: 'Can I customize the designs?',
-    answer: 'Yes! You can customize designs by providing specific text descriptions, adding custom text to the image, and applying the design to different apparel types. Each generation creates unique variations based on your input.'
+    answer:
+      'Yes! You can customize designs by providing specific text descriptions, adding custom text to the image, and applying the design to different apparel types. Each generation creates unique variations based on your input.'
   },
   {
-    question: 'What happens if I don\'t like the generated design?',
-    answer: 'You can easily generate new designs by clicking the "New Generation" button and providing a different description. You can generate multiple designs and choose your favorite one to use.'
+    question: "What happens if I don't like the generated design?",
+    answer:
+      'You can easily generate new designs by clicking the "New Generation" button and providing a different description. You can generate multiple designs and choose your favorite one to use.'
   },
   {
     question: 'Can I save my favorite designs?',
-    answer: 'Yes! Once you\'re signed in, you can favorite any design by clicking the star icon. Your favorited designs will be saved to your account for future use.'
+    answer:
+      "Yes! Once you're signed in, you can favorite any design by clicking the star icon. Your favorited designs will be saved to your account for future use."
   },
   {
     question: 'What types of products can I put my designs on?',
-    answer: 'You can apply your designs to our full range of apparel products including t-shirts, hoodies, and more. Each product page will show you a preview of how your design will look on that specific item.'
+    answer:
+      'You can apply your designs to our full range of apparel products including t-shirts, hoodies, and more. Each product page will show you a preview of how your design will look on that specific item.'
   },
   {
     question: 'How do I share my designs with others?',
-    answer: 'You can easily share your designs using the share button. This will generate a link that you can send to friends, family, or share on social media.'
+    answer:
+      'You can easily share your designs using the share button. This will generate a link that you can send to friends, family, or share on social media.'
   },
   {
     question: 'What if the design generation fails?',
-    answer: 'If a design generation fails, you\'ll see an error message. You can simply delete the failed design and try generating again with the same or modified description.'
+    answer:
+      "If a design generation fails, you'll see an error message. You can simply delete the failed design and try generating again with the same or modified description."
   }
 ];
 
@@ -74,4 +81,4 @@ export default function FAQ() {
       </div>
     </div>
   );
-} 
+}

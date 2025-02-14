@@ -62,7 +62,6 @@ export interface TrendingDesign extends BaseDesign {}
 export interface UserDesign extends BaseDesign {
   image: GenerationImage;
   favorite: boolean;
-
 }
 
 // Response interfaces for different endpoints

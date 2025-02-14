@@ -62,7 +62,9 @@ export default function DesignStudioContent({ initialSelectedDesign }: DesignStu
                     <p className="px-8 text-center text-gray-500">Loading design preview...</p>
                   )
                 ) : (
-                  <p className="px-8 text-center text-gray-500">Select a design to preview it here</p>
+                  <p className="px-8 text-center text-gray-500">
+                    Select a design to preview it here
+                  </p>
                 )}
               </div>
             </Suspense>

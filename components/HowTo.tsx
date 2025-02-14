@@ -15,7 +15,7 @@ const steps = [
     id: 2,
     name: 'Generate & Customize',
     description:
-      'Click the Generate button to create your design. Don\'t like what you see? Generate again! You can create multiple versions until you find the perfect one. Save your favorites by clicking the star icon.',
+      "Click the Generate button to create your design. Don't like what you see? Generate again! You can create multiple versions until you find the perfect one. Save your favorites by clicking the star icon.",
     icon: StarIcon
   },
   {
@@ -69,7 +69,7 @@ export default function HowTo() {
             ))}
           </dl>
         </div>
-        
+
         {/* Example/Demo Section */}
         <div className="mt-16 rounded-2xl bg-gray-50 p-8">
           <h3 className="text-2xl font-semibold text-gray-900">See it in action</h3>
@@ -78,8 +78,8 @@ export default function HowTo() {
               <h4 className="text-lg font-medium text-gray-900">Example Prompt</h4>
               <div className="mt-2 rounded-lg bg-white p-4 shadow-sm">
                 <p className="text-gray-600">
-                  "Create a minimalist design with a mountain landscape at sunset, using warm colors and
-                  adding the text 'Adventure Awaits' in a modern font"
+                  "Create a minimalist design with a mountain landscape at sunset, using warm colors
+                  and adding the text 'Adventure Awaits' in a modern font"
                 </p>
               </div>
             </div>
@@ -97,4 +97,4 @@ export default function HowTo() {
       </div>
     </div>
   );
-} 
+}
