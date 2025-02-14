@@ -13,7 +13,7 @@ const PrivacyPolicyPage = () => (
           This Privacy Policy describes how Journa Inc. (the "<strong>Site</strong>", "
           <strong>we</strong>", "<strong>us</strong>", or "<strong>our</strong>") collects, uses,
           and discloses your personal information when you visit, use our services, or make a
-          purchase from journa.ly (the "<strong>Site</strong>") or otherwise communicate with us
+          purchase from journa.ai (the "<strong>Site</strong>") or otherwise communicate with us
           (collectively, the "<strong>Services</strong>"). For purposes of this Privacy Policy, "
           <strong>you</strong>" and "<strong>your</strong>" means you as the user of the Services,
           whether you are a customer, website visitor, or another individual whose information we
