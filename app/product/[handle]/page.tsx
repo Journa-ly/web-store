@@ -16,6 +16,8 @@ import { Image } from 'lib/shopify/types';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import MyDesignsCarousel from 'components/carousel/MyDesignsCarousel';
+import FAQ from 'components/FAQ';
+import HowTo from 'components/HowTo';
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -151,6 +153,12 @@ export default async function ProductPage({ params, searchParams }: ProductPageP
           </Suspense>
         </div>
         <RelatedProducts id={product.id} />
+        <div className="border-t border-neutral-200">
+          <HowTo />
+        </div>
+        <div className="border-t border-neutral-200">
+          <FAQ />
+        </div>
       </div>
     </ProductProvider>
   );
