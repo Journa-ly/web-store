@@ -1,13 +1,13 @@
-import Image from 'next/image';
+import { SVGProps } from 'react';
 
 type MenuSectionTitleProps = {
-  iconPath: string;
+  Icon: React.ComponentType<SVGProps<SVGSVGElement>>;
   text: string;
 };
 
-const MenuSectionTitle = ({ iconPath, text }: MenuSectionTitleProps) => (
+const MenuSectionTitle = ({ Icon, text }: MenuSectionTitleProps) => (
   <div className="flex items-center gap-2 text-xs font-bold text-neutral-500">
-    <Image src={iconPath} alt="" width={20} height={20} />
+    <Icon className="h-5 w-5" />
     <span>{text}</span>
   </div>
 );

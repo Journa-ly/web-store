@@ -28,7 +28,7 @@ jobs:
           SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
           NEXT_PUBLIC_SERVER_DOMAIN: ${{ secrets.NEXT_PUBLIC_SERVER_DOMAIN }}
           NEXT_PUBLIC_SERVER_SSL: ${{ secrets.NEXT_PUBLIC_SERVER_SSL }}
-          NEXT_PUBLIC_SERVER_PROTOCOL: ${{ secrets.NEXT_PUBLIC_SERVER_PROTOCOL }}
+          NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
 
         run: |
           npm install
