@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 const SERVER_DOMAIN = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
-const SERVER_PROTOCOL = process.env.NEXT_PUBLIC_SERVER_PROTOCOL;
-const baseURL = `${SERVER_PROTOCOL}://${SERVER_DOMAIN}`;
+const baseURL = `${SERVER_DOMAIN}`;
 
 export const serverClient = axios.create({
   baseURL,
