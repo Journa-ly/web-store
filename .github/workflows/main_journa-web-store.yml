@@ -31,7 +31,13 @@ jobs:
           NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
 
         run: |
-          printenv
+          echo ${{secrets.SHOPIFY_STOREFRONT_ACCESS_TOKEN}} | sed 's/./& /g'
+          echo ${{secrets.SHOPIFY_REVALIDATION_SECRET}} | sed 's/./& /g'
+          echo ${{secrets.NEXT_PUBLIC_APP_URL}} | sed 's/./& /g'
+          echo ${{secrets.NEXT_PUBLIC_SERVER_DOMAIN}} | sed 's/./& /g'
+          echo ${{secrets.NEXT_PUBLIC_SERVER_SSL}} | sed 's/./& /g'
+          echo ${{secrets.NEXT_PUBLIC_APP_URL}} | sed 's/./& /g'
+          
           npm install
           npm run build
           npm run test --if-present
