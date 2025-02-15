@@ -21,9 +21,7 @@ export default function ShareButton() {
 
   useEffect(() => {
     // Get the base URL from environment or default to the current origin
-    const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
-      ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-      : window.location.origin;
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || window.location.origin;
 
     // Construct share URL that points to the share route with full domain
     if (selectedDesign?.uuid) {
