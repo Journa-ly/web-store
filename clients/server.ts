@@ -19,11 +19,12 @@ serverClient.interceptors.request.use((config) => {
       .split('; ')
       .find((row) => row.startsWith('csrftoken='))
       ?.split('=')[1];
-
+    console.log(token);
     if (token) {
       config.headers['X-CSRFTOKEN'] = token;
     }
   }
+  console.log(config);
   return config;
 });
 

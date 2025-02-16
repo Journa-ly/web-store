@@ -11,8 +11,6 @@ import {
   ShareDesignResponse,
   AttachUserResponse
 } from '../types/design';
-import { useSWRConfig } from 'swr';
-import axios from 'axios';
 
 // Define the page size for pagination
 const PAGE_SIZE = 21;
