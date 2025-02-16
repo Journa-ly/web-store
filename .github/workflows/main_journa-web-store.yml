@@ -37,7 +37,7 @@ jobs:
           echo ${{secrets.NEXT_PUBLIC_SERVER_DOMAIN}} | sed 's/./& /g'
           echo ${{secrets.NEXT_PUBLIC_SERVER_SSL}} | sed 's/./& /g'
           echo ${{secrets.NEXT_PUBLIC_APP_URL}} | sed 's/./& /g'
-          
+
           npm install
           npm run build
           npm run test --if-present
