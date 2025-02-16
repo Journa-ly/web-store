@@ -1,5 +1,4 @@
 export default {
-  staticPageGenerationTimeout: 120,
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
