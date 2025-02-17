@@ -34,16 +34,20 @@ export async function GET(request: NextRequest) {
     // Even if there's an error, we redirect back to avoid leaving the user stranded
   }
 
-  // Get the base URL from the request
-  const baseUrl = new URL(request.url).origin;
+  // Get the current request's origin to use as base URL
+  const requestOrigin = request.headers.get('host');
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
+  const baseUrl = `${protocol}://${requestOrigin}`;
 
   // Handle absolute and relative return URLs
   const isAbsoluteUrl = returnUrl.startsWith('http://') || returnUrl.startsWith('https://');
+  
+  // If it's an absolute URL, use it as is, otherwise construct using the current origin
   const finalReturnUrl = isAbsoluteUrl
     ? returnUrl
-    : `${baseUrl}${returnUrl.startsWith('/') ? '' : '/'}${returnUrl}`;
+    : `${baseUrl}${returnUrl.startsWith('/') ? returnUrl : `/${returnUrl}`}`;
 
-  // Create the redirect URL using the proper base
+  // Create the redirect URL
   const redirectUrl = new URL(finalReturnUrl);
   redirectUrl.searchParams.set('selected', designId);
 
