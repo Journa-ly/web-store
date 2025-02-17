@@ -34,17 +34,26 @@ export async function GET(request: NextRequest) {
     // Even if there's an error, we redirect back to avoid leaving the user stranded
   }
 
-  // Redirect back to the original page without the share parameters
-  const redirectUrl = new URL(returnUrl, request.url);
+  // Get the base URL from the request
+  const baseUrl = new URL(request.url).origin;
+  
+  // Handle absolute and relative return URLs
+  const isAbsoluteUrl = returnUrl.startsWith('http://') || returnUrl.startsWith('https://');
+  const finalReturnUrl = isAbsoluteUrl ? returnUrl : `${baseUrl}${returnUrl.startsWith('/') ? '' : '/'}${returnUrl}`;
+  
+  // Create the redirect URL using the proper base
+  const redirectUrl = new URL(finalReturnUrl);
   redirectUrl.searchParams.set('selected', designId);
 
-  // Preserve any existing query parameters from the return URL
-  const returnUrlObj = new URL(returnUrl, request.url);
-  returnUrlObj.searchParams.forEach((value, key) => {
-    if (key !== 'selected') {
-      redirectUrl.searchParams.set(key, value);
-    }
-  });
+  // Preserve existing query parameters from the return URL
+  if (!isAbsoluteUrl) {
+    const returnUrlObj = new URL(returnUrl, baseUrl);
+    returnUrlObj.searchParams.forEach((value, key) => {
+      if (key !== 'selected') {
+        redirectUrl.searchParams.set(key, value);
+      }
+    });
+  }
 
   return redirect(redirectUrl.toString());
 }
