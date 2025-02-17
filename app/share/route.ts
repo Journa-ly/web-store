@@ -41,10 +41,10 @@ export async function GET(request: NextRequest) {
 
   // Ensure returnUrl starts with a slash
   const normalizedReturnUrl = returnUrl.startsWith('/') ? returnUrl : `/${returnUrl}`;
-  
+
   // Create the full URL with the current origin
   const redirectUrl = new URL(normalizedReturnUrl, baseUrl);
-  
+
   // Add the selected design parameter
   redirectUrl.searchParams.set('selected', designId);
 
