@@ -39,27 +39,22 @@ export async function GET(request: NextRequest) {
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https';
   const baseUrl = `${protocol}://${requestOrigin}`;
 
-  // Handle absolute and relative return URLs
-  const isAbsoluteUrl = returnUrl.startsWith('http://') || returnUrl.startsWith('https://');
+  // Ensure returnUrl starts with a slash
+  const normalizedReturnUrl = returnUrl.startsWith('/') ? returnUrl : `/${returnUrl}`;
   
-  // If it's an absolute URL, use it as is, otherwise construct using the current origin
-  const finalReturnUrl = isAbsoluteUrl
-    ? returnUrl
-    : `${baseUrl}${returnUrl.startsWith('/') ? returnUrl : `/${returnUrl}`}`;
-
-  // Create the redirect URL
-  const redirectUrl = new URL(finalReturnUrl);
+  // Create the full URL with the current origin
+  const redirectUrl = new URL(normalizedReturnUrl, baseUrl);
+  
+  // Add the selected design parameter
   redirectUrl.searchParams.set('selected', designId);
 
-  // Preserve existing query parameters from the return URL
-  if (!isAbsoluteUrl) {
-    const returnUrlObj = new URL(returnUrl, baseUrl);
-    returnUrlObj.searchParams.forEach((value, key) => {
-      if (key !== 'selected') {
-        redirectUrl.searchParams.set(key, value);
-      }
-    });
-  }
+  // Preserve any existing query parameters from the return URL
+  const returnUrlObj = new URL(normalizedReturnUrl, baseUrl);
+  returnUrlObj.searchParams.forEach((value, key) => {
+    if (key !== 'selected') {
+      redirectUrl.searchParams.set(key, value);
+    }
+  });
 
   return redirect(redirectUrl.toString());
 }
