@@ -74,10 +74,16 @@ function DesignList() {
 
 async function CollectionList() {
   const collections = await getCollections();
+  
+  // Filter out the ready-to-ship collection
+  const filteredCollections = collections.filter(
+    collection => collection.handle.toLowerCase() !== 'ready-to-ship'
+  );
+  
   return (
     <ListWrapper>
       <FilterList
-        list={collections}
+        list={filteredCollections}
         title={<MenuSectionTitle Icon={PaintBrushIcon} text="Create Your Own" />}
       />
     </ListWrapper>

@@ -2,12 +2,10 @@
 
 import { useAuth } from 'requests/users';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export default function UserMenu() {
-  const { user, isAuthenticated, logout, isLoading } = useAuth();
-  const router = useRouter();
+  const { user, isAuthenticated, logout } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {

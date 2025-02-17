@@ -7,7 +7,7 @@ import UserMenu from './UserMenu';
 export function Navbar() {
   const menu = [
     { title: 'Trending', path: '/designs/trending' },
-    { title: 'Ready to Ship', path: '/designs/ready-to-ship' },
+    { title: 'Ready to Ship', path: '/collections/ready-to-ship' },
     { title: 'Categories', path: '/designs/categories' }
   ];
 
