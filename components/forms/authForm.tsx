@@ -14,25 +14,24 @@ const loginSchema = z.object({
   password: z.string().min(6, 'Your password must have at least 6 characters')
 });
 
-const signUpSchema = z.object({
-  username: z
-    .string()
-    .min(3, 'Username must be at least 3 characters')
-    .max(150, 'Username must be less than 150 characters')
-    .regex(
-      /^[\w\-]+$/,
-      'Username can only contain letters, numbers, underscores, and hyphens'
-    ),
-  email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Your password must have at least 6 characters'),
-  password2: z.string().min(6, 'Your password must have at least 6 characters'),
-  first_name: z.string().min(1, 'First name is required'),
-  last_name: z.string().min(1, 'Last name is required'),
-  accepts_marketing: z.boolean().optional()
-}).refine((data) => data.password === data.password2, {
-  message: "Passwords don't match",
-  path: ["password2"]
-});
+const signUpSchema = z
+  .object({
+    username: z
+      .string()
+      .min(3, 'Username must be at least 3 characters')
+      .max(150, 'Username must be less than 150 characters')
+      .regex(/^[\w\-]+$/, 'Username can only contain letters, numbers, underscores, and hyphens'),
+    email: z.string().email('Please enter a valid email address'),
+    password: z.string().min(6, 'Your password must have at least 6 characters'),
+    password2: z.string().min(6, 'Your password must have at least 6 characters'),
+    first_name: z.string().min(1, 'First name is required'),
+    last_name: z.string().min(1, 'Last name is required'),
+    accepts_marketing: z.boolean().optional()
+  })
+  .refine((data) => data.password === data.password2, {
+    message: "Passwords don't match",
+    path: ['password2']
+  });
 
 // Reusable form props
 type LoginFormValues = z.infer<typeof loginSchema>;

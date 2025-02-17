@@ -36,11 +36,13 @@ export async function GET(request: NextRequest) {
 
   // Get the base URL from the request
   const baseUrl = new URL(request.url).origin;
-  
+
   // Handle absolute and relative return URLs
   const isAbsoluteUrl = returnUrl.startsWith('http://') || returnUrl.startsWith('https://');
-  const finalReturnUrl = isAbsoluteUrl ? returnUrl : `${baseUrl}${returnUrl.startsWith('/') ? '' : '/'}${returnUrl}`;
-  
+  const finalReturnUrl = isAbsoluteUrl
+    ? returnUrl
+    : `${baseUrl}${returnUrl.startsWith('/') ? '' : '/'}${returnUrl}`;
+
   // Create the redirect URL using the proper base
   const redirectUrl = new URL(finalReturnUrl);
   redirectUrl.searchParams.set('selected', designId);
