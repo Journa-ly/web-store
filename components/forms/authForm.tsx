@@ -15,12 +15,23 @@ const loginSchema = z.object({
 });
 
 const signUpSchema = z.object({
+  username: z
+    .string()
+    .min(3, 'Username must be at least 3 characters')
+    .max(150, 'Username must be less than 150 characters')
+    .regex(
+      /^[\w\-]+$/,
+      'Username can only contain letters, numbers, underscores, and hyphens'
+    ),
   email: z.string().email('Please enter a valid email address'),
   password: z.string().min(6, 'Your password must have at least 6 characters'),
   password2: z.string().min(6, 'Your password must have at least 6 characters'),
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   accepts_marketing: z.boolean().optional()
+}).refine((data) => data.password === data.password2, {
+  message: "Passwords don't match",
+  path: ["password2"]
 });
 
 // Reusable form props
@@ -66,9 +77,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
           const error = result.error as any;
           if (error.response?.data) {
             Object.keys(error.response.data).forEach((key) => {
+              const errorMessage = Array.isArray(error.response.data[key])
+                ? error.response.data[key][0]
+                : error.response.data[key];
               setError(key as any, {
                 type: 'manual',
-                message: error.response.data[key][0]
+                message: errorMessage
               });
             });
           } else {
@@ -112,13 +126,34 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         <input
           type="email"
           placeholder="example@example.com"
-          className="input input-bordered w-full"
+          className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
           {...register('email')}
         />
         {errors.email && (
           <p className="mt-1 text-sm text-error">{errors.email.message as string}</p>
         )}
       </div>
+
+      {/* Username Field (Sign Up only) */}
+      {!isLogin && (
+        <div className="mt-4">
+          <label className="label">
+            <span className="label-text">Username</span>
+            <span className="label-text-alt text-base-content/60">
+              Letters, numbers, underscores, hyphens only
+            </span>
+          </label>
+          <input
+            type="text"
+            placeholder="your_username"
+            className={`input input-bordered w-full ${errors.username ? 'input-error' : ''}`}
+            {...register('username')}
+          />
+          {errors.username && (
+            <p className="mt-1 text-sm text-error">{errors.username.message as string}</p>
+          )}
+        </div>
+      )}
 
       {/* Name Fields (Sign Up only) */}
       {!isLogin && (
@@ -131,7 +166,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             <input
               type="text"
               placeholder="Jane"
-              className="input input-bordered w-full"
+              className={`input input-bordered w-full ${errors.first_name ? 'input-error' : ''}`}
               {...register('first_name')}
             />
             {!isLogin && errors.first_name && (
@@ -147,7 +182,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             <input
               type="text"
               placeholder="Doe"
-              className="input input-bordered w-full"
+              className={`input input-bordered w-full ${errors.last_name ? 'input-error' : ''}`}
               {...register('last_name')}
             />
             {!isLogin && errors.last_name && (
@@ -165,7 +200,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         <input
           type="password"
           placeholder="********"
-          className="input input-bordered w-full"
+          className={`input input-bordered w-full ${errors.password ? 'input-error' : ''}`}
           {...register('password')}
         />
         {errors.password && (
@@ -182,7 +217,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
           <input
             type="password"
             placeholder="********"
-            className="input input-bordered w-full"
+            className={`input input-bordered w-full ${errors.password2 ? 'input-error' : ''}`}
             {...register('password2')}
           />
           {errors.password2 && (
