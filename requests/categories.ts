@@ -8,4 +8,4 @@ export async function getCategories() {
     console.error('Error fetching categories:', error);
     return [];
   }
-} 
+}

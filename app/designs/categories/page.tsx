@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getCategories } from 'lib/api/categories';
+import { getCategories } from '@/requests/categories';
 
 export const metadata: Metadata = {
   title: 'Design Categories',
@@ -19,7 +19,7 @@ interface Category {
 
 export default async function CategoryPage() {
   let categories: Category[] = [];
-  
+
   try {
     // Fetch categories from the API
     categories = await getCategories();
@@ -30,7 +30,7 @@ export default async function CategoryPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="mb-8 text-center text-3xl font-bold">Design Categories</h1>
-      
+
       {categories.length === 0 ? (
         <div className="flex h-[400px] items-center justify-center">
           <p className="text-lg text-gray-600">No categories found</p>
@@ -59,7 +59,7 @@ export default async function CategoryPage() {
                     </div>
                   )}
                 </figure>
-                
+
                 <div className="card-body">
                   <h2 className="card-title">{category.name}</h2>
                   {category.description && (
