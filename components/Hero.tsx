@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 import React from 'react';
 
 interface HeroProps {
@@ -20,8 +21,12 @@ const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText }) => {
                 <p className="pt-8 text-xl font-semibold text-neutral">{subtitle}</p>
               </div>
               <div className="m-auto flex w-1/2 flex-col gap-4 pt-12 lg:w-2/3 lg:flex-row">
-                <button className="btn">Shop Trending Designs</button>
-                <button className="btn btn-secondary text-white">Design Your Own</button>
+                <Link href="/designs/trending" className="btn">
+                  Shop Trending Designs
+                </Link>
+                <Link href="/designs/studio" className="btn btn-secondary text-white">
+                  Design Your Own
+                </Link>
               </div>
             </div>
             {/* Image Section */}
