@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react';
-import { useToggleFavorite, usePaginatedMyDesigns, deleteDesign } from 'requests/designs';
+import { useToggleFavorite, deleteDesign } from 'requests/designs';
 import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
 import { UserDesign } from 'types/design';
 import { useDesign } from 'components/designs/design-context';
 import DesignCarousel from './DesignCarousel';
 
 export default function DesignStudioCarousel() {
-  const { myDesigns, isLoading, isError, size, setSize, pages, mutate } = usePaginatedMyDesigns();
+  const { designs, isLoading, error, size, setSize, pages, mutate } = useDesignsWithLiveUpdates();
   const { toggleFavorite } = useToggleFavorite();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
   const { selectedDesign, setSelectedDesign, setPreviewImage } = useDesign();
@@ -75,10 +75,10 @@ export default function DesignStudioCarousel() {
 
   return (
     <DesignCarousel
-      designs={myDesigns}
+      designs={designs}
       selectedDesign={selectedDesign}
       isLoading={isLoading}
-      error={isError}
+      error={error}
       onSelectDesign={handleSelectDesign}
       onFavoriteClick={handleFavoriteClick}
       onDeleteDesign={handleDeleteDesign}

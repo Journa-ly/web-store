@@ -1,10 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
+import { SERVER_URL } from '../lib/constants';
 
-const SERVER_DOMAIN = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
-const baseURL = `${SERVER_DOMAIN}`;
 
 export const serverClient = axios.create({
-  baseURL,
+  baseURL: SERVER_URL,
   withCredentials: true,
   xsrfHeaderName: 'X-CSRFTOKEN',
   xsrfCookieName: 'csrftoken',
@@ -19,12 +18,10 @@ serverClient.interceptors.request.use((config) => {
       .split('; ')
       .find((row) => row.startsWith('csrftoken='))
       ?.split('=')[1];
-    console.log(token);
     if (token) {
       config.headers['X-CSRFTOKEN'] = token;
     }
   }
-  console.log(config);
   return config;
 });
 

@@ -44,3 +44,11 @@ export const validateEnvironmentVariables = () => {
     );
   }
 };
+
+export function parseBoolean(str: string) {
+  if (typeof str !== 'string') {
+    return false;
+  }
+  const lowerCaseStr = str.toLowerCase();
+  return lowerCaseStr === 'true';
+}

@@ -4,10 +4,10 @@ import { useState } from 'react';
 import { useDesign } from 'components/designs/design-context';
 import DesignCarousel from './DesignCarousel';
 import { UserDesign } from 'types/design';
-import { usePaginatedMyDesigns, deleteDesign } from 'requests/designs';
+import { deleteDesign } from 'requests/designs';
 
 export default function MyDesignsCarousel() {
-  const { myDesigns, isLoading, isError, size, setSize, pages, mutate } = usePaginatedMyDesigns();
+  const { designs, isLoading, error, size, setSize, pages, mutate } = useDesignsWithLiveUpdates();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
   const { setPreviewImage, selectedDesign, setSelectedDesign } = useDesign();
 
@@ -66,10 +66,10 @@ export default function MyDesignsCarousel() {
 
   return (
     <DesignCarousel
-      designs={myDesigns}
+      designs={designs}
       selectedDesign={selectedDesign}
       isLoading={isLoading}
-      error={isError}
+      error={error}
       onSelectDesign={handleSelectDesign}
       loadingImages={loadingImages}
       onImageLoad={handleImageLoad}

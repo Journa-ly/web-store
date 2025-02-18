@@ -41,6 +41,7 @@ export function useDesignsWithLiveUpdates() {
     designs: myDesigns,
     isLoading: isLoadingDesigns,
     error: fetchError || wsError,
+    mutate,
     ...paginationProps
   };
 }
