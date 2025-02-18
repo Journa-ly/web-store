@@ -1,4 +1,4 @@
-import { parseBoolean } from "./utils";
+import { parseBoolean } from './utils';
 
 export type SortFilterItem = {
   title: string;

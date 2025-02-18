@@ -1,7 +1,6 @@
 import axios, { AxiosResponse } from 'axios';
 import { SERVER_URL } from '../lib/constants';
 
-
 export const serverClient = axios.create({
   baseURL: SERVER_URL,
   withCredentials: true,
