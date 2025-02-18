@@ -44,7 +44,7 @@ export default async function CategoryPage() {
               className="group"
             >
               <div className="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
-                <figure className="relative h-48 w-full">
+                <figure className="relative h-[18rem] w-full">
                   {category.image_url ? (
                     <Image
                       src={category.image_url}
@@ -60,12 +60,9 @@ export default async function CategoryPage() {
                   )}
                 </figure>
 
-                <div className="card-body">
-                  <h2 className="card-title">{category.name}</h2>
-                  {category.description && (
-                    <p className="text-sm text-base-content/70">{category.description}</p>
-                  )}
-                  <div className="card-actions justify-end">
+                <div className="card-body p-4">
+                  <div className="flex items-center justify-between">
+                    <h2 className="card-title">{category.name}</h2>
                     <div className="badge badge-outline">{category.design_count} designs</div>
                   </div>
                 </div>
