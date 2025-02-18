@@ -40,7 +40,7 @@ export function Navbar() {
               <Menu />
             </div>
           </div>
-          <Link href="/" className="relative h-[28px] w-[97px] px-2 pl-2">
+          <Link href="/" className="relative h-[28px] w-[107px] px-2 pl-2">
             <Image src="/icon_black.svg" alt="Journa" fill className="object-contain" priority />
           </Link>
         </div>
