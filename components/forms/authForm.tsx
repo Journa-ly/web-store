@@ -232,7 +232,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       {!isLogin && (
         <div className="form-control mt-4">
           <label className="label cursor-pointer justify-start gap-2">
-            <input type="checkbox" className="checkbox" defaultChecked {...register('accepts_marketing')} />
+            <input
+              type="checkbox"
+              className="checkbox"
+              defaultChecked
+              {...register('accepts_marketing')}
+            />
             <span className="label-text">I want to receive marketing emails</span>
           </label>
         </div>
@@ -249,7 +254,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             />
             <span className="label-text">
               I accept the{' '}
-              <a href="/policies/terms-of-service" className="link link-primary" target="_blank" rel="noopener noreferrer">
+              <a
+                href="/policies/terms-of-service"
+                className="link link-primary"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 terms of service
               </a>
             </span>

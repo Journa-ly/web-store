@@ -21,7 +21,7 @@ export default function DesignStudioCarousel() {
     const selectedId = searchParams.get('selected');
     console.log('selectedId', selectedId);
     if (selectedId && designs.length > 0) {
-      const designToSelect = designs.find(design => design.uuid === selectedId);
+      const designToSelect = designs.find((design) => design.uuid === selectedId);
       console.log('designToSelect', designToSelect);
       if (designToSelect) {
         handleSelectDesign(designToSelect);

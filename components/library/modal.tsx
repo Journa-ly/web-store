@@ -16,7 +16,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children, className }) => 
     // Stop propagation for all clicks within the modal container
     e.stopPropagation();
     e.preventDefault();
-    
+
     // Only close if clicking the backdrop (modal container itself)
     if (e.target === e.currentTarget) {
       onClose();

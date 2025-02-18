@@ -1,6 +1,7 @@
 import CartModal from 'components/cart/modal';
 import DesignStudioButton from 'components/designStudioButton';
 import Link from 'next/link';
+import Image from 'next/image';
 import Menu from '../search/menu';
 import UserMenu from './UserMenu';
 
@@ -39,8 +40,8 @@ export function Navbar() {
               <Menu />
             </div>
           </div>
-          <Link href="/" className="btn btn-ghost text-xl">
-            Journa
+          <Link href="/" className="relative h-[28px] w-[97px] px-2 pl-2">
+            <Image src="/icon_black.svg" alt="Journa" fill className="object-contain" priority />
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">

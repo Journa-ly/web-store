@@ -21,4 +21,4 @@ export default function SimpleDesignCard({ design }: SimpleDesignCardProps) {
       />
     </Link>
   );
-} 
+}

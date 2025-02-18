@@ -5,9 +5,7 @@ interface StatsProps {
 const Stats = ({ title }: StatsProps) => (
   <div className="flex flex-col items-center justify-center gap-4 py-8">
     {title && (
-      <h2 className="mb-6 text-center text-2xl font-bold text-base-content md:text-3xl">
-        {title}
-      </h2>
+      <h2 className="mb-6 text-center text-2xl font-bold text-base-content md:text-3xl">{title}</h2>
     )}
     <div className="flex w-full flex-col items-center justify-center gap-4 pb-4 md:flex-row lg:gap-16">
       <div className="stats w-full shadow md:w-auto">

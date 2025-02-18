@@ -20,7 +20,7 @@ export default function MyDesignsCarousel() {
   useEffect(() => {
     const selectedId = searchParams.get('selected');
     if (selectedId && designs.length > 0) {
-      const designToSelect = designs.find(design => design.uuid === selectedId);
+      const designToSelect = designs.find((design) => design.uuid === selectedId);
       if (designToSelect) {
         handleSelectDesign(designToSelect);
       }

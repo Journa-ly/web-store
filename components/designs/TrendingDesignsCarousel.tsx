@@ -13,10 +13,7 @@ export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCaro
       <div className="scrollbar-hide overflow-x-auto px-4 sm:px-6 lg:px-8">
         <div className="flex gap-4">
           {designs.map((design) => (
-            <div
-              key={design.uuid}
-              className="w-64 flex-none"
-            >
+            <div key={design.uuid} className="w-64 flex-none">
               <SimpleDesignCard design={design} />
             </div>
           ))}
@@ -24,4 +21,4 @@ export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCaro
       </div>
     </div>
   );
-} 
+}

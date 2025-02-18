@@ -27,8 +27,7 @@ function CategoryHeader({ category }: { category: Category }) {
             quality={85}
           />
         ) : (
-          <div className="flex h-full w-full items-center justify-center bg-base-200">
-          </div>
+          <div className="flex h-full w-full items-center justify-center bg-base-200"></div>
         )}
         <div className="absolute inset-0 bg-black/40" />
         <div className="absolute inset-0 flex items-center justify-center">
@@ -41,7 +40,11 @@ function CategoryHeader({ category }: { category: Category }) {
   );
 }
 
-export async function generateMetadata({ params }: { params: { category: string } }): Promise<Metadata> {
+export async function generateMetadata({
+  params
+}: {
+  params: { category: string };
+}): Promise<Metadata> {
   const pageParams = await params;
   const category = await getCategory(pageParams.category);
 

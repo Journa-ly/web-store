@@ -11,16 +11,8 @@ interface CategoryDesignListProps {
 }
 
 export function CategoryDesignList({ categoryId }: CategoryDesignListProps) {
-  const {
-    designs,
-    error,
-    isLoadingMore,
-    size,
-    setSize,
-    isEmpty,
-    hasNextPage,
-    isRefreshing
-  } = usePaginatedCategoryDesigns(categoryId);
+  const { designs, error, isLoadingMore, size, setSize, isEmpty, hasNextPage, isRefreshing } =
+    usePaginatedCategoryDesigns(categoryId);
 
   const { ref, inView } = useInView({
     threshold: 0,
@@ -56,4 +48,4 @@ export function CategoryDesignList({ categoryId }: CategoryDesignListProps) {
       </div>
     </>
   );
-} 
+}
