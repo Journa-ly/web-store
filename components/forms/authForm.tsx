@@ -26,7 +26,10 @@ const signUpSchema = z
     password2: z.string().min(6, 'Your password must have at least 6 characters'),
     first_name: z.string().min(1, 'First name is required'),
     last_name: z.string().min(1, 'Last name is required'),
-    accepts_marketing: z.boolean().optional()
+    accepts_marketing: z.boolean().optional().default(true),
+    accepts_terms: z.boolean().refine((val) => val === true, {
+      message: 'You must accept the terms of service to create an account'
+    })
   })
   .refine((data) => data.password === data.password2, {
     message: "Passwords don't match",
@@ -229,9 +232,31 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       {!isLogin && (
         <div className="form-control mt-4">
           <label className="label cursor-pointer justify-start gap-2">
-            <input type="checkbox" className="checkbox" {...register('accepts_marketing')} />
+            <input type="checkbox" className="checkbox" defaultChecked {...register('accepts_marketing')} />
             <span className="label-text">I want to receive marketing emails</span>
           </label>
+        </div>
+      )}
+
+      {/* Terms of Service Acceptance (Sign Up only) */}
+      {!isLogin && (
+        <div className="form-control mt-4">
+          <label className="label cursor-pointer justify-start gap-2">
+            <input
+              type="checkbox"
+              className={`checkbox ${errors.accepts_terms ? 'checkbox-error' : ''}`}
+              {...register('accepts_terms')}
+            />
+            <span className="label-text">
+              I accept the{' '}
+              <a href="/policies/terms-of-service" className="link link-primary" target="_blank" rel="noopener noreferrer">
+                terms of service
+              </a>
+            </span>
+          </label>
+          {errors.accepts_terms && (
+            <p className="mt-1 text-sm text-error">{errors.accepts_terms.message as string}</p>
+          )}
         </div>
       )}
 
