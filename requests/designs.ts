@@ -46,7 +46,8 @@ export function usePaginatedCategoryDesigns(categoryId: string) {
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     getKey,
-    ([categoryId, cursor]: [string, string | null]) => getCategoryDesigns(categoryId, cursor ?? undefined)
+    ([categoryId, cursor]: [string, string | null]) =>
+      getCategoryDesigns(categoryId, cursor ?? undefined)
   );
 
   const designs = data ? data.flatMap((page) => page.results) : [];
