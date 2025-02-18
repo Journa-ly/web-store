@@ -43,7 +43,7 @@ function CategoryHeader({ category }: { category: Category }) {
 export async function generateMetadata({
   params
 }: {
-  params: { category: string };
+  params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const pageParams = await params;
   const category = await getCategory(pageParams.category);
@@ -61,7 +61,7 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ params }: { params: { category: string } }) {
+export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const pageParams = await params;
   const category = await getCategory(pageParams.category);
 

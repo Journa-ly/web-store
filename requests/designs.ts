@@ -41,12 +41,12 @@ export function usePaginatedCategoryDesigns(categoryId: string) {
     if (pageIndex === 0) return [categoryId, null];
 
     // add the cursor to the API endpoint
-    return [categoryId, previousPageData.next];
+    return [categoryId, previousPageData?.next ?? null];
   };
 
   const { data, error, size, setSize, isValidating } = useSWRInfinite(
     getKey,
-    ([categoryId, cursor]) => getCategoryDesigns(categoryId, cursor)
+    ([categoryId, cursor]: [string, string | null]) => getCategoryDesigns(categoryId, cursor ?? undefined)
   );
 
   const designs = data ? data.flatMap((page) => page.results) : [];
