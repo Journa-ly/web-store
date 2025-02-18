@@ -1,17 +1,33 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useToggleFavorite, deleteDesign } from 'requests/designs';
 import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
 import { UserDesign } from 'types/design';
 import { useDesign } from 'components/designs/design-context';
 import DesignCarousel from './DesignCarousel';
+import { useSearchParams } from 'next/navigation';
 
 export default function DesignStudioCarousel() {
   const { designs, isLoading, error, size, setSize, pages, mutate } = useDesignsWithLiveUpdates();
   const { toggleFavorite } = useToggleFavorite();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
   const { selectedDesign, setSelectedDesign, setPreviewImage } = useDesign();
+  const searchParams = useSearchParams();
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const isLastPage = pages && pages[pages.length - 1]?.next === null;
+
+  // Handle initial selection from URL
+  useEffect(() => {
+    const selectedId = searchParams.get('selected');
+    console.log('selectedId', selectedId);
+    if (selectedId && designs.length > 0) {
+      const designToSelect = designs.find(design => design.uuid === selectedId);
+      console.log('designToSelect', designToSelect);
+      if (designToSelect) {
+        handleSelectDesign(designToSelect);
+      }
+    }
+  }, [searchParams]); // Only run when searchParams changes
 
   const handleFavoriteClick = async (uuid: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -67,9 +83,14 @@ export default function DesignStudioCarousel() {
     setLoadingImages((prev) => ({ ...prev, [uuid]: true }));
   };
 
-  const handleLoadMore = () => {
-    if (!isLastPage && !isLoading) {
-      setSize(size + 1);
+  const handleLoadMore = async () => {
+    if (!isLastPage && !isLoading && !isLoadingMore) {
+      setIsLoadingMore(true);
+      try {
+        await setSize(size + 1);
+      } finally {
+        setIsLoadingMore(false);
+      }
     }
   };
 
@@ -77,7 +98,7 @@ export default function DesignStudioCarousel() {
     <DesignCarousel
       designs={designs}
       selectedDesign={selectedDesign}
-      isLoading={isLoading}
+      isLoading={isLoading || isLoadingMore}
       error={error}
       onSelectDesign={handleSelectDesign}
       onFavoriteClick={handleFavoriteClick}

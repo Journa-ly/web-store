@@ -45,7 +45,7 @@ export default function TrendingPage() {
   }
 
   return (
-    <section className="container mx-auto px-4 py-8">
+    <section className="container mx-auto px-4 pb-8">
       <h1 className="mb-8 text-3xl font-bold">Trending Designs</h1>
 
       {trendingDesigns.length === 0 && !isLoading ? (

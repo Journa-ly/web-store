@@ -12,14 +12,20 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children, className }) => 
   const containerClasses = clsx('modal', open && 'modal-open');
   const modalClasses = clsx('modal-box p-0', className);
 
+  const handleModalClick = (e: React.MouseEvent) => {
+    // Stop propagation for all clicks within the modal container
+    e.stopPropagation();
+    e.preventDefault();
+    
+    // Only close if clicking the backdrop (modal container itself)
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={containerClasses} onClick={onClose}>
-      <div
-        className={modalClasses}
-        onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside
-      >
-        {children}
-      </div>
+    <div className={containerClasses} onClick={handleModalClick}>
+      <div className={modalClasses}>{children}</div>
     </div>
   );
 };

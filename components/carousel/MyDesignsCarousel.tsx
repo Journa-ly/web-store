@@ -1,17 +1,31 @@
 'use client';
 import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDesign } from 'components/designs/design-context';
 import DesignCarousel from './DesignCarousel';
 import { UserDesign } from 'types/design';
 import { deleteDesign } from 'requests/designs';
+import { useSearchParams } from 'next/navigation';
 
 export default function MyDesignsCarousel() {
   const { designs, isLoading, error, size, setSize, pages, mutate } = useDesignsWithLiveUpdates();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
   const { setPreviewImage, selectedDesign, setSelectedDesign } = useDesign();
+  const searchParams = useSearchParams();
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
 
   const isLastPage = pages && pages[pages.length - 1]?.next === null;
+
+  // Handle initial selection from URL
+  useEffect(() => {
+    const selectedId = searchParams.get('selected');
+    if (selectedId && designs.length > 0) {
+      const designToSelect = designs.find(design => design.uuid === selectedId);
+      if (designToSelect) {
+        handleSelectDesign(designToSelect);
+      }
+    }
+  }, [searchParams]); // Only run when searchParams changes
 
   const handleSelectDesign = (design: UserDesign) => {
     setSelectedDesign(design);
@@ -58,9 +72,14 @@ export default function MyDesignsCarousel() {
     }
   };
 
-  const handleLoadMore = () => {
-    if (!isLastPage && !isLoading) {
-      setSize(size + 1);
+  const handleLoadMore = async () => {
+    if (!isLastPage && !isLoading && !isLoadingMore) {
+      setIsLoadingMore(true);
+      try {
+        await setSize(size + 1);
+      } finally {
+        setIsLoadingMore(false);
+      }
     }
   };
 
@@ -68,7 +87,7 @@ export default function MyDesignsCarousel() {
     <DesignCarousel
       designs={designs}
       selectedDesign={selectedDesign}
-      isLoading={isLoading}
+      isLoading={isLoading || isLoadingMore}
       error={error}
       onSelectDesign={handleSelectDesign}
       loadingImages={loadingImages}

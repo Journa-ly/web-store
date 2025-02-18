@@ -16,6 +16,60 @@ import {
 const PAGE_SIZE = 21;
 
 /**
+ * getCategoryDesigns - fetches designs for a specific category
+ */
+export async function getCategoryDesigns(categoryId: string, cursor?: string) {
+  try {
+    const url = `/designs/trending/category/${categoryId}/${cursor ? `?cursor=${cursor}` : ''}`;
+    const response = await serverClient.get(url);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching category designs:', error);
+    return { results: [], next: null, previous: null, count: 0 };
+  }
+}
+
+/**
+ * usePaginatedCategoryDesigns - hook for fetching paginated designs for a category
+ */
+export function usePaginatedCategoryDesigns(categoryId: string) {
+  const getKey = (pageIndex: number, previousPageData: TrendingDesignListResponse | null) => {
+    // reached the end
+    if (previousPageData && !previousPageData.next) return null;
+
+    // first page, we don't have `previousPageData`
+    if (pageIndex === 0) return [categoryId, null];
+
+    // add the cursor to the API endpoint
+    return [categoryId, previousPageData.next];
+  };
+
+  const { data, error, size, setSize, isValidating } = useSWRInfinite(
+    getKey,
+    ([categoryId, cursor]) => getCategoryDesigns(categoryId, cursor)
+  );
+
+  const designs = data ? data.flatMap((page) => page.results) : [];
+  const isLoadingInitialData = !data && !error;
+  const isLoadingMore =
+    isLoadingInitialData || (size > 0 && data && typeof data[size - 1] === 'undefined');
+  const isEmpty = data?.[0]?.results?.length === 0;
+  const hasNextPage = Boolean(data?.[data.length - 1]?.next);
+  const isRefreshing = isValidating && data && data.length === size;
+
+  return {
+    designs,
+    error,
+    isLoadingMore,
+    size,
+    setSize,
+    isEmpty,
+    hasNextPage,
+    isRefreshing
+  };
+}
+
+/**
  * usePaginatedDesigns - fetches all designs with pagination.
  */
 export const usePaginatedDesigns = () => {
@@ -93,15 +147,23 @@ export const usePaginatedMyDesigns = () => {
     if (pageIndex === 0) return `/designs/designs/my_designs/?page_size=${PAGE_SIZE}`;
 
     // If the previous page is empty or doesn't have next cursor, we've reached the end
-    if (!previousPageData || !previousPageData.next) return null;
+    if (previousPageData && !previousPageData.next) return null;
 
-    // Use the cursor value directly
-    return `/designs/designs/my_designs/?cursor=${previousPageData.next}&page_size=${PAGE_SIZE}`;
+    // Extract cursor from previous page's next value
+    const cursor = previousPageData?.next;
+    if (!cursor) return null;
+
+    // Use the cursor for subsequent pages
+    return `/designs/designs/my_designs/?cursor=${cursor}&page_size=${PAGE_SIZE}`;
   };
 
   const { data, error, size, setSize, mutate } = useSWRInfinite<UserDesignListResponse>(
     getKey,
-    fetcher
+    fetcher,
+    {
+      revalidateFirstPage: false,
+      persistSize: true
+    }
   );
 
   const myDesigns = data ? data.map((page) => page.results).flat() : [];
