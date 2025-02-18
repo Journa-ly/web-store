@@ -11,14 +11,11 @@ interface HeroProps {
   collection: string;
 }
 
-const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText, collection }) => {
+const Hero: React.FC<HeroProps> = ({ title, subtitle, imageSrc, altText }) => {
   return (
     <div className="mx-2 mt-16 overflow-hidden lg:mx-6">
       <div className="hero rounded-xl bg-neutral py-12">
         <div className="container mx-auto overflow-hidden px-4">
-          <div className="mb-8">
-            <Carousel collection={collection} />
-          </div>
           <div className="flex flex-col-reverse items-center gap-8 lg:flex-row">
             <div className="w-full lg:w-1/2">
               <Image
