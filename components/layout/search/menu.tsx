@@ -1,6 +1,5 @@
 import clsx from 'clsx';
 import { Suspense } from 'react';
-import { SVGProps } from 'react';
 
 import MenuSectionTitle from 'components/menus/menuSectionTitle';
 import { getCollections } from 'lib/shopify';
