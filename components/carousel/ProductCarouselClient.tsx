@@ -3,6 +3,7 @@
 import { Product } from 'lib/shopify/types';
 import { GridTileImage } from '../grid/tile';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 interface ProductCarouselClientProps {
   products: Product[];
@@ -27,19 +28,21 @@ export default function ProductCarouselClient({
           <div className="flex gap-4">
             {products.map((product) => (
               <div key={product.id} className="w-[180px] flex-shrink-0">
-                <GridTileImage
-                  src={product.images[0]?.url || ''}
-                  alt={product.title}
-                  width={180}
-                  height={144}
-                  sizes="180px"
-                  label={{
-                    title: product.title,
-                    amount: product.priceRange.maxVariantPrice.amount,
-                    currencyCode: product.priceRange.maxVariantPrice.currencyCode,
-                    position: 'bottom'
-                  }}
-                />
+                <Link href={`/product/${product.handle}`} prefetch={true}>
+                  <GridTileImage
+                    src={product.images[0]?.url || ''}
+                    alt={product.title}
+                    width={180}
+                    height={144}
+                    sizes="180px"
+                    label={{
+                      title: product.title,
+                      amount: product.priceRange.maxVariantPrice.amount,
+                      currencyCode: product.priceRange.maxVariantPrice.currencyCode,
+                      position: 'bottom'
+                    }}
+                  />
+                </Link>
               </div>
             ))}
           </div>
