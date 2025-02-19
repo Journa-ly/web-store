@@ -3,6 +3,7 @@ import { DesignProvider } from 'components/designs/design-context';
 import Footer from 'components/layout/footer';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
+import { GoogleAnalytics } from '@next/third-parties/google'
 import { Inter } from 'next/font/google';
 import { cookies, headers } from 'next/headers';
 import { ReactNode } from 'react';
@@ -31,6 +32,7 @@ export const metadata = {
 };
 
 const inter = Inter({ subsets: ['latin'] });
+const gaId = String(process.env.NEXT_PUBLIC_GA_ID);
 
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
@@ -47,7 +49,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
           </DesignProvider>
         </CartProvider>
         <Footer />
-        {/* <GoogleAnalytics gaId="G-XYZ" /> */}
+        <GoogleAnalytics gaId={gaId} />
       </body>
     </html>
   );
