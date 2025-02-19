@@ -3,7 +3,7 @@ import { DesignProvider } from 'components/designs/design-context';
 import Footer from 'components/layout/footer';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { Inter } from 'next/font/google';
 import { cookies, headers } from 'next/headers';
 import { ReactNode } from 'react';
