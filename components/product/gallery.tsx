@@ -18,7 +18,7 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
 
   return (
     <form>
-      <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden">
+      <div className="relative aspect-square max-w-full overflow-hidden">
         {images[imageIndex] && (
           <Image
             className="h-full w-full object-contain"
@@ -60,9 +60,9 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
       </div>
 
       {images.length > 1 ? (
-        <div className="relative mt-12 w-full">
-          <div className="overflow-hidden">
-            <ul className="scrollbar-hide flex snap-x items-center gap-2 overflow-x-auto pb-2">
+        <div className="relative mt-12 max-w-2xl">
+          <div className="overflow-x-auto">
+            <ul className="scrollbar-hide flex snap-x items-center gap-2 pb-2">
               {images.map((image, index) => {
                 const isActive = index === imageIndex;
 

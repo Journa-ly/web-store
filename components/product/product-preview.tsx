@@ -5,7 +5,7 @@ function ProductPreview({ product }: { product: Product }) {
   const { title, featuredImage } = product;
 
   return (
-    <div className="relative aspect-square">
+    <div className="relative aspect-square max-w-full">
       {featuredImage ? (
         <Image
           src={featuredImage.url}
