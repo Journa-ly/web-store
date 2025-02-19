@@ -26,7 +26,7 @@ export default async function StudioPage({ searchParams }: StudioPageProps) {
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}
               >
                 <div className="mx-auto max-w-4xl">
-                  <ProductCarousel collectionHandle="apparel" className="w-full md:max-w-none" />
+                  <ProductCarousel collectionHandle="all" className="w-full md:max-w-none" />
                 </div>
               </Suspense>
             </div>
