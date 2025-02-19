@@ -6,15 +6,8 @@ import MenuSectionTitle from 'components/menus/menuSectionTitle';
 import { getCollections } from 'lib/shopify';
 import FilterList from './filter';
 
-const CommunityIcon = (props: SVGProps<SVGSVGElement>) => (
-  <svg
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    {...props}
-  >
+const CommunityIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       d="M12.0002 10.8001C13.9884 10.8001 15.6002 9.18832 15.6002 7.2001C15.6002 5.21187 13.9884 3.6001 12.0002 3.6001C10.012 3.6001 8.40019 5.21187 8.40019 7.2001C8.40019 9.18832 10.012 10.8001 12.0002 10.8001Z"
       fill="#1F2937"
@@ -42,7 +35,7 @@ const CommunityIcon = (props: SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const PaintBrushIcon = (props: SVGProps<SVGSVGElement>) => (
+const PaintBrushIcon = () => (
   <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
