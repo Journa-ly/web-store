@@ -55,7 +55,7 @@ function DesignList() {
       <FilterList
         list={[
           { title: 'Trending', path: '/designs/trending' },
-          { title: 'Ready to Ship', path: '/designs/ready-to-ship' },
+          { title: 'Ready to Ship', path: '/collections/ready-to-ship' },
           { title: 'Categories', path: '/designs/categories' }
         ]}
         title={<MenuSectionTitle Icon={CommunityIcon} text="Community Designs" />}
