@@ -1,95 +1,60 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import React, {
-  createContext,
-  useContext,
-  useMemo,
-  useOptimistic,
-  useReducer,
-  ReactNode,
-  useState,
-  useEffect
-} from 'react';
-import { ProductVariant } from 'lib/shopify/types';
+import React, { createContext, useContext, useMemo, useOptimistic } from 'react';
 
-interface State {
-  image: string | null;
-  variant: string | null;
-  [key: string]: string | null;
-}
-
-type Action =
-  | { type: 'UPDATE_IMAGE'; payload: string }
-  | { type: 'UPDATE_VARIANT'; payload: string };
-
-const initialState: State = {
-  image: null,
-  variant: null
+type ProductState = {
+  [key: string]: string;
+} & {
+  image?: string;
 };
 
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case 'UPDATE_IMAGE':
-      return { ...state, image: action.payload };
-    case 'UPDATE_VARIANT':
-      return { ...state, variant: action.payload };
-    default:
-      return state;
-  }
-}
-
-interface ProductContextType {
-  selectedVariant: ProductVariant | null;
-  previewImage: string | null;
-  setSelectedVariant: (variant: ProductVariant | null) => void;
-  state: State;
-  updateImage: (image: string) => State;
-  updateVariant: (variant: string) => State;
-  updateOption: (name: string, value: string) => State;
-}
+type ProductContextType = {
+  state: ProductState;
+  updateOption: (name: string, value: string) => ProductState;
+  updateImage: (index: string) => ProductState;
+};
 
 const ProductContext = createContext<ProductContextType | undefined>(undefined);
 
-export function ProductProvider({ children }: { children: ReactNode }) {
+export function ProductProvider({ children }: { children: React.ReactNode }) {
   const searchParams = useSearchParams();
-  const [selectedVariant, setSelectedVariant] = useState<ProductVariant | null>(null);
-  const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    // Initialize state from URL params
-    const params: State = { ...initialState };
+  const getInitialState = () => {
+    const params: ProductState = {};
     for (const [key, value] of searchParams.entries()) {
-      if (key === 'image') {
-        params.image = value;
-      } else if (key === 'variant') {
-        params.variant = value;
-      }
+      params[key] = value;
     }
-    dispatch({ type: 'UPDATE_IMAGE', payload: params.image || '' });
-    dispatch({ type: 'UPDATE_VARIANT', payload: params.variant || '' });
-  }, [searchParams]);
+    return params;
+  };
+
+  const [state, setOptimisticState] = useOptimistic(
+    getInitialState(),
+    (prevState: ProductState, update: ProductState) => ({
+      ...prevState,
+      ...update
+    })
+  );
+
+  const updateOption = (name: string, value: string) => {
+    const newState = { [name]: value };
+    setOptimisticState(newState);
+    return { ...state, ...newState };
+  };
+
+  const updateImage = (index: string) => {
+    const newState = { image: index };
+    setOptimisticState(newState);
+    return { ...state, ...newState };
+  };
 
   const value = useMemo(
     () => ({
-      selectedVariant,
-      setSelectedVariant,
       state,
-      updateImage: (image: string) => {
-        dispatch({ type: 'UPDATE_IMAGE', payload: image });
-        return { ...state, image };
-      },
-      updateVariant: (variant: string) => {
-        dispatch({ type: 'UPDATE_VARIANT', payload: variant });
-        return { ...state, variant };
-      },
-      updateOption: (name: string, value: string) => {
-        dispatch({ type: 'UPDATE_VARIANT', payload: value });
-        return { ...state, [name]: value };
-      },
-      previewImage: state.image
+      updateOption,
+      updateImage
     }),
-    [selectedVariant, state]
+    [state]
   );
 
   return <ProductContext.Provider value={value}>{children}</ProductContext.Provider>;
@@ -106,10 +71,10 @@ export function useProduct() {
 export function useUpdateURL() {
   const router = useRouter();
 
-  return (state: State) => {
+  return (state: ProductState) => {
     const newParams = new URLSearchParams(window.location.search);
     Object.entries(state).forEach(([key, value]) => {
-      newParams.set(key, String(value));
+      newParams.set(key, value);
     });
     router.push(`?${newParams.toString()}`, { scroll: false });
   };

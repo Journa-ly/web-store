@@ -18,6 +18,7 @@ import { Suspense } from 'react';
 import MyDesignsCarousel from 'components/carousel/MyDesignsCarousel';
 import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
+import ProductPreview from '@/components/product/product-preview';
 
 export async function generateMetadata(props: {
   params: Promise<{ handle: string }>;
@@ -110,14 +111,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
                 <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
               }
             >
-              <Gallery
-                images={[product.featuredImage].map((image: Image) => ({
-                  src: image.url,
-                  altText: image.altText
-                }))}
-                useQueryParams={false}
-                showDesignOverlay={true}
-              />
+              <ProductPreview product={product} />
               <VariantSelector options={product.options} variants={product.variants} />
               <div className="mt-4">
                 <AddToCart product={product} />
@@ -139,8 +133,6 @@ export default async function ProductPage({ params }: ProductPageProps) {
                     src: image.url,
                     altText: image.altText
                   }))}
-                  useQueryParams={true}
-                  showDesignOverlay={false}
                 />
               </div>
             </div>

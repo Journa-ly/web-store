@@ -17,7 +17,7 @@ export function VariantSelector({
   options: ProductOption[];
   variants: ProductVariant[];
 }) {
-  const { state, updateOption, setSelectedVariant } = useProduct();
+  const { state, updateOption } = useProduct();
   const updateURL = useUpdateURL();
   const hasNoOptionsOrJustOneOption =
     !options.length || (options.length === 1 && options[0]?.values.length === 1);
@@ -35,11 +35,6 @@ export function VariantSelector({
     )
   }));
 
-  const handleVariantChange = (variant: ProductVariant) => {
-    setSelectedVariant(variant);
-    // ... other existing variant change logic ...
-  };
-
   return options.map((option) => (
     <form key={option.id}>
       <dl className="mb-8">
@@ -52,12 +47,10 @@ export function VariantSelector({
             const optionParams = { ...state, [optionNameLowerCase]: value };
 
             // Filter out invalid options and check if the option combination is available for sale.
-            const filtered = Object.entries(optionParams).filter(
-              ([key, value]) =>
-                typeof value === 'string' &&
-                options.find(
-                  (option) => option.name.toLowerCase() === key && option.values.includes(value)
-                )
+            const filtered = Object.entries(optionParams).filter(([key, value]) =>
+              options.find(
+                (option) => option.name.toLowerCase() === key && option.values.includes(value)
+              )
             );
             const isAvailableForSale = combinations.find((combination) =>
               filtered.every(
@@ -73,16 +66,6 @@ export function VariantSelector({
                 formAction={() => {
                   const newState = updateOption(optionNameLowerCase, value);
                   updateURL(newState);
-                  const foundVariant = variants.find((v) =>
-                    v.selectedOptions.some(
-                      (o) => o.name.toLowerCase() === optionNameLowerCase && o.value === value
-                    )
-                  );
-                  if (foundVariant) {
-                    handleVariantChange(foundVariant);
-                  } else if (variants.length > 0) {
-                    handleVariantChange(variants[0]!);
-                  }
                 }}
                 key={value}
                 aria-disabled={!isAvailableForSale}
@@ -91,8 +74,8 @@ export function VariantSelector({
                 className={clsx(
                   'flex min-w-[48px] items-center justify-center rounded-full border bg-neutral-100 px-2 py-1 text-sm',
                   {
-                    'accent cursor-default ring-2': isActive,
-                    'hover:accent ring-1 ring-transparent transition duration-300 ease-in-out':
+                    'cursor-default ring-2 ring-blue-600': isActive,
+                    'ring-1 ring-transparent transition duration-300 ease-in-out hover:ring-blue-600':
                       !isActive && isAvailableForSale,
                     'relative z-10 cursor-not-allowed overflow-hidden bg-neutral-100 text-neutral-500 ring-1 ring-neutral-300 before:absolute before:inset-x-0 before:-z-10 before:h-px before:-rotate-45 before:bg-neutral-300 before:transition-transform':
                       !isAvailableForSale

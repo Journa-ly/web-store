@@ -52,3 +52,11 @@ export function parseBoolean(str: string) {
   const lowerCaseStr = str.toLowerCase();
   return lowerCaseStr === 'true';
 }
+
+export function formatPrice(amount: string) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumFractionDigits: 2
+  }).format(parseFloat(amount));
+}
