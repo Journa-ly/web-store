@@ -4,23 +4,13 @@ import ProductCarousel from 'components/ProductCarousel';
 import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
 
-interface StudioPageProps {
-  searchParams: Promise<{
-    selected?: string;
-    [key: string]: string | string[] | undefined;
-  }>;
-}
-
-export default async function StudioPage({ searchParams }: StudioPageProps) {
-  const params = await searchParams;
-  const selectedDesignId = params.selected;
-
+export default async function StudioPage() {
   return (
     <>
       <div className="w-full">
         <div className="overflow-hidden rounded-2xl bg-white shadow">
           <div className="p-4 md:p-6 lg:p-8">
-            <DesignStudioContent initialSelectedDesign={selectedDesignId} />
+            <DesignStudioContent />
             <div className="pt-8">
               <Suspense
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}

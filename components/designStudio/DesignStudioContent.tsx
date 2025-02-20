@@ -8,14 +8,10 @@ import Image from 'next/image';
 import { useDesign } from 'components/designs/design-context';
 import { ClipLoader } from 'react-spinners';
 
-interface DesignStudioContentProps {
-  initialSelectedDesign?: string;
-}
-
-export default function DesignStudioContent({ initialSelectedDesign }: DesignStudioContentProps) {
-  const { selectedDesign, setSelectedDesign } = useDesign();
-  const isGenerating = selectedDesign?.image?.status !== 'Succeeded';
-  const imageUrl = selectedDesign?.product_image?.image || selectedDesign?.image?.image?.image;
+export default function DesignStudioContent() {
+  const { selectedDesign } = useDesign();
+  const imageUrl = selectedDesign?.product_image?.image;
+  const isGenerating = !Boolean(imageUrl);
 
   return (
     <div className="flex w-full flex-col gap-8">
