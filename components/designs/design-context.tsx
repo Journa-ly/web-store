@@ -1,6 +1,14 @@
 'use client';
 
-import { createContext, useContext, useState, ReactNode, useMemo, useEffect } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useMemo,
+  useEffect,
+  useCallback
+} from 'react';
 import { UserDesign } from 'types/design';
 import { LocalStorageCache } from 'utils/localStorage';
 
@@ -9,6 +17,7 @@ interface DesignContextType {
   setSelectedDesign: (design: UserDesign | null) => void;
   previewImage: string | null;
   setPreviewImage: (image: string | null) => void;
+  clearDesignContext: () => void;
 }
 
 const DesignContext = createContext<DesignContextType | undefined>(undefined);
@@ -32,6 +41,12 @@ export function DesignProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
+  const clearDesignContext = useCallback(() => {
+    setSelectedDesign(null);
+    setPreviewImage(null);
+    designCache.clear();
+  }, []);
+
   // Update localStorage when state changes
   useEffect(() => {
     designCache.set('state', {
@@ -45,9 +60,10 @@ export function DesignProvider({ children }: { children: ReactNode }) {
       selectedDesign,
       setSelectedDesign,
       previewImage,
-      setPreviewImage
+      setPreviewImage,
+      clearDesignContext
     }),
-    [selectedDesign, previewImage]
+    [selectedDesign, previewImage, clearDesignContext]
   );
 
   return <DesignContext.Provider value={value}>{children}</DesignContext.Provider>;

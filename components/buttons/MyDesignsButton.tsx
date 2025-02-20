@@ -11,8 +11,8 @@ export default function MyDesignsButton() {
 
   const handleSelectDesign = (design: UserDesign) => {
     setSelectedDesign(design);
-    if (design.image?.image?.image) {
-      setPreviewImage(design.image.image.image);
+    if (design.product_image?.image) {
+      setPreviewImage(design.product_image?.image);
     }
     setIsModalOpen(false);
   };

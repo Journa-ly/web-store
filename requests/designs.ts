@@ -81,7 +81,12 @@ export const usePaginatedDesigns = () => {
     return `/designs/designs/?page=${pageIndex + 1}&page_size=${PAGE_SIZE}`;
   };
 
-  const { data, error, size, setSize } = useSWRInfinite<UserDesignListResponse>(getKey, fetcher);
+  const { data, error, size, setSize } = useSWRInfinite<UserDesignListResponse>(getKey, fetcher, {
+    revalidateOnMount: true,
+    revalidateOnFocus: true,
+    revalidateIfStale: true,
+    dedupingInterval: 2000
+  });
 
   // Flatten the paginated results
   const designs = data ? data.map((page) => page.results).flat() : [];
@@ -163,7 +168,8 @@ export const usePaginatedMyDesigns = () => {
     fetcher,
     {
       revalidateFirstPage: false,
-      persistSize: true
+      persistSize: true,
+      dedupingInterval: 2000
     }
   );
 
@@ -304,6 +310,16 @@ export async function addToMyDesigns(designId: string) {
     return response.data;
   } catch (error) {
     console.error('Error adding design to my designs:', error);
+    throw error;
+  }
+}
+
+export async function getDesign(uuid: string): Promise<UserDesign> {
+  try {
+    const response = await serverClient.get(`/designs/designs/${uuid}/`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching design:', error);
     throw error;
   }
 }

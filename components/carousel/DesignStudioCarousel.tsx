@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { useToggleFavorite, deleteDesign } from 'requests/designs';
 import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
 import { UserDesign } from 'types/design';
@@ -16,18 +16,38 @@ export default function DesignStudioCarousel() {
 
   const isLastPage = pages && pages[pages.length - 1]?.next === null;
 
-  // Handle initial selection from URL
+  const handleSelectDesignFromUrl = useCallback(
+    async (uuid: string) => {
+      if (!uuid) return;
+      try {
+        const updatedPages = await mutate();
+        if (!updatedPages || !updatedPages[0]) {
+          console.warn('No pages received from mutate');
+          return;
+        }
+        const design = updatedPages[0].results.find((d: UserDesign) => d.uuid === uuid);
+        if (design) {
+          handleSelectDesign(design);
+        } else {
+          console.warn(`Design with uuid ${uuid} not found.`);
+        }
+      } catch (err) {
+        console.error('Error in handleSelectDesignFromUrl:', err);
+      }
+    },
+    [mutate]
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
   useEffect(() => {
     const selectedId = searchParams.get('selected');
-    console.log('selectedId', selectedId);
-    if (selectedId && designs.length > 0) {
-      const designToSelect = designs.find((design) => design.uuid === selectedId);
-      console.log('designToSelect', designToSelect);
-      if (designToSelect) {
-        handleSelectDesign(designToSelect);
-      }
+    if (selectedId) {
+      handleSelectDesignFromUrl(selectedId);
     }
-  }, [searchParams]); // Only run when searchParams changes
+  }, [searchParams, handleSelectDesignFromUrl]);
 
   const handleFavoriteClick = async (uuid: string, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,8 +90,8 @@ export default function DesignStudioCarousel() {
 
   const handleSelectDesign = (design: UserDesign) => {
     setSelectedDesign(design);
-    if (design.image?.image?.image) {
-      setPreviewImage(design.image.image.image);
+    if (design.product_image?.image) {
+      setPreviewImage(design.product_image?.image);
     }
   };
 

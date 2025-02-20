@@ -9,6 +9,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/solid';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import AuthModal from 'components/modals/AuthModal';
+import { useAuth } from '@/requests/users';
 
 interface DesignCarouselProps {
   designs: UserDesign[];
@@ -38,15 +39,14 @@ export default function DesignCarousel({
   onImageLoad,
   onImageLoadStart,
   onLoadMore,
-  hasMore,
-  isAuthenticated = false
+  hasMore
 }: DesignCarouselProps) {
   const selectedImageRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const lastImageRef = useRef<HTMLDivElement>(null);
   const previousDesignsLength = useRef(designs.length);
-
+  const { isAuthenticated } = useAuth();
   const [showAuthModal, setShowAuthModal] = useState(false);
   const [pendingFavoriteDesign, setPendingFavoriteDesign] = useState<string | null>(null);
 

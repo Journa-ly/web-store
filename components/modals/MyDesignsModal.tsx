@@ -11,8 +11,7 @@ import { XMarkIcon } from '@heroicons/react/24/solid';
 import ConfirmationModal from 'components/library/ConfirmationModal';
 import { isMobile } from 'react-device-detect';
 import { ExclamationTriangleIcon } from '@heroicons/react/24/outline';
-import { CheckIcon } from '@heroicons/react/24/outline';
-import { UserDesign } from 'types/design';
+import { UserDesign, UserDesignListResponse } from 'types/design';
 
 interface MyDesignsModalProps {
   open: boolean;
@@ -22,7 +21,7 @@ interface MyDesignsModalProps {
 
 export default function MyDesignsModal({ open, onClose, onSelectDesign }: MyDesignsModalProps) {
   const [activeTab, setActiveTab] = useState<'all' | 'favorites'>('all');
-  const { myDesigns, isLoading, isError, size, setSize, pages } = usePaginatedMyDesigns();
+  const { myDesigns, isLoading, isError, size, setSize, pages, mutate } = usePaginatedMyDesigns();
   const { toggleFavorite } = useToggleFavorite();
   const { ref, inView } = useInView();
   const [loadingImages, setLoadingImages] = useState<{ [key: string]: boolean }>({});
@@ -66,8 +65,15 @@ export default function MyDesignsModal({ open, onClose, onSelectDesign }: MyDesi
   const handleDeleteDesign = async (uuid: string) => {
     try {
       await deleteDesign(uuid);
-      // Trigger a revalidation of the designs data
-      setSize((prev) => prev);
+      // Update the SWR cache to remove the deleted design
+      const updatedData = (pages: UserDesignListResponse[] | undefined) => {
+        if (!pages) return pages;
+        return pages.map((page) => ({
+          ...page,
+          results: page.results.filter((design) => design.uuid !== uuid)
+        }));
+      };
+      await mutate(updatedData, false);
     } catch (error) {
       console.error('Error deleting design:', error);
     }

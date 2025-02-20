@@ -3,10 +3,15 @@
 import { useAuth } from 'requests/users';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { useDesign } from 'components/designs/design-context';
+import { mutate } from 'swr';
+import { useRouter } from 'next/navigation';
 
 export default function UserMenu() {
+  const router = useRouter();
   const { user, isAuthenticated, logout } = useAuth();
   const [isMounted, setIsMounted] = useState(false);
+  const { setSelectedDesign, setPreviewImage } = useDesign();
 
   useEffect(() => {
     setIsMounted(true);
@@ -15,8 +20,17 @@ export default function UserMenu() {
   const handleLogout = async () => {
     const result = await logout();
     if (result.success) {
-      // No need to navigate since the state change will trigger a re-render
-      // router.push('/');
+      // Clear design context
+      setSelectedDesign(null);
+      setPreviewImage(null);
+
+      // Clear all SWR cache
+      await mutate(
+        () => true, // match all keys
+        undefined, // data to reset to
+        { revalidate: false } // do not revalidate
+      );
+      router.push('/designs/trending');
     }
   };
 

@@ -1,6 +1,6 @@
 'use client';
 import { useDesignsWithLiveUpdates } from 'hooks/useDesignsWithLiveUpdates';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDesign } from 'components/designs/design-context';
 import DesignCarousel from './DesignCarousel';
 import { UserDesign } from 'types/design';
@@ -16,21 +16,43 @@ export default function MyDesignsCarousel() {
 
   const isLastPage = pages && pages[pages.length - 1]?.next === null;
 
-  // Handle initial selection from URL
+  const handleSelectDesignFromUrl = useCallback(
+    async (uuid: string) => {
+      if (!uuid) return;
+      try {
+        const updatedPages = await mutate();
+        if (!updatedPages || !updatedPages[0]) {
+          console.warn('No pages received from mutate');
+          return;
+        }
+        const design = updatedPages[0].results.find((d: UserDesign) => d.uuid === uuid);
+        if (design) {
+          handleSelectDesign(design);
+        } else {
+          console.warn(`Design with uuid ${uuid} not found.`);
+        }
+      } catch (err) {
+        console.error('Error in handleSelectDesignFromUrl:', err);
+      }
+    },
+    [mutate]
+  );
+
+  useEffect(() => {
+    mutate();
+  }, [mutate]);
+
   useEffect(() => {
     const selectedId = searchParams.get('selected');
-    if (selectedId && designs.length > 0) {
-      const designToSelect = designs.find((design) => design.uuid === selectedId);
-      if (designToSelect) {
-        handleSelectDesign(designToSelect);
-      }
+    if (selectedId) {
+      handleSelectDesignFromUrl(selectedId);
     }
-  }, [searchParams]); // Only run when searchParams changes
+  }, [searchParams, handleSelectDesignFromUrl]);
 
   const handleSelectDesign = (design: UserDesign) => {
     setSelectedDesign(design);
-    if (design.image?.image?.image) {
-      setPreviewImage(design.image.image.image);
+    if (design.product_image?.image) {
+      setPreviewImage(design.product_image?.image);
     }
   };
 
