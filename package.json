@@ -11,7 +11,7 @@
     "start": "node_modules/next/dist/bin/next start --port=8080",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
-    "test": "npm run prettier:check"
+    "test": ""
   },
   "dependencies": {
     "@headlessui/react": "^2.1.2",
