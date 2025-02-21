@@ -4,6 +4,7 @@ import { XCircleIcon } from '@heroicons/react/24/outline';
 
 function Error({ reset, error }: { reset: () => void; error: Error }) {
   console.error(error);
+
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
       <div className="card w-full max-w-xl border border-error/10 bg-base-100 shadow-xl">
