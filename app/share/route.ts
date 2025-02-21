@@ -18,6 +18,7 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
     const sessionId = cookieStore.get('sessionid')?.value;
     const csrfToken = cookieStore.get('csrftoken')?.value;
+    throw new Error('test');
 
     // Call the Django API with the session cookie
     await serverClient.post(

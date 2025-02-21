@@ -1,11 +1,13 @@
-// export async function register() {
-// 	const { registerHighlight } = await import('@highlight-run/next/server');
-//   const highlightProjectId = String(process.env.HIGHLIGHT_PROJECT_ID);
-//   const environment = String(process.env.NEXT_PUBLIC_ENVIRONMENT);
+import * as Sentry from '@sentry/nextjs';
 
-// 	registerHighlight({
-//     projectID: highlightProjectId,
-//     serviceName: "Journa-Web-Store",
-//     environment: environment,
-// 	})
-// }
+export async function register() {
+  if (process.env.NEXT_RUNTIME === 'nodejs') {
+    await import('./sentry.server.config');
+  }
+
+  if (process.env.NEXT_RUNTIME === 'edge') {
+    await import('./sentry.edge.config');
+  }
+}
+
+export const onRequestError = Sentry.captureRequestError;

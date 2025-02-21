@@ -5,9 +5,9 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "next dev --turbo --port=3000",
+    "dev": "next dev --port=3000",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev --turbo --port=3000",
-    "build": "next build --debug",
+    "build": "next build",
     "start": "node_modules/next/dist/bin/next start --port=8080",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
@@ -19,6 +19,7 @@
     "@highlight-run/next": "^7.8.5",
     "@hookform/resolvers": "^3.10.0",
     "@next/third-parties": "^15.1.6",
+    "@sentry/nextjs": "^9.1.0",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
     "framer-motion": "^12.4.4",

@@ -1,4 +1,3 @@
-import { HighlightInit } from '@highlight-run/next/client';
 import { CartProvider } from 'components/cart/cart-context';
 import { DesignProvider } from 'components/designs/design-context';
 import Footer from 'components/layout/footer';
@@ -34,38 +33,24 @@ export const metadata = {
 
 const inter = Inter({ subsets: ['latin'] });
 const gaId = String(process.env.NEXT_PUBLIC_GA_ID);
-const highlightProjectId = String(process.env.NEXT_PUBLIC_HIGHLIGHT_PROJECT_ID);
-const environment = String(process.env.NEXT_PUBLIC_ENVIRONMENT);
+
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
   // Don't await the fetch, pass the Promise to the context provider
   const cart = getCart(cartId);
 
   return (
-    <>
-      <HighlightInit
-        projectId={highlightProjectId}
-        serviceName="Journa-Web-Store"
-        environment={environment}
-        tracingOrigins
-        networkRecording={{
-          enabled: true,
-          recordHeadersAndBody: true,
-          urlBlocklist: []
-        }}
-      />
-      <html lang="en" data-theme="journaTheme" className={inter.className}>
-        <body>
-          <CartProvider cartPromise={cart}>
-            <DesignProvider>
-              <Navbar />
-              <main>{children}</main>
-            </DesignProvider>
-          </CartProvider>
-          <Footer />
-          <GoogleAnalytics gaId={gaId} />
-        </body>
-      </html>
-    </>
+    <html lang="en" data-theme="journaTheme" className={inter.className}>
+      <body>
+        <CartProvider cartPromise={cart}>
+          <DesignProvider>
+            <Navbar />
+            <main>{children}</main>
+          </DesignProvider>
+        </CartProvider>
+        <Footer />
+        <GoogleAnalytics gaId={gaId} />
+      </body>
+    </html>
   );
 }
