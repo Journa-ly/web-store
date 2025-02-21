@@ -31,7 +31,7 @@ module.exports = withSentryConfig(config, {
   // https://github.com/getsentry/sentry-webpack-plugin#options
 
   org: 'journa-inc',
-  project: 'javascript-nextjs',
+  project: 'web-store',
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
