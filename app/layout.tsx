@@ -34,7 +34,7 @@ export const metadata = {
 
 const inter = Inter({ subsets: ['latin'] });
 const gaId = String(process.env.NEXT_PUBLIC_GA_ID);
-const highlightProjectId = String(process.env.HIGHLIGHT_PROJECT_ID);
+const highlightProjectId = String(process.env.NEXT_PUBLIC_HIGHLIGHT_PROJECT_ID);
 const environment = String(process.env.NEXT_PUBLIC_ENVIRONMENT);
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
