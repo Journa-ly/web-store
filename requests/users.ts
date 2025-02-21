@@ -3,6 +3,7 @@ import useLocalStorageSWR from './useLocalStorageSWR';
 
 export interface User {
   id: number;
+  uuid: string;
   username: string;
   email: string;
   first_name: string;
