@@ -52,7 +52,7 @@ jobs:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
-      id-token: write #This is required for requesting the JWT
+      id-token: write
 
     steps:
       - name: Download artifact from build job
@@ -70,6 +70,9 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_500AC07816A44016A08F63EC07A3FA53 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_531CA602D2A9438AB051FCB1E3794291 }}
 
+      - name: Install dependencies on Azure
+        run: npm install
+
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
@@ -77,3 +80,4 @@ jobs:
           app-name: 'journa-web-store'
           slot-name: 'Production'
           package: .
+
