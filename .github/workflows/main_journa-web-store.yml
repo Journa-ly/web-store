@@ -80,4 +80,3 @@ jobs:
           app-name: 'journa-web-store'
           slot-name: 'Production'
           package: .
-
