@@ -3,6 +3,7 @@ import { NextConfig } from 'next';
 const { withHighlightConfig } = require('@highlight-run/next/config');
 
 const config: NextConfig = {
+  instrumentationHook: true,
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],

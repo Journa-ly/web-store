@@ -2,6 +2,7 @@ import { serverClient } from 'clients/server';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
+import { H } from '@highlight-run/next/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -31,7 +32,9 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error('Error sharing design:', error);
-    // Even if there's an error, we redirect back to avoid leaving the user stranded
+    if (error instanceof Error) {
+      H.consumeError(error);
+    }
   }
 
   // Get the current request's origin to use as base URL

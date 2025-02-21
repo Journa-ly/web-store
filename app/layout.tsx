@@ -35,6 +35,7 @@ export const metadata = {
 const inter = Inter({ subsets: ['latin'] });
 const gaId = String(process.env.NEXT_PUBLIC_GA_ID);
 const highlightProjectId = String(process.env.HIGHLIGHT_PROJECT_ID);
+const environment = String(process.env.NEXT_PUBLIC_ENVIRONMENT);
 export default async function RootLayout({ children }: { children: ReactNode }) {
   const cartId = (await cookies()).get('cartId')?.value;
   // Don't await the fetch, pass the Promise to the context provider
@@ -45,6 +46,7 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
       <HighlightInit
         projectId={highlightProjectId}
         serviceName="Journa-Web-Store"
+        environment={environment}
         tracingOrigins
         networkRecording={{
           enabled: true,
