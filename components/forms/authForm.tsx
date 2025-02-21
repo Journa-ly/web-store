@@ -1,6 +1,5 @@
 'use client';
 
-import { H } from '@highlight-run/next/client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -64,10 +63,6 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       if (isLogin) {
         const result = await login(values as LoginFormValues);
         if (result.success && result.data) {
-          H.identify(result.data.uuid, {
-            email: result.data.email,
-            user_name: result.data.username
-          });
           router.push('/designs/trending');
         } else {
           setError('root', {

@@ -2,7 +2,6 @@ import { serverClient } from 'clients/server';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
-import { H } from '@highlight-run/next/server';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
