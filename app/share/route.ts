@@ -2,6 +2,7 @@ import { serverClient } from 'clients/server';
 import { redirect } from 'next/navigation';
 import { NextRequest } from 'next/server';
 import { cookies } from 'next/headers';
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -17,7 +18,6 @@ export async function GET(request: NextRequest) {
     const cookieStore = await cookies();
     const sessionId = cookieStore.get('sessionid')?.value;
     const csrfToken = cookieStore.get('csrftoken')?.value;
-    throw new Error('test');
 
     // Call the Django API with the session cookie
     await serverClient.post(
@@ -32,9 +32,7 @@ export async function GET(request: NextRequest) {
     );
   } catch (error) {
     console.error('Error sharing design:', error);
-    if (error instanceof Error) {
-      H.consumeError(error);
-    }
+    Sentry.captureException(error);
   }
 
   // Get the current request's origin to use as base URL
