@@ -3,6 +3,7 @@ import { NextConfig } from 'next';
 import { withSentryConfig } from '@sentry/nextjs';
 
 const config: NextConfig = {
+  output: 'standalone',
   images: {
     unoptimized: true,
     formats: ['image/avif', 'image/webp'],

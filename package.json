@@ -8,7 +8,7 @@
     "dev": "next dev --port=3000",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev --turbo --port=3000",
     "build": "next build",
-    "start": "node_modules/next/dist/bin/next start --port=8080",
+    "start": "PORT=8080 node .next/standalone/server.js --port=8080",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
     "test": ""
