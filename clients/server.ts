@@ -7,12 +7,15 @@ export const serverClient = axios.create({
   xsrfHeaderName: 'X-CSRFTOKEN',
   xsrfCookieName: 'csrftoken',
   headers: {
-    'X-Requested-With': 'XMLHttpRequest'
+    'X-Requested-With': 'XMLHttpRequest',
+    'Referer': typeof window !== 'undefined' ? window.location.origin : SERVER_URL
   }
 });
 
 serverClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
+    config.headers['Referer'] = window.location.origin;
+    
     const token = document.cookie
       .split('; ')
       .find((row) => row.startsWith('csrftoken='))

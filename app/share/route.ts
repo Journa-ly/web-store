@@ -34,7 +34,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Call the Django API with the session cookie
-    const response = await serverClient.post(
+    await serverClient.post(
       `/designs/designs/${designId}/share/`,
       {},
       {
