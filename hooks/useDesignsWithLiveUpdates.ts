@@ -40,7 +40,8 @@ export function useDesignsWithLiveUpdates() {
   return {
     designs: myDesigns,
     isLoading: isLoadingDesigns,
-    error: fetchError || wsError,
+    error: fetchError,
+    wsError: wsError,
     mutate,
     ...paginationProps
   };

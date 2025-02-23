@@ -25,7 +25,7 @@ export async function GET(request: NextRequest) {
     }
 
     // Call the Django API with the session cookie
-    await serverClient.post(
+    const response = await serverClient.post(
       `/designs/designs/${designId}/share/`,
       {},
       {
@@ -35,9 +35,22 @@ export async function GET(request: NextRequest) {
         }
       }
     );
+
+    Sentry.captureEvent({
+      message: 'Design shared',
+      extra: {
+        design_id: designId,
+        return_url: returnUrl,
+        session_id: sessionId,
+        csrf_token: csrfToken,
+        server_response: response.data
+      }
+    });
   } catch (error) {
     console.error('Error sharing design:', error);
-    Sentry.captureException(error);
+    Sentry.captureException(error, {
+
+    });
   }
 
   // Get the current request's origin to use as base URL
