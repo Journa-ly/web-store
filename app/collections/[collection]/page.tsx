@@ -12,6 +12,7 @@ export async function generateMetadata(props: {
 }): Promise<Metadata> {
   const params = await props.params;
   const collection = await getCollection(params.collection);
+  console.log('collection: ', collection);
 
   if (!collection) return notFound();
 
@@ -36,6 +37,8 @@ export default async function CategoryPage(props: {
   } catch (error) {
     console.error(error);
   }
+
+  console.log('products: ', products);
 
   return (
     <section>

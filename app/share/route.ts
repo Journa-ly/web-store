@@ -19,6 +19,15 @@ export async function GET(request: NextRequest) {
     const sessionId = cookieStore.get('sessionid')?.value;
     const csrfToken = cookieStore.get('csrftoken')?.value;
 
+    Sentry.captureMessage('Sharing design', {
+      extra: {
+        design_id: designId,
+        return_url: returnUrl,
+        session_id: sessionId,
+        csrf_token: csrfToken
+      }
+    });
+
     if (!sessionId || !csrfToken) {
       console.error('Missing session or CSRF token');
       throw new Error('Authentication cookies not found');
@@ -36,6 +45,10 @@ export async function GET(request: NextRequest) {
       }
     );
 
+    if (response.status !== 200 && response.status !== 201) {
+      throw new Error('Failed to share design');
+    }
+
     Sentry.captureEvent({
       message: 'Design shared',
       extra: {
@@ -43,7 +56,8 @@ export async function GET(request: NextRequest) {
         return_url: returnUrl,
         session_id: sessionId,
         csrf_token: csrfToken,
-        server_response: response.data
+        server_response: response.data,
+
       }
     });
   } catch (error) {
