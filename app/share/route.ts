@@ -19,6 +19,11 @@ export async function GET(request: NextRequest) {
     const sessionId = cookieStore.get('sessionid')?.value;
     const csrfToken = cookieStore.get('csrftoken')?.value;
 
+    if (!sessionId || !csrfToken) {
+      console.error('Missing session or CSRF token');
+      throw new Error('Authentication cookies not found');
+    }
+
     // Call the Django API with the session cookie
     await serverClient.post(
       `/designs/designs/${designId}/share/`,
