@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
         design_id: designId,
         return_url: returnUrl,
         session_id: sessionId,
-        csrf_token: csrfToken
+        csrf_token_log: `csrfToken: ${csrfToken}`
       }
     });
 
@@ -43,28 +43,22 @@ export async function GET(request: NextRequest) {
           'X-CSRFToken': csrfToken
         }
       }
-    );
-
-    if (response.status !== 200 && response.status !== 201) {
-      throw new Error('Failed to share design');
-    }
-
-    Sentry.captureEvent({
-      message: 'Design shared',
-      extra: {
-        design_id: designId,
-        return_url: returnUrl,
-        session_id: sessionId,
-        csrf_token: csrfToken,
-        server_response: response.data,
-
-      }
+    ).catch((error) => {
+      console.error('Error sharing design:', error);
+      Sentry.captureException(error, {
+        extra: {
+          design_id: designId,
+          return_url: returnUrl,
+          session_id: sessionId,
+          csrf_token: csrfToken,
+          server_response: error.response?.data
+        }
+      });
     });
+
   } catch (error) {
     console.error('Error sharing design:', error);
-    Sentry.captureException(error, {
-
-    });
+    Sentry.captureException(error);
   }
 
   // Get the current request's origin to use as base URL
