@@ -2,31 +2,14 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCategories } from '@/requests/categories';
-import * as Sentry from '@sentry/nextjs';
+
 export const metadata: Metadata = {
   title: 'Design Categories',
   description: 'Browse our collection of design categories'
 };
 
-interface Category {
-  uuid: string;
-  name: string;
-  description: string | null;
-  priority: number;
-  image_url: string | null;
-  design_count: number;
-}
-
 export default async function CategoryPage() {
-  let categories: Category[] = [];
-
-  try {
-    // Fetch categories from the API
-    categories = await getCategories();
-  } catch (error) {
-    Sentry.captureException(error);
-    console.error('Failed to fetch categories:', error);
-  }
+  const { data: categories } = await getCategories();
 
   return (
     <div className="container mx-auto px-4 pb-8">
