@@ -18,7 +18,7 @@ export async function getCategories() {
  */
 export async function getCategory(categoryId: string) {
   try {
-    const response = await serverClient.get(`/designs/categories/${categoryId}/`);
+    const response = await serverSideServerClient.get(`/designs/categories/${categoryId}/`);
     return response.data;
   } catch (error) {
     console.error('Error fetching category:', error);
