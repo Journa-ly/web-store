@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 import { getCategories } from '@/requests/categories';
-
+import * as Sentry from '@sentry/nextjs';
 export const metadata: Metadata = {
   title: 'Design Categories',
   description: 'Browse our collection of design categories'
@@ -24,6 +24,7 @@ export default async function CategoryPage() {
     // Fetch categories from the API
     categories = await getCategories();
   } catch (error) {
+    Sentry.captureException(error);
     console.error('Failed to fetch categories:', error);
   }
 
