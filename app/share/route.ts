@@ -1,4 +1,4 @@
-import { serverClient } from 'clients/server';
+import { serverSideServerClient } from 'clients/server';
 import { redirect } from 'next/navigation';
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
@@ -23,14 +23,13 @@ export async function GET(request: NextRequest) {
 
   try {
     // Make the share request - Django will create a session if one doesn't exist
-    const response = await serverClient.post(
+    const response = await serverSideServerClient.post(
       `/designs/designs/${designId}/share/`,
       {},
       {
         headers: {
           Cookie: `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-          'X-CSRFToken': csrfToken,
-          'Referer': SERVER_URL
+          'X-CSRFToken': csrfToken
         }
       }
     ).catch((error) => {
@@ -43,15 +42,6 @@ export async function GET(request: NextRequest) {
           server_response: error.response?.data
         }
       });
-    });
-
-    Sentry.captureMessage('Sharing design', {
-      extra: {
-        design_id: designId,
-        return_url: returnUrl,
-        session_id: sessionId,
-        server_response: response?.data
-      }
     });
 
     // Get the current request's origin to use as base URL

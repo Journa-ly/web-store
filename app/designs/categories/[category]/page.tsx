@@ -1,16 +1,8 @@
 import { Metadata } from 'next';
 import { getCategory } from '@/requests/categories';
 import { CategoryDesignList } from '@/components/designs/CategoryDesignList';
+import { Category } from '@/types/category';
 import Image from 'next/image';
-
-interface Category {
-  uuid: string;
-  name: string;
-  description: string | null;
-  priority: number;
-  image_url: string | null;
-  design_count: number;
-}
 
 function CategoryHeader({ category }: { category: Category }) {
   return (
@@ -46,7 +38,7 @@ export async function generateMetadata({
   params: Promise<{ category: string }>;
 }): Promise<Metadata> {
   const pageParams = await params;
-  const category = await getCategory(pageParams.category);
+  const { data: category } = await getCategory(pageParams.category);
 
   if (!category) {
     return {
@@ -63,7 +55,7 @@ export async function generateMetadata({
 
 export default async function CategoryPage({ params }: { params: Promise<{ category: string }> }) {
   const pageParams = await params;
-  const category = await getCategory(pageParams.category);
+  const { data: category } = await getCategory(pageParams.category);
 
   if (!category) {
     return (
