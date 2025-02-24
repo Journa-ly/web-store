@@ -1,11 +1,11 @@
-import { serverClient } from 'clients/server';
+import { serverSideServerClient } from 'clients/server';
 
 /**
  * getCategories - fetches all available categories
  */
 export async function getCategories() {
   try {
-    const response = await serverClient.get('/designs/categories/');
+    const response = await serverSideServerClient.get('/designs/categories/');
     return response.data;
   } catch (error) {
     console.error('Error fetching categories:', error);

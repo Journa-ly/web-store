@@ -24,6 +24,18 @@ serverClient.interceptors.request.use((config) => {
   return config;
 });
 
+export const serverSideServerClient = axios.create({
+  baseURL: SERVER_URL,
+  withCredentials: true,
+  xsrfHeaderName: 'X-CSRFTOKEN',
+  xsrfCookieName: 'csrftoken',
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+    'Referer': SERVER_URL
+  }
+});
+
+
 export const fetcher = async <T>(url: string): Promise<T> => {
   const response: AxiosResponse<T> = await serverClient.get(url);
   return response.data;
