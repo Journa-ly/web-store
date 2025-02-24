@@ -7,8 +7,7 @@ export const serverClient = axios.create({
   xsrfHeaderName: 'X-CSRFTOKEN',
   xsrfCookieName: 'csrftoken',
   headers: {
-    'X-Requested-With': 'XMLHttpRequest',
-    'Referer': typeof window !== 'undefined' ? window.location.origin : SERVER_URL
+    'X-Requested-With': 'XMLHttpRequest'
   }
 });
 
