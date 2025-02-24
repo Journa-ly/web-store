@@ -28,8 +28,6 @@ export default function MyDesignsCarousel() {
         const design = updatedPages[0].results.find((d: UserDesign) => d.uuid === uuid);
         if (design) {
           handleSelectDesign(design);
-        } else {
-          console.warn(`Design with uuid ${uuid} not found.`);
         }
       } catch (err) {
         console.error('Error in handleSelectDesignFromUrl:', err);
