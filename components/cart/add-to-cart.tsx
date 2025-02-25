@@ -83,7 +83,7 @@ export function AddToCart({
   selectedDesignRequired = false
 }: {
   product: Product;
-  selectedDesignRequired: boolean;
+  selectedDesignRequired?: boolean;
 }) {
   const { variants, availableForSale } = product;
   const { addCartItem } = useCart();

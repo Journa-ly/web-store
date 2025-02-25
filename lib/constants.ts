@@ -35,3 +35,8 @@ export const SERVER_DOMAIN = process.env.NEXT_PUBLIC_SERVER_DOMAIN;
 export const SERVER_SSL = parseBoolean(process.env.NEXT_PUBLIC_SERVER_SSL || 'false');
 export const SERVER_URL = `http${SERVER_SSL ? 's' : ''}://${SERVER_DOMAIN}`;
 export const WEBSOCKET_URL = `ws${SERVER_SSL ? 's' : ''}://${SERVER_DOMAIN}`;
+
+export const PRODUCT_TYPES = {
+  readyToShip: 'ready-to-ship',
+  template: 'template'
+};

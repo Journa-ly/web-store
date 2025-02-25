@@ -237,8 +237,10 @@ export default function DesignCarousel({
                     {!hasFailed && (
                       <div
                         className={clsx(
-                          'absolute inset-0 ring-2 transition-colors duration-200',
-                          isSelected ? 'ring-primary' : 'ring-black/5 group-hover:ring-black/10'
+                          'absolute inset-0 transition-colors duration-200',
+                          isSelected 
+                            ? 'border-4 border-primary rounded-xl' 
+                            : 'ring-2 ring-black/5 group-hover:ring-black/10'
                         )}
                       />
                     )}
