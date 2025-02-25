@@ -5,7 +5,7 @@
     "pnpm": ">=9"
   },
   "scripts": {
-    "dev": "next dev --port=3000",
+    "dev": "next dev --port=3000 --turbo",
     "dev-inspect": "NODE_OPTIONS='--inspect' next dev --turbo --port=3000",
     "build": "next build && cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/",
     "start": "PORT=8080 node .next/standalone/server.js --port=8080",

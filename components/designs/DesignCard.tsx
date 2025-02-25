@@ -10,10 +10,12 @@ import {
 import clsx from 'clsx';
 import { toggleInteraction } from 'requests/designs';
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { ClipLoader } from 'react-spinners';
 import { useAuth } from 'requests/users';
 import { isMobile } from 'react-device-detect';
 import dynamic from 'next/dynamic';
+import { LayoutGroup } from 'framer-motion';
+import LaughingOutlineIcon from '../icons/LaughingOutlineIcon';
+import LaughingIcon from '../icons/LaughingIcon';
 
 // Dynamically import AuthModal to avoid SSR issues
 const AuthModal = dynamic(() => import('components/modals/AuthModal'), {
@@ -237,9 +239,9 @@ export default function DesignCard({ design }: DesignCardProps) {
             )}
           >
             {reactions.includes('LAUGH') ? (
-              <FaceSmileIconSolid className="h-6 w-6 drop-shadow-lg" />
+              <LaughingIcon className="h-6 w-6 drop-shadow-lg" />
             ) : (
-              <FaceSmileIcon className="h-6 w-6 drop-shadow-lg" />
+              <LaughingOutlineIcon className="h-6 w-6 drop-shadow-lg" />
             )}
             <span className="drop-shadow-lg">{counts.laugh_count}</span>
           </button>

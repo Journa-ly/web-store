@@ -5,19 +5,12 @@ import { ClipLoader } from 'react-spinners';
 import DesignCard from '@/components/designs/DesignCard';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { Metadata } from 'next';
 
-// export async function generateMetadata(props: {
-//   params: Promise<{ category: string }>;
-// }): Promise<Metadata> {
-//   const params = await props.params;
-//   const collection = await getCollection(params.collection);
-
-//   if (!collection) return notFound();
-
+// export function generateMetadata(): Metadata {
 //   return {
-//     title: collection.seo?.title || collection.title,
-//     description:
-//       collection.seo?.description || collection.description || `${collection.title} products`
+//     title: 'Shop our trending designs',
+//     description: 'Shop our trending designs'
 //   };
 // }
 
