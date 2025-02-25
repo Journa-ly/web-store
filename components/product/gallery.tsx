@@ -13,15 +13,12 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
   const nextImageIndex = imageIndex + 1 < images.length ? imageIndex + 1 : 0;
   const previousImageIndex = imageIndex === 0 ? images.length - 1 : imageIndex - 1;
 
-  const buttonClassName =
-    'h-full px-6 transition-all ease-in-out hover:scale-110 hover:text-black dark:hover:text-white flex items-center justify-center';
-
   return (
     <form>
-      <div className="relative aspect-square max-w-full overflow-hidden">
+      <div className="group relative aspect-square max-w-full overflow-hidden">
         {images[imageIndex] && (
           <Image
-            className="h-full w-full object-contain"
+            className="h-full w-full object-contain transition-opacity duration-300"
             fill
             sizes="(min-width: 1024px) 66vw, 100vw"
             alt={(images[imageIndex]?.altText as string) || 'product image'}
@@ -31,29 +28,48 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
         )}
 
         {images.length > 1 ? (
-          <div className="absolute bottom-[15%] flex w-full justify-center">
-            <div className="mx-auto flex h-11 items-center rounded-full border border-white bg-neutral-50/80 text-neutral-500 backdrop-blur-sm dark:border-black dark:bg-neutral-900/80">
-              <button
-                formAction={() => {
-                  const newState = updateImage(previousImageIndex.toString());
-                  updateURL(newState);
-                }}
-                aria-label="Previous product image"
-                className={buttonClassName}
-              >
-                <ArrowLeftIcon className="h-5" />
-              </button>
-              <div className="mx-1 h-6 w-px bg-neutral-500"></div>
-              <button
-                formAction={() => {
-                  const newState = updateImage(nextImageIndex.toString());
-                  updateURL(newState);
-                }}
-                aria-label="Next product image"
-                className={buttonClassName}
-              >
-                <ArrowRightIcon className="h-5" />
-              </button>
+          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+            <button
+              formAction={() => {
+                const newState = updateImage(previousImageIndex.toString());
+                updateURL(newState);
+              }}
+              aria-label="Previous product image"
+              className="btn btn-circle btn-ghost bg-base-100/80 backdrop-blur-sm hover:bg-base-200/90"
+            >
+              <ArrowLeftIcon className="h-6 w-6" />
+            </button>
+            <button
+              formAction={() => {
+                const newState = updateImage(nextImageIndex.toString());
+                updateURL(newState);
+              }}
+              aria-label="Next product image"
+              className="btn btn-circle btn-ghost bg-base-100/80 backdrop-blur-sm hover:bg-base-200/90"
+            >
+              <ArrowRightIcon className="h-6 w-6" />
+            </button>
+          </div>
+        ) : null}
+
+        {images.length > 1 ? (
+          <div className="absolute bottom-4 left-0 right-0 flex justify-center">
+            <div className="flex items-center gap-2 rounded-full bg-base-100/80 px-3 py-2 backdrop-blur-sm">
+              {images.map((_, idx) => (
+                <button
+                  key={idx}
+                  formAction={() => {
+                    const newState = updateImage(idx.toString());
+                    updateURL(newState);
+                  }}
+                  className={`h-2 w-2 rounded-full transition-all duration-300 ${
+                    idx === imageIndex
+                      ? 'scale-125 bg-primary'
+                      : 'bg-base-content/30 hover:bg-base-content/50'
+                  }`}
+                  aria-label={`Go to image ${idx + 1}`}
+                />
+              ))}
             </div>
           </div>
         ) : null}
