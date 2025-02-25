@@ -114,7 +114,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
               <ProductPreview product={product} />
               <VariantSelector options={product.options} variants={product.variants} />
               <div className="mt-4">
-                <AddToCart product={product} />
+                <AddToCart product={product} selectedDesignRequired />
               </div>
             </Suspense>
           </div>
