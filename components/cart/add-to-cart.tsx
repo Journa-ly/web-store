@@ -33,10 +33,10 @@ function SubmitButton({
     );
   }
 
-  if (!selectedDesign || (selectedDesign.product_image?.image === null && selectedDesignRequired)) {
+  if ((!selectedDesign || selectedDesign.product_image?.image === null) && selectedDesignRequired) {
     return (
       <button
-        aria-label="Please select an option"
+        aria-label="Please select an image"
         disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
