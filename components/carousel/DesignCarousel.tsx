@@ -238,8 +238,8 @@ export default function DesignCarousel({
                       <div
                         className={clsx(
                           'absolute inset-0 transition-colors duration-200',
-                          isSelected 
-                            ? 'border-4 border-primary rounded-xl' 
+                          isSelected
+                            ? 'rounded-xl border-4 border-primary'
                             : 'ring-2 ring-black/5 group-hover:ring-black/10'
                         )}
                       />

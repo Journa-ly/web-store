@@ -11,7 +11,6 @@ import RelatedProducts from 'components/product/related-products';
 export default function ReadyToShipProduct({ product }: { product: Product }) {
   return (
     <>
-      
       <div className="flex flex-col border-neutral-200 pt-8 lg:flex-row">
         <Suspense
           fallback={
@@ -20,9 +19,9 @@ export default function ReadyToShipProduct({ product }: { product: Product }) {
         >
           {/* Product description container */}
           <div className="w-full px-4 lg:w-1/2">
-          <div className="w-full">
-            <ProductTitleWithPrice product={product} />
-          </div>
+            <div className="w-full">
+              <ProductTitleWithPrice product={product} />
+            </div>
             <ProductDescription product={product} />
             <VariantSelector options={product.options} variants={product.variants} />
             <div className="mt-4">
@@ -48,9 +47,7 @@ export default function ReadyToShipProduct({ product }: { product: Product }) {
             fallback={
               <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
             }
-          >
-            
-          </Suspense>
+          ></Suspense>
         </div>
       </div>
       <RelatedProducts id={product.id} />
