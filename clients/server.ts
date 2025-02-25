@@ -31,10 +31,9 @@ export const serverSideServerClient = axios.create({
   xsrfCookieName: 'csrftoken',
   headers: {
     'X-Requested-With': 'XMLHttpRequest',
-    'Referer': SERVER_URL
+    Referer: SERVER_URL
   }
 });
-
 
 export const fetcher = async <T>(url: string): Promise<T> => {
   const response: AxiosResponse<T> = await serverClient.get(url);

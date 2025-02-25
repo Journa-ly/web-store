@@ -9,13 +9,11 @@ export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const designId = searchParams.get('design');
   const returnUrl = searchParams.get('return') || '/';
-  
+
   // Get all cookies from the request
   const cookieStore = await cookies();
   const sessionId = cookieStore.get('sessionid')?.value;
   const csrfToken = cookieStore.get('csrftoken')?.value;
-
-  
 
   if (!designId) {
     return redirect(returnUrl);
@@ -23,26 +21,28 @@ export async function GET(request: NextRequest) {
 
   try {
     // Make the share request - Django will create a session if one doesn't exist
-    const response = await serverSideServerClient.post(
-      `/designs/designs/${designId}/share/`,
-      {},
-      {
-        headers: {
-          Cookie: `sessionid=${sessionId}; csrftoken=${csrfToken}`,
-          'X-CSRFToken': csrfToken
+    const response = await serverSideServerClient
+      .post(
+        `/designs/designs/${designId}/share/`,
+        {},
+        {
+          headers: {
+            Cookie: `sessionid=${sessionId}; csrftoken=${csrfToken}`,
+            'X-CSRFToken': csrfToken
+          }
         }
-      }
-    ).catch((error) => {
-      console.error('Error sharing design:', error);
-      Sentry.captureException(error, {
-        extra: {
-          design_id: designId,
-          return_url: returnUrl,
-          session_id: sessionId,
-          server_response: error.response?.data
-        }
+      )
+      .catch((error) => {
+        console.error('Error sharing design:', error);
+        Sentry.captureException(error, {
+          extra: {
+            design_id: designId,
+            return_url: returnUrl,
+            session_id: sessionId,
+            server_response: error.response?.data
+          }
+        });
       });
-    });
 
     // Get the current request's origin to use as base URL
     const requestOrigin = request.headers.get('host');
@@ -72,13 +72,12 @@ export async function GET(request: NextRequest) {
     // Forward the session cookies from Django's response
     const setCookieHeader = response?.headers['set-cookie'];
     if (setCookieHeader) {
-      setCookieHeader.forEach(cookie => {
+      setCookieHeader.forEach((cookie) => {
         resp.headers.append('Set-Cookie', cookie);
       });
     }
 
     return resp;
-
   } catch (error) {
     console.error('Error in share route:', error);
     Sentry.captureException(error);
