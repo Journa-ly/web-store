@@ -118,9 +118,6 @@ const DesignForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4 p-6">
         {/* Description Field */}
         <div>
-          <label className="block text-sm font-medium text-base-content">
-            Describe your design
-          </label>
           <textarea
             {...register('prompt')}
             ref={(e) => {

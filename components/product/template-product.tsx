@@ -36,6 +36,9 @@ export default function TemplateProduct({ product }: { product: Product }) {
             }
           >
             <ProductPreview product={product} />
+            <div className="mt-8">
+              <NumberLabel label="Add to cart">3</NumberLabel>
+            </div>
             <VariantSelector options={product.options} variants={product.variants} />
             <div className="mt-4">
               <AddToCart product={product} selectedDesignRequired />

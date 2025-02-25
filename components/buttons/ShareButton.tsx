@@ -50,7 +50,7 @@ export default function ShareButton() {
           icon={<ShareIcon />}
           text="Share"
           onClick={() => {}} // Empty click handler to satisfy type
-          disabled={!selectedDesign}
+          disabled={!selectedDesign || !selectedDesign.product_image?.image}
         />
       </div>
       <div className="menu dropdown-content z-[1] mt-4 w-52 rounded-box bg-base-100 p-4 shadow-lg">
