@@ -48,7 +48,8 @@ import {
   ShopifyProductRecommendationsOperation,
   ShopifyProductsOperation,
   ShopifyRemoveFromCartOperation,
-  ShopifyUpdateCartOperation
+  ShopifyUpdateCartOperation,
+  CartLineInput
 } from './types';
 
 const domain = process.env.SHOPIFY_STORE_DOMAIN
@@ -213,10 +214,7 @@ export async function createCart(): Promise<Cart> {
   return reshapeCart(res.body.data.cartCreate.cart);
 }
 
-export async function addToCart(
-  cartId: string,
-  lines: { merchandiseId: string; quantity: number }[]
-): Promise<Cart> {
+export async function addToCart(cartId: string, lines: CartLineInput[]): Promise<Cart | undefined> {
   const res = await shopifyFetch<ShopifyAddToCartOperation>({
     query: addToCartMutation,
     variables: {

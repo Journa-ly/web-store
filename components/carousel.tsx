@@ -22,7 +22,7 @@ export async function Carousel({ collection }: { collection: string }) {
               key={`${product.handle}${i}`}
               className="relative aspect-square max-h-[425px] w-[300px] flex-none"
             >
-              <Link href={`/product/${product.handle}`} className="relative h-full w-full">
+              <Link href={`/products/${product.handle}`} className="relative h-full w-full">
                 <GridTileImage
                   alt={product.title}
                   label={{

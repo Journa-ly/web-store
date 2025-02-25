@@ -170,7 +170,7 @@ async function RelatedProducts({ id }: { id: string }) {
           >
             <Link
               className="relative h-full w-full"
-              href={`/product/${product.handle}`}
+              href={`/products/${product.handle}`}
               prefetch={true}
             >
               <GridTileImage

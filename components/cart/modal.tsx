@@ -104,7 +104,7 @@ export default function CartModal() {
                         });
 
                         const merchandiseUrl = createUrl(
-                          `/product/${item.merchandise.product.handle}`,
+                          `/products/${item.merchandise.product.handle}`,
                           new URLSearchParams(merchandiseSearchParams)
                         );
 
@@ -127,6 +127,21 @@ export default function CartModal() {
                                     src={item.merchandise.product.featuredImage.url}
                                   />
                                 </div>
+                                {item.attributes?.find((attr) => attr.key === 'designUrl')
+                                  ?.value && (
+                                  <div className="relative ml-2 h-16 w-16 overflow-hidden rounded-md border border-neutral-300 bg-neutral-300">
+                                    <Image
+                                      className="h-full w-full object-cover"
+                                      width={64}
+                                      height={64}
+                                      alt="Custom Design"
+                                      src={
+                                        item.attributes.find((attr) => attr.key === 'designUrl')!
+                                          .value
+                                      }
+                                    />
+                                  </div>
+                                )}
                                 <Link
                                   href={merchandiseUrl}
                                   onClick={closeCart}

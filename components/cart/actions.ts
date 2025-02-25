@@ -6,15 +6,28 @@ import { revalidateTag } from 'next/cache';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
-export async function addItem(prevState: any, selectedVariantId: string | undefined) {
-  let cartId = (await cookies()).get('cartId')?.value;
+export async function addItem(
+  prevState: any,
+  payload: {
+    variantId: string | undefined;
+    attributes: Array<{ key: string; value: string }>;
+  }
+) {
+  const cartId = (await cookies()).get('cartId')?.value;
+  const { variantId, attributes } = payload;
 
-  if (!cartId || !selectedVariantId) {
+  if (!cartId || !variantId) {
     return 'Error adding item to cart';
   }
 
   try {
-    await addToCart(cartId, [{ merchandiseId: selectedVariantId, quantity: 1 }]);
+    await addToCart(cartId, [
+      {
+        merchandiseId: variantId,
+        quantity: 1,
+        attributes
+      }
+    ]);
     revalidateTag(TAGS.cart);
   } catch (e) {
     return 'Error adding item to cart';

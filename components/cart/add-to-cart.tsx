@@ -7,13 +7,19 @@ import { useProduct } from 'components/product/product-context';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useActionState } from 'react';
 import { useCart } from './cart-context';
+import { Design } from '@/types/design';
+import { useDesign } from '../designs/design-context';
 
 function SubmitButton({
   availableForSale,
-  selectedVariantId
+  selectedVariantId,
+  selectedDesign,
+  selectedDesignRequired = false
 }: {
   availableForSale: boolean;
   selectedVariantId: string | undefined;
+  selectedDesignRequired: boolean;
+  selectedDesign: Design | null;
 }) {
   const buttonClasses =
     'relative flex w-full items-center justify-center rounded-full bg-accent p-4 tracking-wide text-white';
@@ -27,10 +33,25 @@ function SubmitButton({
     );
   }
 
-  if (!selectedVariantId) {
+  if (!selectedDesign || (selectedDesign.product_image?.image === null && selectedDesignRequired)) {
     return (
       <button
         aria-label="Please select an option"
+        disabled
+        className={clsx(buttonClasses, disabledClasses)}
+      >
+        <div className="absolute left-0 ml-4">
+          <PlusIcon className="h-5" />
+        </div>
+        Add To Cart
+      </button>
+    );
+  }
+
+  if (!selectedVariantId) {
+    return (
+      <button
+        aria-label="Please select an image"
         disabled
         className={clsx(buttonClasses, disabledClasses)}
       >
@@ -57,10 +78,17 @@ function SubmitButton({
   );
 }
 
-export function AddToCart({ product }: { product: Product }) {
+export function AddToCart({
+  product,
+  selectedDesignRequired = false
+}: {
+  product: Product;
+  selectedDesignRequired: boolean;
+}) {
   const { variants, availableForSale } = product;
   const { addCartItem } = useCart();
   const { state } = useProduct();
+  const { selectedDesign } = useDesign();
   const [message, formAction] = useActionState(addItem, null);
 
   const variant = variants.find((variant: ProductVariant) =>
@@ -68,17 +96,34 @@ export function AddToCart({ product }: { product: Product }) {
   );
   const defaultVariantId = variants.length === 1 ? variants[0]?.id : undefined;
   const selectedVariantId = variant?.id || defaultVariantId;
-  const actionWithVariant = formAction.bind(null, selectedVariantId);
+
+  const cartAttributes = selectedDesign
+    ? [
+        { key: 'designId', value: selectedDesign.uuid },
+        { key: 'designUrl', value: selectedDesign.product_image?.image || '' }
+      ]
+    : [];
+
+  const actionWithVariant = formAction.bind(null, {
+    variantId: selectedVariantId,
+    attributes: cartAttributes
+  });
+
   const finalVariant = variants.find((variant) => variant.id === selectedVariantId)!;
 
   return (
     <form
       action={async () => {
-        addCartItem(finalVariant, product);
+        addCartItem(finalVariant, product, cartAttributes);
         await actionWithVariant();
       }}
     >
-      <SubmitButton availableForSale={availableForSale} selectedVariantId={selectedVariantId} />
+      <SubmitButton
+        selectedDesignRequired={selectedDesignRequired}
+        selectedDesign={selectedDesign}
+        availableForSale={availableForSale}
+        selectedVariantId={selectedVariantId}
+      />
       <p aria-live="polite" className="sr-only" role="status">
         {message}
       </p>

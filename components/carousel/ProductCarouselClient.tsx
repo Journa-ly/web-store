@@ -28,7 +28,7 @@ export default function ProductCarouselClient({
           <div className="flex gap-4">
             {products.map((product) => (
               <div key={product.id} className="w-[180px] flex-shrink-0">
-                <Link href={`/product/${product.handle}`} prefetch={true}>
+                <Link href={`/products/${product.handle}`} prefetch={true}>
                   <GridTileImage
                     src={product.images[0]?.url || ''}
                     alt={product.title}
