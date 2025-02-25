@@ -163,7 +163,7 @@ export function CartProvider({
   cartPromise
 }: {
   children: React.ReactNode;
-  cartPromise: Promise<Cart>;
+  cartPromise: Promise<Cart | undefined>;
 }) {
   const initialCart = use(cartPromise);
   const [optimisticCart, updateOptimisticCart] = useOptimistic(initialCart, cartReducer);
