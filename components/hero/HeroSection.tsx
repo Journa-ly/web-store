@@ -9,9 +9,9 @@ export default function HeroSection() {
       <div className="">
         <div className="grid min-h-[675px] grid-cols-1 lg:grid-cols-2">
           {/* Left Column: Text and Buttons */}
-          <div className="order-first flex flex-col justify-center px-8 py-12 text-left md:pl-16">
+          <div className="order-first flex flex-col justify-center px-8 py-12 text-left md:pl-24">
             {/* Main Heading with shadow effect - Increased text size */}
-            <h1 className="mb-8 text-6xl font-bold text-neutral-800 drop-shadow-[0_4px_4px_rgba(255,0,211,0.6)] md:text-7xl lg:text-8xl">
+            <h1 className="mb-8 text-6xl font-black text-neutral-800 drop-shadow-[0_4px_4px_rgba(255,0,211,0.6)] md:text-7xl lg:text-8xl">
               Create things you wish you could buy.
             </h1>
 
@@ -22,19 +22,17 @@ export default function HeroSection() {
             </p>
 
             {/* Action Buttons - Matching the Figma design */}
-            <div className="flex max-w-md flex-col gap-4 sm:flex-row">
+            <div className="flex flex-col gap-4 sm:flex-row justify-center w-full max-w-md mx-auto">
               <Link
                 href="/designs/trending"
-                className="btn btn-outline h-12 flex-1 gap-2 border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white"
+                className="btn btn-outline h-12 w-full sm:w-40 gap-2 border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white whitespace-nowrap"
               >
-                <HeartIcon className="h-4 w-4" />
                 <span>Browse Designs</span>
               </Link>
               <Link
                 href="/designs/studio"
-                className="btn h-12 flex-1 gap-2 border-none bg-pink-600 text-white hover:bg-pink-700"
+                className="btn h-12 w-full sm:w-40 gap-2 border-none bg-pink-600 text-white hover:bg-pink-700 whitespace-nowrap"
               >
-                <HeartIcon className="h-4 w-4 text-blue-100" />
                 <span>Create Design</span>
               </Link>
             </div>

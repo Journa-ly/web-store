@@ -10,8 +10,8 @@ interface TrendingDesignsCarouselProps {
 
 export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCarouselProps) {
   // Split designs into two rows
-  const firstRowDesigns = designs.slice(0, 4);
-  const secondRowDesigns = designs.slice(4, 8);
+  const firstRowDesigns = designs.slice(0, 5);
+  const secondRowDesigns = designs.slice(5, 10);
 
   return (
     <div className="w-full">
@@ -19,7 +19,7 @@ export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCaro
         {/* First Row - Always visible */}
         <div className="flex flex-wrap justify-center gap-4">
           {firstRowDesigns.map((design) => (
-            <div key={design.uuid} className="w-[calc(50%-8px)] flex-none sm:w-64">
+            <div key={design.uuid} className="w-[calc(50%-8px)] flex-none sm:w-[calc(20%-16px)]">
               <Link
                 href="/designs/trending"
                 className="group block aspect-square overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-xl"
@@ -39,7 +39,7 @@ export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCaro
         {/* Second Row - Hidden on mobile */}
         <div className="hidden justify-center gap-4 md:flex">
           {secondRowDesigns.map((design) => (
-            <div key={design.uuid} className="w-64 flex-none">
+            <div key={design.uuid} className="w-[calc(20%-16px)] flex-none">
               <Link
                 href="/designs/trending"
                 className="group block aspect-square overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-xl"

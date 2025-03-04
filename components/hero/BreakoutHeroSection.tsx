@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 export default function BreakoutHeroSection() {
   return (
@@ -23,16 +22,18 @@ export default function BreakoutHeroSection() {
           </p>
         </div>
 
-        {/* Breakout image that extends beyond the hero section */}
+        {/* Breakout video that extends beyond the hero section */}
         <div className="relative mx-auto -mt-16 h-[300px] max-w-3xl md:-mt-20 md:h-[400px] lg:-mt-24 lg:h-[500px]">
           <div className="absolute left-1/2 h-full w-full -translate-x-1/2 transform md:w-[120%]">
             <div className="relative h-full w-full">
-              <Image
-                src="/images/Sweet_Child_O_Mine_Outline_2.jpg"
-                alt="Journa product showcase"
-                fill
-                className="rounded-2xl object-cover shadow-xl"
-                priority
+              <video
+                src="/videos/studio_demo.mp4"
+                autoPlay
+                loop
+                muted
+                playsInline
+                className="h-full w-full rounded-xl object-cover shadow-xl"
+                aria-label="Journa studio demo"
               />
             </div>
           </div>

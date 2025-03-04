@@ -33,9 +33,9 @@ export default function Footer() {
           </Link>
           <SocialLinks />
         </div>
-        <div className="flex w-full items-center gap-4 md:justify-between">
-          <FooterMenu menu={menu} />
+        <div className="flex w-full flex-col gap-6 md:flex-row md:items-center md:gap-4 md:justify-between">
           <EmailIntake />
+          <FooterMenu menu={menu} />
         </div>
       </div>
       <div className="mx-auto flex w-full border-t border-neutral-200 py-6 text-sm">
@@ -44,16 +44,16 @@ export default function Footer() {
             &copy; {copyrightDate} {copyrightName}
             {copyrightName.length && !copyrightName.endsWith('.') ? '.' : ''} All rights reserved.
           </p>
-          <p className="block p-2 text-lg underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm">
+          <p className="block p-2 text-lg underline-offset-4 hover:underline md:inline-block md:text-sm">
             <Link href="/policies/privacy-policy">Privacy Policy</Link>
           </p>
-          <p className="block p-2 text-lg underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm">
+          <p className="block p-2 text-lg underline-offset-4 hover:underline md:inline-block md:text-sm">
             <Link href="/policies/shipping-policy">Shipping Policy</Link>
           </p>
-          <p className="block p-2 text-lg underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm">
+          <p className="block p-2 text-lg underline-offset-4 hover:underline md:inline-block md:text-sm">
             <Link href="/policies/refund-policy">Refund Policy</Link>
           </p>
-          <p className="block p-2 text-lg underline-offset-4 hover:text-black hover:underline md:inline-block md:text-sm">
+          <p className="block p-2 text-lg underline-offset-4 hover:underline md:inline-block md:text-sm">
             <Link href="/policies/terms-of-service">Terms of Service</Link>
           </p>
         </div>

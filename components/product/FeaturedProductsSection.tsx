@@ -36,13 +36,10 @@ export async function FeaturedProductsSection() {
     <div className="px-4 py-16 md:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
-        <div className="mb-12 text-center">
-          <div className="mb-4 inline-block rounded-full bg-gray-200/80 px-6 py-2">
-            <h2 className="text-2xl font-bold text-gray-800">Featured Products</h2>
+        <div className="mb-12">
+          <div className="w-full card pb-6 text-center">
+            <span className="absolute top-0 left-0 w-full h-[3px] bg-gradient-to-r from-transparent via-pink-500 to-transparent opacity-70 shadow-[0_4px_6px_-1px_rgba(236,72,153,0.5)]"></span>
           </div>
-          <p className="mx-auto max-w-2xl text-lg text-gray-600">
-            Discover our most popular designs ready to ship
-          </p>
         </div>
 
         {/* Product Cards Grid - Simplified Design */}

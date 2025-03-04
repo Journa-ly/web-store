@@ -7,18 +7,18 @@ import TrendingDesignsCarousel from './TrendingDesignsCarousel';
 
 export default async function TrendingDesignsSection() {
   // Fetch trending designs directly using the server function
-  const designs = await getTrendingDesigns(8); // Limit to 8 designs (2 rows of 4)
+  const designs = await getTrendingDesigns(10); // Limit to 10 designs (2 rows of 5)
 
   return (
     <div className="px-4 py-4 md:px-8">
-      <div className="w-full overflow-hidden rounded-3xl bg-[#22a1d8] bg-opacity-30 shadow-lg">
+      <div className="w-full overflow-hidden rounded-3xl bg-[#22a1d8] bg-opacity-70 shadow-lg">
         <div className="px-4 py-12 md:px-8">
           <div className="mb-10 text-center">
-            <h2 className="mb-6 text-3xl font-bold text-[#1F2937] md:text-4xl lg:text-5xl">
-              Designs That Don't Suck
+            <h2 className="mb-6 text-3xl font-extrabold text-white md:text-4xl lg:text-5xl">
+              Designs That Don't Suck.
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-[#1F2937] text-white/90 md:text-xl">
-              Sometimes other people have better ideas than you, and that's O.K. Buy them instead.
+            <p className="mx-auto mb-8 max-w-2xl text-lg text-white md:text-xl">
+              Browse trending community designs.
             </p>
           </div>
 
@@ -31,9 +31,23 @@ export default async function TrendingDesignsSection() {
           <div className="text-center">
             <Link
               href="/designs/trending"
-              className="btn btn-lg rounded-full border-none bg-white text-[#1F2937] hover:bg-white/90"
+              className="btn btn-outline gap-2 rounded-full border-gray-300 bg-white px-8 text-gray-800 transition-colors duration-300 hover:border-secondary hover:bg-secondary hover:text-white"
             >
-              View All Designs
+              <span>View All Designs</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="h-4 w-4"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"
+                />
+              </svg>
             </Link>
           </div>
         </div>

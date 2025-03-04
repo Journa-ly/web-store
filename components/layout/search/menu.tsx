@@ -104,7 +104,7 @@ export default function Menu() {
         </div>
       }
     >
-      <div className="order-first h-full w-full flex-none rounded-lg px-4 pt-12 shadow-xl md:max-w-[300px]">
+      <div className="order-first h-full w-full flex-none px-4 pt-12 md:max-w-[300px]">
         <DesignList />
         <CollectionList />
         {/* <Search /> */}

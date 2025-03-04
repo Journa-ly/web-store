@@ -15,9 +15,9 @@ export function Navbar() {
   return (
     <div className="mx-2 pb-8 pt-4 lg:mx-6">
       <div className="navbar rounded-box bg-base-100 shadow-lg">
-        <div className="navbar-start">
-          <div className="dropdown">
-            <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
+        <div className="navbar-start flex items-center">
+          <details className="dropdown lg:hidden">
+            <summary className="btn btn-ghost m-1">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="h-5 w-5"
@@ -32,15 +32,12 @@ export function Navbar() {
                   d="M4 6h16M4 12h8m-8 6h16"
                 />
               </svg>
-            </div>
-            <div
-              tabIndex={0}
-              className="dropdown-content menu-sm z-[1] mb-12 mt-4 w-52 rounded-lg bg-base-100"
-            >
+            </summary>
+            <div className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
               <Menu />
             </div>
-          </div>
-          <Link href="/" className="relative h-[28px] w-[107px] px-2 pl-2">
+          </details>
+          <Link href="/" className="relative h-[28px] w-[107px] ml-4 mt-2">
             <Image src="/icon_black.svg" alt="Journa" fill className="object-contain" priority />
           </Link>
         </div>

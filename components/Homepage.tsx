@@ -20,9 +20,6 @@ export default function Homepage() {
       {/* Trending Designs Section */}
       <TrendingDesignsSection />
 
-      {/* Stats Section */}
-      <Stats title="Our Stats Speak for Themselves" />
-
       {/* Breakout Hero Section */}
       <BreakoutHeroSection />
 
@@ -31,6 +28,9 @@ export default function Homepage() {
 
       {/* Customer Reviews Section */}
       <CustomerReviewsSection />
+
+      {/* Stats Section */}
+      <Stats title="Our Stats Speak for Themselves" />
 
       {/* CTA Section */}
       <div className="bg-primary px-8 py-16 text-primary-content">

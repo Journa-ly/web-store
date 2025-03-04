@@ -3,7 +3,7 @@ interface StatsProps {
 }
 
 const Stats = ({ title }: StatsProps) => (
-  <div className="flex flex-col items-center justify-center gap-4 py-16">
+  <div className="flex flex-col items-center justify-center gap-4 py-16 px-8">
     {title && (
       <h2 className="mb-6 text-center text-2xl font-bold text-base-content md:text-3xl">{title}</h2>
     )}
