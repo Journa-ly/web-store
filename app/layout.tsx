@@ -14,21 +14,71 @@ const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
 export const metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: 'Journa',
-    template: 'Journa'
+    default: 'Journa - Discover Unique Designs',
+    template: '%s | Journa'
+  },
+  description: 'Explore and shop thousands of custom designs from independent creators on Journa.',
+  keywords: [
+    'custom designs',
+    'independent creators',
+    'unique products',
+    'design marketplace',
+    'print on demand'
+  ],
+  authors: [{ name: 'Journa Team' }],
+  creator: 'Journa',
+  publisher: 'Journa',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false
   },
   robots: {
     follow: true,
-    index: true
+    index: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1
+    }
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: baseUrl,
+    siteName: 'Journa',
+    title: 'Journa - Discover Unique Designs',
+    description:
+      'Explore and shop thousands of custom designs from independent creators on Journa.',
+    images: [
+      {
+        url: `${baseUrl}/opengraph-image.png`,
+        width: 1200,
+        height: 630,
+        alt: 'Journa - Discover Unique Designs'
+      }
+    ]
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Journa - Discover Unique Designs',
+    description:
+      'Explore and shop thousands of custom designs from independent creators on Journa.',
+    creator: '@journa',
+    site: '@journa',
+    images: [`${baseUrl}/twitter-image.png`]
+  },
+  alternates: {
+    canonical: baseUrl,
+    languages: {
+      'en-US': baseUrl
+    }
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION
   }
-  // ...(twitterCreator &&
-  //   twitterSite && {
-  //     twitter: {
-  //       card: 'summary_large_image',
-  //       creator: twitterCreator,
-  //       site: twitterSite
-  //     }
-  //   })
 };
 
 const inter = Inter({ subsets: ['latin'] });

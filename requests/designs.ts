@@ -1,8 +1,9 @@
+'use client';
+
 import useSWRInfinite from 'swr/infinite';
 import { fetcher, serverClient } from '../clients/server';
 import {
   CreateDesignRequest,
-  TrendingDesign,
   UserDesign,
   TrendingDesignListResponse,
   UserDesignListResponse,
@@ -321,5 +322,18 @@ export async function getDesign(uuid: string): Promise<UserDesign> {
   } catch (error) {
     console.error('Error fetching design:', error);
     throw error;
+  }
+}
+
+/**
+ * getTrendingDesigns - fetches trending designs for homepage display
+ */
+export async function getTrendingDesigns(pageSize: number = 8) {
+  try {
+    const response = await serverClient.get(`/designs/trending/?page_size=${pageSize}`);
+    return response.data.results;
+  } catch (error) {
+    console.error('Error fetching trending designs:', error);
+    return [];
   }
 }

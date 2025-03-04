@@ -13,6 +13,7 @@ import { Gallery } from 'components/product/gallery';
 import { AddToCart } from 'components/cart/add-to-cart';
 import DesignForm from 'components/forms/generateForm';
 import RelatedProducts from 'components/product/related-products';
+import DesignPreview from '../designs/DesignPreview';
 
 export default function TemplateProduct({ product }: { product: Product }) {
   return (
@@ -36,6 +37,19 @@ export default function TemplateProduct({ product }: { product: Product }) {
             }
           >
             <ProductPreview product={product} />
+            {/* <div className="relative aspect-square max-w-full">
+              <DesignPreview
+                templateImageUrl={product.featuredImage?.url}
+                designImageUrl={"https://journatest.blob.core.windows.net/media/local/images/GeneratedImage/c1db8bb1-5308-4283-a01c-3fbde6625279/image_1739425262.jpeg"}
+                templateWidth={1000}
+                templateHeight={1000}
+                printAreaWidth={360}
+                printAreaHeight={360}
+                printAreaTop={270}
+                printAreaLeft={320}
+                isTemplateOnFront={false}
+              />
+            </div> */}
             <div className="my-4">
               <NumberLabel label="Add to cart">3</NumberLabel>
             </div>

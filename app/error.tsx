@@ -30,5 +30,4 @@ function Error({ reset, error }: { reset: () => void; error: Error }) {
     </div>
   );
 }
-
 export default Error;

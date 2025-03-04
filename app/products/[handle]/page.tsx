@@ -5,12 +5,15 @@ import { HIDDEN_PRODUCT_TAG, PRODUCT_TYPES } from 'lib/constants';
 import { getProduct } from 'lib/shopify';
 import TemplateProduct from '@/components/product/template-product';
 import ReadyToShipProduct from '@/components/product/ready-to-ship-product';
+// import { getDesign } from '@/requests/designs';
 
 export async function generateMetadata(props: {
-  params: Promise<{ handle: string }>;
+  params: Promise<{ handle: string; design: string }>;
 }): Promise<Metadata> {
   const params = await props.params;
   const product = await getProduct(params.handle);
+  // const design = await getDesign(params.design);
+  // const designImage = design?.product_image?.image
 
   if (!product) return notFound();
 
@@ -32,7 +35,7 @@ export async function generateMetadata(props: {
       ? {
           images: [
             {
-              url,
+              url: url,
               width,
               height,
               alt

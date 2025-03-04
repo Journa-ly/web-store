@@ -1,21 +1,11 @@
 'use server';
 
 import { Design } from '@/types/design';
-import { serverClient } from '../../clients/server';
+import { getTrendingDesigns } from '@/requests/server-designs';
 import TrendingDesignsCarousel from './TrendingDesignsCarousel';
 
-async function getTrendingDesigns() {
-  try {
-    const response = await serverClient.get('/designs/trending/?page_size=8');
-    return response.data.results;
-  } catch (error) {
-    console.error('Error fetching trending designs:', error);
-    return [];
-  }
-}
-
 export default async function TrendingDesignsServer() {
-  const designs = await getTrendingDesigns();
+  const designs = await getTrendingDesigns(8);
 
   return (
     <div className="pb-12 pt-6">
