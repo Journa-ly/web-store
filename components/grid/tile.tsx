@@ -18,7 +18,7 @@ export function GridTileImage({
 } & React.ComponentProps<typeof Image>) {
   return (
     <div
-      className={clsx('group card flex h-full w-full items-center justify-center bg-base-100 p-2', {
+      className={clsx('group flex h-full w-full items-center justify-center bg-base-100 p-2 rounded-md', {
         'transition-shadow duration-300 hover:shadow-sm': isInteractive,
         'border-2 border-accent': active,
         'border border-base-200': !active
