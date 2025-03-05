@@ -46,7 +46,7 @@ const PaintBrushIcon = () => (
 );
 
 function ListWrapper({ children }: { children: React.ReactNode }) {
-  return <div className="pb-12">{children}</div>;
+  return <div className="pb-6">{children}</div>;
 }
 
 function DesignList() {
@@ -90,7 +90,7 @@ export default function Menu() {
   return (
     <Suspense
       fallback={
-        <div className="col-span-2 hidden h-[400px] w-full flex-none py-4 lg:block">
+        <div className="h-[400px] w-full py-4">
           <div className={clsx(skeleton, activeAndTitles)} />
           <div className={clsx(skeleton, activeAndTitles)} />
           <div className={clsx(skeleton, items)} />
@@ -104,10 +104,9 @@ export default function Menu() {
         </div>
       }
     >
-      <div className="order-first h-full w-full flex-none px-4 pt-12 md:max-w-[300px]">
+      <div className="h-full w-full px-4 pt-4">
         <DesignList />
         <CollectionList />
-        {/* <Search /> */}
       </div>
     </Suspense>
   );

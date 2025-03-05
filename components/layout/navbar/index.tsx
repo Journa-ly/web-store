@@ -13,7 +13,7 @@ export function Navbar() {
   ];
 
   return (
-    <div className="mx-2 pb-8 pt-4 lg:mx-6">
+    <div className="bg-white pb-4 pt-4 px-2 lg:px-6 mb-8">
       <div className="navbar rounded-box bg-base-100 shadow-lg">
         <div className="navbar-start flex items-center">
           <details className="dropdown lg:hidden">
