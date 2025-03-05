@@ -1,11 +1,11 @@
 import React from 'react';
+import Image from "next/image";
 
 export default function BreakoutHeroSection() {
   return (
     <section className="relative overflow-visible px-4 md:px-8">
-      <div className="mx-auto">
-        {/* Hero content with secondary background */}
-        <div className="relative rounded-3xl bg-secondary p-8 pb-24 text-center md:p-12 md:pb-32 lg:pb-40">
+      <div className="container mx-auto px-4">
+        <div className="relative rounded-3xl bg-secondary p-8 pb-32 text-center md:p-12 md:pb-32 lg:pb-40">
           {/* Bold hero text with each sentence on a separate row */}
           <div className="mb-10">
             <h2 className="text-5xl font-black leading-tight tracking-tight text-white md:text-6xl lg:text-7xl xl:text-8xl">
@@ -25,15 +25,13 @@ export default function BreakoutHeroSection() {
         {/* Breakout video that extends beyond the hero section */}
         <div className="relative mx-auto -mt-16 h-[300px] max-w-3xl md:-mt-20 md:h-[400px] lg:-mt-24 lg:h-[500px]">
           <div className="absolute left-1/2 h-full w-full -translate-x-1/2 transform md:w-[120%]">
-            <div className="relative h-full w-full">
-              <video
-                src="/videos/studio_demo.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                className="h-full w-full rounded-xl object-cover shadow-xl"
-                aria-label="Journa studio demo"
+            <div className="relative w-full overflow-hidden md:rounded-xl shadow-2xl">
+              <Image
+                src="/videos/studio_demo.GIF"
+                alt="Journa studio demo"
+                fill
+                className="object-contain"
+                priority
               />
             </div>
           </div>
