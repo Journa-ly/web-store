@@ -6,7 +6,7 @@ type MenuSectionTitleProps = {
 };
 
 const MenuSectionTitle = ({ Icon, text }: MenuSectionTitleProps) => (
-  <div className="flex items-center gap-2 text-xs font-bold text-neutral-500">
+  <div className="flex items-center gap-2 text-sm font-bold text-neutral-500">
     <Icon className="h-5 w-5" />
     <span>{text}</span>
   </div>

@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function BreakoutHeroSection() {
   return (
-    <section className="relative overflow-visible px-4 md:px-8">
+    <section className="relative overflow-visible w-full px-4 md:px-8">
       <div className="container mx-auto px-4">
         <div className="relative rounded-3xl bg-secondary p-8 pb-32 text-center md:p-12 md:pb-32 lg:pb-40">
           {/* Bold hero text with each sentence on a separate row */}
@@ -23,17 +23,30 @@ export default function BreakoutHeroSection() {
         </div>
 
         {/* Breakout video that extends beyond the hero section */}
-        <div className="relative mx-auto -mt-16 h-[300px] max-w-3xl md:-mt-20 md:h-[400px] lg:-mt-24 lg:h-[500px]">
-          <div className="absolute left-1/2 h-full w-full -translate-x-1/2 transform md:w-[120%]">
-            <div className="relative w-full overflow-hidden md:rounded-xl shadow-2xl">
+        <div className="relative mx-auto -mt-16 w-full md:-mt-20 lg:-mt-24">
+          <div className="relative w-full md:w-4/5 lg:w-3/4 mx-auto overflow-hidden rounded-xl shadow-2xl">
+            <picture className="block w-full">
+              {/* Mobile image */}
+              <source
+                media="(max-width: 767px)"
+                srcSet="/videos/studio_demo_mobile.gif"
+              />
+              {/* Desktop image */}
+              <source
+                media="(min-width: 768px)"
+                srcSet="/videos/studio_demo.gif"
+              />
+              {/* Fallback image */}
               <Image
-                src="/videos/studio_demo.GIF"
+                src="/videos/studio_demo.gif"
                 alt="Journa studio demo"
-                fill
-                className="object-contain"
+                width={1920}
+                height={1080}
+                className="w-full h-auto"
+                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 75vw"
                 priority
               />
-            </div>
+            </picture>
           </div>
         </div>
       </div>
