@@ -8,6 +8,8 @@ export default function Collections({ children }: { children: React.ReactNode })
         <div className="order-first mb-12 hidden h-full w-full md:block md:max-w-[300px]">
           <Menu />
         </div>
+        {/* Vertical divider - only visible on md screens and up */}
+        <div className="hidden md:block w-px bg-gray-200 h-auto self-stretch"></div>
         <div className="order-last min-h-screen w-full md:order-none">
           <ChildrenWrapper>{children}</ChildrenWrapper>
         </div>

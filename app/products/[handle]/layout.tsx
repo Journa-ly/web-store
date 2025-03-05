@@ -7,6 +7,7 @@ export default function Collections({ children }: { children: React.ReactNode })
         <div className="order-first mb-12 hidden h-full w-full md:max-w-[300px] lg:block">
           <Menu />
         </div>
+        <div className="hidden lg:block w-px bg-gray-200 h-auto self-stretch"></div>
         <div className="order-last min-h-screen w-full md:order-none">{children}</div>
       </div>
     </>

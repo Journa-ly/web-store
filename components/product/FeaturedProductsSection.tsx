@@ -1,26 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { getCollectionProducts } from '../../lib/shopify';
-
-// Define the Product type based on what we need
-type Product = {
-  id: string;
-  handle: string;
-  title: string;
-  featuredImage: {
-    url: string;
-    altText: string;
-    width: number;
-    height: number;
-  };
-  priceRange: {
-    minVariantPrice: {
-      amount: string;
-      currencyCode: string;
-    };
-  };
-};
+import { ProductCard, Product } from './ProductCard';
 
 // This component will be rendered on the server
 export async function FeaturedProductsSection() {
@@ -46,38 +27,7 @@ export async function FeaturedProductsSection() {
         <div className="grid grid-cols-2 gap-4 sm:gap-6 md:gap-8 lg:grid-cols-3 xl:grid-cols-4">
           {/* Show all products on all screen sizes */}
           {products.map((product) => (
-            <Link
-              key={product.id}
-              href={`/products/${product.handle}`}
-              className="group relative overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl"
-            >
-              {/* Card Image with Hover Effect */}
-              <div className="relative h-64 overflow-hidden">
-                <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
-                <Image
-                  src={product.featuredImage.url}
-                  alt={product.featuredImage.altText || product.title}
-                  fill
-                  className="object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-              </div>
-
-              {/* Simplified Card Content */}
-              <div className="flex h-[100px] flex-col p-4 sm:p-6">
-                <h3 className="mb-2 sm:mb-3 line-clamp-3 text-xs sm:text-sm font-medium text-gray-800">
-                  {product.title}
-                </h3>
-                <div className="mt-auto pt-1">
-                  <span className="text-base sm:text-lg font-semibold text-secondary">
-                    {new Intl.NumberFormat('en-US', {
-                      style: 'currency',
-                      currency: product.priceRange.minVariantPrice.currencyCode,
-                      minimumFractionDigits: 0
-                    }).format(parseFloat(product.priceRange.minVariantPrice.amount))}
-                  </span>
-                </div>
-              </div>
-            </Link>
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
 
