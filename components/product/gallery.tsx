@@ -28,7 +28,7 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
         )}
 
         {images.length > 1 ? (
-          <div className="absolute inset-0 flex items-center justify-between px-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-between px-4 lg:opacity-0 lg:transition-opacity lg:duration-300 lg:group-hover:opacity-100">
             <button
               formAction={() => {
                 const newState = updateImage(previousImageIndex.toString());

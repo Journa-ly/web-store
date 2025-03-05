@@ -63,9 +63,8 @@ export default function ReadyToShipProduct({ product }: { product: Product }) {
       </div>
       
       {/* Horizontal divider between sections */}
-      <hr className="mx-4 my-8 border-t border-neutral-200" />
-      
-      <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
+      <hr className="mx-4 my-4 border-t border-neutral-200" />
+      <div className="flex flex-col rounded-lg bg-white lg:flex-row lg:gap-8">
         <div className="h-full w-full basis-full lg:basis-1/2">
           <Suspense
             fallback={
