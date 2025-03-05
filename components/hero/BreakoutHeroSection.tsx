@@ -4,7 +4,7 @@ import Image from "next/image";
 export default function BreakoutHeroSection() {
   return (
     <section className="relative overflow-visible w-full px-4 md:px-8">
-      <div className="container mx-auto px-4">
+      <div className="mx-auto">
         <div className="relative rounded-3xl bg-secondary p-8 pb-32 text-center md:p-12 md:pb-32 lg:pb-40">
           {/* Bold hero text with each sentence on a separate row */}
           <div className="mb-10">
