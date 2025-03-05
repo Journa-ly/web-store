@@ -9,7 +9,7 @@ export default function HeroSection() {
       <div className="">
         <div className="grid min-h-[675px] grid-cols-1 lg:grid-cols-2">
           {/* Left Column: Text and Buttons */}
-          <div className="order-first flex flex-col justify-center px-8 py-12 text-left md:pl-24">
+          <div className="order-first flex flex-col justify-center px-8 pt-6 pb-2 md:py-12 text-left md:pl-24">
             {/* Main Heading with shadow effect - Increased text size */}
             <h1 className="mb-8 text-6xl font-black text-neutral-800 drop-shadow-[0_4px_4px_rgba(255,0,211,0.6)] md:text-7xl lg:text-8xl">
               Create things you wish you could buy.

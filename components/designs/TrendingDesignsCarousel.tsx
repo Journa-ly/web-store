@@ -9,17 +9,18 @@ interface TrendingDesignsCarouselProps {
 }
 
 export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCarouselProps) {
-  // Split designs into two rows
-  const firstRowDesigns = designs.slice(0, 5);
-  const secondRowDesigns = designs.slice(5, 10);
+  // Split designs for different views
+  const mobileDesigns = designs.slice(0, 8); // Show 8 designs on mobile
+  const desktopFirstRow = designs.slice(0, 5);
+  const desktopSecondRow = designs.slice(5, 10);
 
   return (
     <div className="w-full">
       <div className="flex flex-col gap-6">
-        {/* First Row - Always visible */}
-        <div className="flex flex-wrap justify-center gap-4">
-          {firstRowDesigns.map((design) => (
-            <div key={design.uuid} className="w-[calc(50%-8px)] flex-none sm:w-[calc(20%-16px)]">
+        {/* Mobile View - 8 designs in a grid */}
+        <div className="flex flex-wrap justify-center gap-4 md:hidden">
+          {mobileDesigns.map((design) => (
+            <div key={design.uuid} className="w-[calc(50%-8px)] flex-none">
               <Link
                 href="/designs/trending"
                 className="group block aspect-square overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-xl"
@@ -36,9 +37,29 @@ export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCaro
           ))}
         </div>
 
-        {/* Second Row - Hidden on mobile */}
+        {/* Desktop View - First Row */}
         <div className="hidden justify-center gap-4 md:flex">
-          {secondRowDesigns.map((design) => (
+          {desktopFirstRow.map((design) => (
+            <div key={design.uuid} className="w-[calc(20%-16px)] flex-none">
+              <Link
+                href="/designs/trending"
+                className="group block aspect-square overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-xl"
+              >
+                <Image
+                  src={design.product_image?.image || '/images/product-placeholder.jpg'}
+                  alt={design.name || 'Design'}
+                  width={400}
+                  height={400}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                />
+              </Link>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop View - Second Row */}
+        <div className="hidden justify-center gap-4 md:flex">
+          {desktopSecondRow.map((design) => (
             <div key={design.uuid} className="w-[calc(20%-16px)] flex-none">
               <Link
                 href="/designs/trending"

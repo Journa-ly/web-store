@@ -76,14 +76,14 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
       </div>
 
       {images.length > 1 ? (
-        <div className="relative mt-12 max-w-2xl">
+        <div className="relative mt-6 max-w-2xl">
           <div className="overflow-x-auto">
             <ul className="scrollbar-hide flex snap-x items-center gap-2 pb-2">
               {images.map((image, index) => {
                 const isActive = index === imageIndex;
 
                 return (
-                  <li key={image.src} className="h-40 w-40 flex-none snap-start">
+                  <li key={image.src} className="h-20 w-20 flex-none snap-start">
                     <button
                       formAction={() => {
                         const newState = updateImage(index.toString());
@@ -95,8 +95,8 @@ export function Gallery({ images }: { images: { src: string; altText: string }[]
                       <GridTileImage
                         alt={image.altText}
                         src={image.src}
-                        width={80}
-                        height={80}
+                        width={60}
+                        height={60}
                         active={isActive}
                       />
                     </button>

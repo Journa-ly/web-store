@@ -33,7 +33,7 @@ export async function FeaturedProductsSection() {
   const products = allProducts.slice(0, 8);
 
   return (
-    <div className="px-4 py-16 md:px-8">
+    <div className="px-4 pt-2 pb-16 md:py-16 md:px-8">
       <div className="mx-auto max-w-6xl">
         {/* Section Header */}
         <div className="mb-12">
