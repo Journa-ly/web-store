@@ -19,9 +19,26 @@ export default function TemplateProduct({ product }: { product: Product }) {
   return (
     <>
       <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
-        <div className="w-full lg:w-1/2 lg:max-w-xl">
-          <ProductTitleWithPrice product={product} />
-          <div className="w-full">
+        {/* Left Column - Title, Price, Design Form, Add to Cart */}
+        <div className="w-full lg:w-1/2">
+          <div className="mb-2">
+            <ProductTitleWithPrice product={product} />
+          </div>
+          
+          {/* Product Preview - Visible only on mobile */}
+          <div className="w-full mb-8 lg:hidden">
+            <Suspense
+              fallback={
+                <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden rounded-lg bg-gray-100" />
+              }
+            >
+              <div className="h-full w-full">
+                <ProductPreview product={product} />
+              </div>
+            </Suspense>
+          </div>
+          
+          <div className="w-full mb-8">
             <NumberLabel label="Describe your design">1</NumberLabel>
             <DesignForm />
             <NumberLabel label="Select a design">2</NumberLabel>
@@ -29,14 +46,28 @@ export default function TemplateProduct({ product }: { product: Product }) {
               <MyDesignsCarousel />
             </div>
           </div>
+          
+          <div className="w-full">
+            <div className="w-full mb-4">
+              <NumberLabel label="Add to cart">3</NumberLabel>
+            </div>
+            <VariantSelector options={product.options} variants={product.variants} />
+            <div className="mt-4">
+              <AddToCart product={product} selectedDesignRequired />
+            </div>
+          </div>
         </div>
-        <div className="h-full w-full basis-full lg:basis-1/2">
+        
+        {/* Right Column - Product Preview (visible only on desktop) */}
+        <div className="hidden w-full lg:block lg:w-1/2">
           <Suspense
             fallback={
-              <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden" />
+              <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden rounded-lg bg-gray-100" />
             }
           >
-            <ProductPreview product={product} />
+            <div className="h-full w-full">
+              <ProductPreview product={product} />
+            </div>
             {/* <div className="relative aspect-square max-w-full">
               <DesignPreview
                 templateImageUrl={product.featuredImage?.url}
@@ -50,16 +81,11 @@ export default function TemplateProduct({ product }: { product: Product }) {
                 isTemplateOnFront={false}
               />
             </div> */}
-            <div className="my-4">
-              <NumberLabel label="Add to cart">3</NumberLabel>
-            </div>
-            <VariantSelector options={product.options} variants={product.variants} />
-            <div className="mt-4">
-              <AddToCart product={product} selectedDesignRequired />
-            </div>
           </Suspense>
         </div>
       </div>
+      
+      {/* Gallery and Description Section */}
       <div className="flex flex-col border-t border-neutral-200 pt-8 lg:flex-row">
         <Suspense
           fallback={
@@ -83,10 +109,16 @@ export default function TemplateProduct({ product }: { product: Product }) {
           </div>
         </Suspense>
       </div>
+      
+      {/* Related Products Section */}
       <RelatedProducts id={product.id} />
+      
+      {/* How To Section */}
       <div className="border-t border-neutral-200">
         <HowTo />
       </div>
+      
+      {/* FAQ Section */}
       <div className="border-t border-neutral-200">
         <FAQ />
       </div>
