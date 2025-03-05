@@ -115,7 +115,7 @@ const DesignForm = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4 p-6">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4 py-6">
         {/* Description Field */}
         <div>
           <textarea
