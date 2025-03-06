@@ -24,9 +24,9 @@ export default function FilterList({
 }) {
   return (
     <>
-      <nav>
-        {title ? <h3 className="text-xs text-neutral-500">{title}</h3> : null}
-        <ul className="">
+      <nav className="w-full">
+        {title ? <h3 className="text-xs text-neutral-500 w-full">{title}</h3> : null}
+        <ul className="w-full">
           <Suspense fallback={null}>
             <FilterItemList list={list} />
           </Suspense>

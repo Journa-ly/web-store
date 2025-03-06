@@ -9,7 +9,7 @@ export default async function RelatedProducts({ id }: { id: string }) {
   return (
     <div className="py-8">
       <h2 className="mb-4 text-2xl ml-5 font-bold">Related Products</h2>
-      <ul className="flex w-full gap-4 overflow-x-auto pt-1 pb-6">
+      <ul className="flex max-w-5xl gap-4 overflow-x-auto pt-1 pb-6">
         {relatedProducts.map((product) => (
           <li
             key={product.handle}

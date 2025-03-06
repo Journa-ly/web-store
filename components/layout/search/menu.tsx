@@ -104,7 +104,7 @@ export default function Menu() {
         </div>
       }
     >
-      <div className="h-full w-full px-4 pt-4">
+      <div className="h-full w-full px-2 pt-4">
         <DesignList />
         <CollectionList />
       </div>

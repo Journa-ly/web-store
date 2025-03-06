@@ -4,6 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Menu from '../search/menu';
 import UserMenu from './UserMenu';
+import MobileMenu from './MobileMenu';
 
 export function Navbar() {
   const menu = [
@@ -14,29 +15,11 @@ export function Navbar() {
 
   return (
     <div className="bg-white pb-4 pt-4 px-2 lg:px-6">
-      <div className="navbar rounded-box bg-base-100 shadow-lg">
+      <div className="navbar rounded-box bg-base-100 shadow-md">
         <div className="navbar-start flex items-center">
-          <details className="dropdown lg:hidden">
-            <summary className="btn btn-ghost m-1">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M4 6h16M4 12h8m-8 6h16"
-                />
-              </svg>
-            </summary>
-            <div className="dropdown-content z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
-              <Menu />
-            </div>
-          </details>
+          <MobileMenu>
+            <Menu />
+          </MobileMenu>
           <Link href="/" className="relative h-[28px] w-[107px] ml-4 mt-2">
             <Image src="/icon_black.svg" alt="Journa" fill className="object-contain" priority />
           </Link>

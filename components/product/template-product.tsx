@@ -18,7 +18,7 @@ import DesignPreview from '../designs/DesignPreview';
 export default function TemplateProduct({ product }: { product: Product }) {
   return (
     <>
-      <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8">
+      <div className="flex flex-col rounded-lg bg-white p-8 md:p-12 lg:flex-row lg:gap-8 lg:pr-8">
         {/* Left Column - Title, Price, Design Form, Add to Cart */}
         <div className="w-full lg:w-1/2">
           <div className="mb-2">
