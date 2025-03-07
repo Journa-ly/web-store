@@ -39,16 +39,26 @@ export default function CreationProcessSection() {
                 </p>
               </div>
 
-              {/* Right Side - Image Placeholders */}
-              <div>
-                {/* Landscape image on top (563x268 in Figma) */}
+              {/* Right Side - GIF */}
+              <div className="flex items-center justify-center">
+                <div className="relative aspect-auto w-full">
+                  <Image
+                    src="/videos/hompage_gif.GIF"
+                    alt="Creation process demonstration"
+                    width={600}
+                    height={400}
+                    className="h-auto w-full rounded-2xl"
+                    priority
+                  />
+                </div>
+              </div>
+
+              {/* Original Right Side - Image Placeholders (Commented Out) */}
+              {/* <div>
                 <div className="mb-6 aspect-[563/268] rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.1)]">
-                  {/* Empty content as per Figma design */}
                 </div>
 
-                {/* Three square images in a row */}
                 <div className="grid grid-cols-3 gap-4">
-                  {/* First Card (173x173 in Figma) */}
                   <div className="relative aspect-square">
                     <Image
                       src="/images/create_journa_octo.png"
@@ -59,7 +69,6 @@ export default function CreationProcessSection() {
                     />
                   </div>
 
-                  {/* Second Card (173x173 in Figma) */}
                   <div className="relative aspect-square">
                     <Image
                       src="/images/print_journa_octo.png"
@@ -70,7 +79,6 @@ export default function CreationProcessSection() {
                     />
                   </div>
 
-                  {/* Third Card (173x173 in Figma) */}
                   <div className="relative aspect-square">
                     <Image
                       src="/images/free_shipping_journa_octo.png"
@@ -81,7 +89,7 @@ export default function CreationProcessSection() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
