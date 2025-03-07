@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 
 export default function BreakoutHeroSection() {
   return (
@@ -27,22 +26,18 @@ export default function BreakoutHeroSection() {
       {/* Breakout video that extends beyond the hero section and spans full width */}
       <div className="relative mt-8 w-full md:m-auto md:max-w-[64rem] md:rounded-lg md:-mt-20 lg:-mt-24">
         <div className="relative w-full overflow-hidden">
-          <picture className="block w-full">
-            {/* Mobile image */}
-            {/* <source media="(max-width: 767px)" srcSet="/videos/journa_demo.gif" /> */}
-            {/* Desktop image */}
-            <source srcSet="/videos/studio_demo.gif" />
-            {/* Fallback image */}
-            <Image
-              src="/videos/studio_demo.gif"
-              alt="Journa studio demo"
-              width={1920}
-              height={1080}
-              className="h-auto w-full rounded-lg"
-              sizes="100vw"
-              priority
-            />
-          </picture>
+          <video 
+            className="h-auto w-full md:rounded-lg"
+            autoPlay 
+            muted 
+            loop 
+            playsInline
+            poster="/videos/scratch_that_cat_desktop.mp4"
+          >
+            <source src="/videos/scratch_that_cat_desktop.mp4" type="video/mp4" media="(min-width: 768px)" />
+            <source src="/videos/scratch_that_cat_mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </section>
