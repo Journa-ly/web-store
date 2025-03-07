@@ -3,8 +3,9 @@ import Image from 'next/image';
 
 export default function BreakoutHeroSection() {
   return (
-    <section className="relative w-full overflow-visible px-4 md:px-8">
-      <div className="mx-auto">
+    <section className="relative w-full overflow-visible">
+      {/* Hero content with text */}
+      <div className="px-4 md:px-8">
         <div className="relative rounded-3xl bg-secondary p-8 pb-32 text-center md:p-12 md:pb-32 lg:pb-40">
           {/* Bold hero text with each sentence on a separate row */}
           <div className="mb-10">
@@ -21,27 +22,27 @@ export default function BreakoutHeroSection() {
             thing you're celebrating. Wear it loud, own it proud.
           </p>
         </div>
+      </div>
 
-        {/* Breakout video that extends beyond the hero section */}
-        <div className="relative mx-auto mt-8 w-full md:-mt-20 lg:-mt-24">
-          <div className="relative mx-auto w-full overflow-hidden rounded-xl shadow-2xl md:w-4/5 lg:w-3/4 bg-white border">
-            <picture className="block w-full">
-              {/* Mobile image */}
-              {/* <source media="(max-width: 767px)" srcSet="/videos/journa_demo.gif" /> */}
-              {/* Desktop image */}
-              <source srcSet="/videos/journa_demo.gif" />
-              {/* Fallback image */}
-              <Image
-                src="/videos/journa_demo.gif"
-                alt="Journa studio demo"
-                width={1920}
-                height={1080}
-                className="h-auto w-full"
-                sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 75vw"
-                priority
-              />
-            </picture>
-          </div>
+      {/* Breakout video that extends beyond the hero section and spans full width */}
+      <div className="relative mt-8 w-full md:m-auto md:max-w-[64rem] md:rounded-lg md:-mt-20 lg:-mt-24">
+        <div className="relative w-full overflow-hidden">
+          <picture className="block w-full">
+            {/* Mobile image */}
+            {/* <source media="(max-width: 767px)" srcSet="/videos/journa_demo.gif" /> */}
+            {/* Desktop image */}
+            <source srcSet="/videos/studio_demo.gif" />
+            {/* Fallback image */}
+            <Image
+              src="/videos/studio_demo.gif"
+              alt="Journa studio demo"
+              width={1920}
+              height={1080}
+              className="h-auto w-full rounded-lg"
+              sizes="100vw"
+              priority
+            />
+          </picture>
         </div>
       </div>
     </section>

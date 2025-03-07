@@ -41,7 +41,7 @@ export default function HeroSection() {
           {/* Right Column: Design Loop GIF */}
           <div className="relative order-last h-full min-h-[500px] w-full">
             <Image
-              src="/hompage_gif.GIF"
+              src="/videos/journa_demo.gif"
               alt="Design creation process"
               fill
               className="object-contain lg:object-cover"
