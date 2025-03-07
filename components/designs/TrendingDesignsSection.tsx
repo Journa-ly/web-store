@@ -11,13 +11,13 @@ export default async function TrendingDesignsSection() {
 
   return (
     <div className="px-4 py-4 md:px-8">
-      <div className="w-full overflow-hidden rounded-3xl bg-[#22a1d8] bg-opacity-70 shadow-lg">
+      <div className="w-full overflow-hidden rounded-3xl bg-neutral shadow-lg">
         <div className="px-4 py-12 md:px-8">
           <div className="mb-10 text-center">
-            <h2 className="mb-6 text-3xl font-extrabold text-white md:text-4xl lg:text-5xl">
+            <h2 className="mb-6 text-3xl font-black md:text-4xl lg:text-5xl">
               Designs That Don't Suck.
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-white md:text-xl">
+            <p className="mx-auto mb-8 max-w-2xl text-lg md:text-xl">
               Browse trending community designs.
             </p>
           </div>

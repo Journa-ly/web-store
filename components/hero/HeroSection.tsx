@@ -21,16 +21,16 @@ export default function HeroSection() {
             </p>
 
             {/* Action Buttons - Matching the Figma design */}
-            <div className="mx-auto flex w-full max-w-md flex-col justify-center gap-4 sm:flex-row">
+            <div className="mx-auto flex w-full max-w-md flex-row justify-center gap-3">
               <Link
                 href="/designs/trending"
-                className="btn btn-outline h-12 w-full gap-2 whitespace-nowrap border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white sm:w-40"
+                className="btn btn-outline h-12 flex-1 gap-2 whitespace-nowrap border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white sm:w-40"
               >
                 <span>Browse Designs</span>
               </Link>
               <Link
                 href="/designs/studio"
-                className="btn h-12 w-full gap-2 whitespace-nowrap border-none bg-pink-600 text-white hover:bg-pink-700 sm:w-40"
+                className="btn h-12 flex-1 gap-2 whitespace-nowrap border-none bg-secondary text-white hover:bg-accent sm:w-40"
               >
                 <span>Create Design</span>
               </Link>
@@ -38,7 +38,7 @@ export default function HeroSection() {
           </div>
 
           {/* Right Column: Responsive Videos */}
-          <div className="relative order-last flex h-full min-h-[550px] w-full items-center justify-center overflow-hidden px-4 py-8 md:min-h-[600px] md:py-12 lg:min-h-[675px]">
+          <div className="relative order-last flex h-full min-h-[550px] w-full items-center justify-center overflow-hidden px-4 py-4 md:min-h-[600px] md:py-12 lg:min-h-[675px]">
             {/* Mobile Video (hidden on lg screens) */}
             <video
               className="absolute inset-0 h-full w-full object-contain object-center lg:hidden"

@@ -77,10 +77,10 @@ export default function CustomerReviewsSection() {
 
           {/* Reviews Grid */}
           <div className="mx-auto grid max-w-6xl grid-cols-1 gap-6 md:grid-cols-2 md:gap-8 lg:grid-cols-3">
-            {reviews.map((review) => (
+            {reviews.map((review, index) => (
               <div
                 key={review.id}
-                className="h-full rounded-xl border border-gray-100 bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-lg"
+                className={`h-full rounded-xl border border-gray-100 bg-white p-6 shadow-md transition-shadow duration-300 hover:shadow-lg ${index >= 3 ? 'hidden md:block' : ''}`}
               >
                 {/* Review Header */}
                 <div className="mb-4">
@@ -108,6 +108,16 @@ export default function CustomerReviewsSection() {
               </div>
             ))}
           </div>
+          
+          {/* View All Reviews Link (Mobile Only)
+          <div className="mt-8 text-center block md:hidden">
+            <a 
+              href="/reviews" 
+              className="rounded-md bg-pink-600 px-4 py-2 text-sm font-medium text-white hover:bg-pink-700 focus:outline-none focus:ring-2 focus:ring-pink-500 focus:ring-offset-2"
+            >
+              View All Reviews
+            </a>
+          </div> */}
         </div>
       </div>
     </div>

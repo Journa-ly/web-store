@@ -9,7 +9,7 @@ export const metadata = {
     title: 'Journa - Create Custom Apparel with AI',
     description:
       'Design and create custom apparel using AI. Browse community-created designs or make your own unique clothing.',
-    url: 'https://journa.ai', // Replace with your actual domain
+    url: 'https://journa.ai',
     siteName: 'Journa'
   },
   twitter: {
