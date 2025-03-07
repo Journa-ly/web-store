@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { HeartIcon } from '@heroicons/react/24/solid';
 
 export default function HeroSection() {
@@ -38,16 +37,32 @@ export default function HeroSection() {
             </div>
           </div>
 
-          {/* Right Column: Design Loop GIF */}
-          <div className="relative order-last h-full min-h-[500px] w-full">
-            <Image
-              src="/videos/journa_demo.gif"
-              alt="Design creation process"
-              fill
-              className="object-contain lg:object-cover"
-              priority
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
+          {/* Right Column: Responsive Videos */}
+          <div className="relative order-last flex h-full min-h-[550px] w-full items-center justify-center overflow-hidden px-4 py-8 md:min-h-[600px] md:py-12 lg:min-h-[675px]">
+            {/* Mobile Video (hidden on lg screens) */}
+            <video
+              className="absolute inset-0 h-full w-full object-contain object-center lg:hidden"
+              playsInline
+              muted
+              loop
+              autoPlay
+              poster="/videos/journa_demo.gif"
+            >
+              <source src="/videos/homepage_hero_mobile.mp4" type="video/mp4" />
+            </video>
+            
+            {/* Desktop Video (hidden on smaller screens) */}
+            <video
+              className="absolute inset-0 hidden h-full w-full object-contain object-center lg:block"
+              playsInline
+              muted
+              loop
+              autoPlay
+              poster="/videos/journa_demo.gif"
+            >
+              <source src="/videos/homepage_hero_desktop.mp4" type="video/mp4" />
+            </video>
+            
             <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent mix-blend-overlay"></div>
           </div>
         </div>
