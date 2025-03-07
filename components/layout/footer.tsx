@@ -26,7 +26,7 @@ export default function Footer({ className }: { className?: string }) {
   const copyrightName = 'Journa, Inc.';
 
   return (
-    <footer className={clsx("footer grid-rows-2 bg-neutral text-neutral-content", className)}>
+    <footer className={clsx('footer grid-rows-2 bg-neutral text-neutral-content', className)}>
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-6 px-6 py-12 text-sm md:px-4 min-[1320px]:px-0">
         <div className="flex w-full items-center justify-between">
           <Link href="/" className="relative h-[30px] w-[108px]">
@@ -34,7 +34,7 @@ export default function Footer({ className }: { className?: string }) {
           </Link>
           <SocialLinks />
         </div>
-        <div className="flex w-full flex-col gap-6 md:flex-row md:items-center md:gap-4 md:justify-between">
+        <div className="flex w-full flex-col gap-6 md:flex-row md:items-center md:justify-between md:gap-4">
           <EmailIntake />
           <FooterMenu menu={menu} />
         </div>

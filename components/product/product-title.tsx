@@ -6,4 +6,4 @@ const ProductTitle = ({ product }: { product: Product }) => (
   </div>
 );
 
-export default ProductTitle; 
+export default ProductTitle;

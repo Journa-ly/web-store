@@ -1,4 +1,5 @@
 import React from 'react';
+import Image from 'next/image';
 
 export default function CreationProcessSection() {
   return (
@@ -48,18 +49,36 @@ export default function CreationProcessSection() {
                 {/* Three square images in a row */}
                 <div className="grid grid-cols-3 gap-4">
                   {/* First Card (173x173 in Figma) */}
-                  <div className="aspect-square rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.1)]">
-                    {/* Empty content as per Figma design */}
+                  <div className="relative aspect-square">
+                    <Image
+                      src="/images/create_journa_octo.png"
+                      alt="Create your design with AI"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
                   </div>
 
                   {/* Second Card (173x173 in Figma) */}
-                  <div className="aspect-square rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.1)]">
-                    {/* Empty content as per Figma design */}
+                  <div className="relative aspect-square">
+                    <Image
+                      src="/images/print_journa_octo.png"
+                      alt="Print your design"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
                   </div>
 
                   {/* Third Card (173x173 in Figma) */}
-                  <div className="aspect-square rounded-2xl bg-white shadow-[0_1px_2px_rgba(0,0,0,0.06),0_1px_3px_rgba(0,0,0,0.1)]">
-                    {/* Empty content as per Figma design */}
+                  <div className="relative aspect-square">
+                    <Image
+                      src="/images/free_shipping_journa_octo.png"
+                      alt="Free shipping"
+                      fill
+                      className="object-contain"
+                      priority
+                    />
                   </div>
                 </div>
               </div>

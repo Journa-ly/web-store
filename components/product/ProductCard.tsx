@@ -44,11 +44,11 @@ export function ProductCard({ product }: ProductCardProps) {
 
       {/* Simplified Card Content */}
       <div className="flex flex-1 flex-col p-4 sm:p-6">
-        <h3 className="mb-2 sm:mb-3 line-clamp-2 text-xs sm:text-sm font-medium text-gray-800">
+        <h3 className="mb-2 line-clamp-2 text-xs font-medium text-gray-800 sm:mb-3 sm:text-sm">
           {product.title}
         </h3>
         <div className="mt-auto pt-1">
-          <span className="text-base sm:text-lg font-semibold text-secondary">
+          <span className="text-base font-semibold text-secondary sm:text-lg">
             {new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: product.priceRange.minVariantPrice.currencyCode,
@@ -61,4 +61,4 @@ export function ProductCard({ product }: ProductCardProps) {
   );
 }
 
-export default ProductCard; 
+export default ProductCard;

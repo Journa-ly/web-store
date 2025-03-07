@@ -9,7 +9,7 @@ interface MobileMenuProps {
 export default function MobileMenu({ children }: MobileMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
-  
+
   // Close menu when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent | TouchEvent) {
@@ -17,12 +17,12 @@ export default function MobileMenu({ children }: MobileMenuProps) {
         setIsMenuOpen(false);
       }
     }
-    
+
     if (isMenuOpen) {
       document.addEventListener('mousedown', handleClickOutside as EventListener);
       document.addEventListener('touchstart', handleClickOutside as EventListener);
     }
-    
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside as EventListener);
       document.removeEventListener('touchstart', handleClickOutside as EventListener);
@@ -38,11 +38,11 @@ export default function MobileMenu({ children }: MobileMenuProps) {
         setIsMenuOpen(false);
       }
     }
-    
+
     if (isMenuOpen && menuRef.current) {
       menuRef.current.addEventListener('click', handleLinkClick as EventListener);
     }
-    
+
     return () => {
       if (menuRef.current) {
         menuRef.current.removeEventListener('click', handleLinkClick as EventListener);
@@ -52,7 +52,7 @@ export default function MobileMenu({ children }: MobileMenuProps) {
 
   return (
     <div className="relative lg:hidden" ref={menuRef}>
-      <button 
+      <button
         className="btn btn-ghost m-1"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-expanded={isMenuOpen}
@@ -74,10 +74,10 @@ export default function MobileMenu({ children }: MobileMenuProps) {
         </svg>
       </button>
       {isMenuOpen && (
-        <div className="absolute top-full left-0 z-50 menu p-2 shadow bg-base-100 rounded-box w-52">
+        <div className="menu absolute left-0 top-full z-50 w-52 rounded-box bg-base-100 p-2 shadow">
           {children}
         </div>
       )}
     </div>
   );
-} 
+}

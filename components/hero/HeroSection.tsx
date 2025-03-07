@@ -9,7 +9,7 @@ export default function HeroSection() {
       <div className="">
         <div className="grid min-h-[675px] grid-cols-1 lg:grid-cols-2">
           {/* Left Column: Text and Buttons */}
-          <div className="order-first flex flex-col justify-center px-8 pt-6 pb-2 md:py-12 text-left md:pl-24">
+          <div className="order-first flex flex-col justify-center px-8 pb-2 pt-6 text-left md:py-12 md:pl-24">
             {/* Main Heading with shadow effect - Increased text size */}
             <h1 className="mb-8 text-6xl font-black text-neutral-800 drop-shadow-[0_4px_4px_rgba(255,0,211,0.6)] md:text-7xl lg:text-8xl">
               Create things you wish you could buy.
@@ -22,16 +22,16 @@ export default function HeroSection() {
             </p>
 
             {/* Action Buttons - Matching the Figma design */}
-            <div className="flex flex-col gap-4 sm:flex-row justify-center w-full max-w-md mx-auto">
+            <div className="mx-auto flex w-full max-w-md flex-col justify-center gap-4 sm:flex-row">
               <Link
                 href="/designs/trending"
-                className="btn btn-outline h-12 w-full sm:w-40 gap-2 border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white whitespace-nowrap"
+                className="btn btn-outline h-12 w-full gap-2 whitespace-nowrap border-neutral-300 text-neutral-800 transition-colors hover:border-neutral-800 hover:bg-neutral-800 hover:text-white sm:w-40"
               >
                 <span>Browse Designs</span>
               </Link>
               <Link
                 href="/designs/studio"
-                className="btn h-12 w-full sm:w-40 gap-2 border-none bg-pink-600 text-white hover:bg-pink-700 whitespace-nowrap"
+                className="btn h-12 w-full gap-2 whitespace-nowrap border-none bg-pink-600 text-white hover:bg-pink-700 sm:w-40"
               >
                 <span>Create Design</span>
               </Link>

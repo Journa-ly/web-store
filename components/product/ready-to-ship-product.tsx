@@ -20,10 +20,10 @@ export default function ReadyToShipProduct({ product }: { product: Product }) {
           }
         >
           {/* Mobile: Title appears at the top (without price) */}
-          <div className="w-full block lg:hidden mb-6 px-4">
+          <div className="mb-6 block w-full px-4 lg:hidden">
             <ProductTitle product={product} />
           </div>
-          
+
           {/* Left column: Gallery only */}
           <div className="w-full lg:w-1/2 lg:border-r">
             <div className="px-4 lg:px-10">
@@ -35,33 +35,33 @@ export default function ReadyToShipProduct({ product }: { product: Product }) {
               />
             </div>
           </div>
-          
+
           {/* Mobile: Price and free shipping below gallery */}
-          <div className="w-full block lg:hidden mt-6 mb-4 px-4">
+          <div className="mb-4 mt-6 block w-full px-4 lg:hidden">
             <PriceWithFreeShipping product={product} />
           </div>
-          
+
           {/* Right column: Title with price (desktop only), Variant selection, Add to cart, and Product description */}
           <div className="w-full px-4 lg:w-1/2 lg:pl-8">
-            <div className="h-full flex flex-col justify-start">
+            <div className="flex h-full flex-col justify-start">
               {/* Title with price only visible on desktop */}
-              <div className="w-full hidden lg:block">
+              <div className="hidden w-full lg:block">
                 <ProductTitleWithPrice product={product} />
               </div>
               <VariantSelector options={product.options} variants={product.variants} />
-              <div className="mt-4 mb-8">
+              <div className="mb-8 mt-4">
                 <div className="w-2/3">
                   <AddToCart product={product} />
                 </div>
               </div>
-              <div className="pt-4 border-t border-neutral-200">
+              <div className="border-t border-neutral-200 pt-4">
                 <ProductDescription product={product} />
               </div>
             </div>
           </div>
         </Suspense>
       </div>
-      
+
       {/* Horizontal divider between sections */}
       <hr className="mx-4 my-4 border-t border-neutral-200" />
       <div className="flex flex-col rounded-lg bg-white lg:flex-row lg:gap-8">

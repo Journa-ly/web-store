@@ -7,7 +7,7 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
     <>
       {products.map((product) => (
         <Grid.Item key={product.handle} className="animate-fadeIn">
-          <ProductCard 
+          <ProductCard
             product={{
               id: product.id,
               handle: product.handle,
@@ -16,7 +16,7 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
               priceRange: {
                 minVariantPrice: product.priceRange.minVariantPrice
               }
-            }} 
+            }}
           />
         </Grid.Item>
       ))}

@@ -1,9 +1,9 @@
 import React from 'react';
-import Image from "next/image";
+import Image from 'next/image';
 
 export default function BreakoutHeroSection() {
   return (
-    <section className="relative overflow-visible w-full px-4 md:px-8">
+    <section className="relative w-full overflow-visible px-4 md:px-8">
       <div className="mx-auto">
         <div className="relative rounded-3xl bg-secondary p-8 pb-32 text-center md:p-12 md:pb-32 lg:pb-40">
           {/* Bold hero text with each sentence on a separate row */}
@@ -24,25 +24,19 @@ export default function BreakoutHeroSection() {
 
         {/* Breakout video that extends beyond the hero section */}
         <div className="relative mx-auto -mt-16 w-full md:-mt-20 lg:-mt-24">
-          <div className="relative w-full md:w-4/5 lg:w-3/4 mx-auto overflow-hidden rounded-xl shadow-2xl">
+          <div className="relative mx-auto w-full overflow-hidden rounded-xl shadow-2xl md:w-4/5 lg:w-3/4">
             <picture className="block w-full">
               {/* Mobile image */}
-              <source
-                media="(max-width: 767px)"
-                srcSet="/videos/studio_demo_mobile.gif"
-              />
+              <source media="(max-width: 767px)" srcSet="/videos/studio_demo_mobile.gif" />
               {/* Desktop image */}
-              <source
-                media="(min-width: 768px)"
-                srcSet="/videos/studio_demo.gif"
-              />
+              <source media="(min-width: 768px)" srcSet="/videos/studio_demo.gif" />
               {/* Fallback image */}
               <Image
                 src="/videos/studio_demo.gif"
                 alt="Journa studio demo"
                 width={1920}
                 height={1080}
-                className="w-full h-auto"
+                className="h-auto w-full"
                 sizes="(max-width: 767px) 100vw, (max-width: 1023px) 80vw, 75vw"
                 priority
               />

@@ -24,9 +24,9 @@ export default function TemplateProduct({ product }: { product: Product }) {
           <div className="mb-2">
             <ProductTitleWithPrice product={product} />
           </div>
-          
+
           {/* Product Preview - Visible only on mobile */}
-          <div className="w-full mb-8 lg:hidden">
+          <div className="mb-8 w-full lg:hidden">
             <Suspense
               fallback={
                 <div className="relative aspect-square h-full max-h-[550px] w-full overflow-hidden rounded-lg bg-gray-100" />
@@ -37,8 +37,8 @@ export default function TemplateProduct({ product }: { product: Product }) {
               </div>
             </Suspense>
           </div>
-          
-          <div className="w-full mb-8">
+
+          <div className="mb-8 w-full">
             <NumberLabel label="Describe your design">1</NumberLabel>
             <DesignForm />
             <NumberLabel label="Select a design">2</NumberLabel>
@@ -46,9 +46,9 @@ export default function TemplateProduct({ product }: { product: Product }) {
               <MyDesignsCarousel />
             </div>
           </div>
-          
+
           <div className="w-full">
-            <div className="w-full mb-4">
+            <div className="mb-4 w-full">
               <NumberLabel label="Add to cart">3</NumberLabel>
             </div>
             <VariantSelector options={product.options} variants={product.variants} />
@@ -57,7 +57,7 @@ export default function TemplateProduct({ product }: { product: Product }) {
             </div>
           </div>
         </div>
-        
+
         {/* Right Column - Product Preview (visible only on desktop) */}
         <div className="hidden w-full lg:block lg:w-1/2">
           <Suspense
@@ -84,7 +84,7 @@ export default function TemplateProduct({ product }: { product: Product }) {
           </Suspense>
         </div>
       </div>
-      
+
       {/* Gallery and Description Section */}
       <div className="flex flex-col border-t border-neutral-200 pt-8 lg:flex-row">
         <Suspense
@@ -109,15 +109,15 @@ export default function TemplateProduct({ product }: { product: Product }) {
           </div>
         </Suspense>
       </div>
-      
+
       {/* Related Products Section */}
       <RelatedProducts id={product.id} />
-      
+
       {/* How To Section */}
       <div className="border-t border-neutral-200">
         <HowTo />
       </div>
-      
+
       {/* FAQ Section */}
       <div className="border-t border-neutral-200">
         <FAQ />
