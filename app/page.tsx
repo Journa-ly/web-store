@@ -17,7 +17,8 @@ export const metadata = {
     title: 'Journa - Create Custom Apparel with AI',
     description:
       'Design and create custom apparel using AI. Browse community-created designs or make your own unique clothing.'
-  }
+  },
+  themeColor: '#fff'
 };
 
 export default function Page() {
