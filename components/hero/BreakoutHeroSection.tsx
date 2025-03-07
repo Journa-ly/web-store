@@ -23,16 +23,16 @@ export default function BreakoutHeroSection() {
         </div>
 
         {/* Breakout video that extends beyond the hero section */}
-        <div className="relative mx-auto -mt-16 w-full md:-mt-20 lg:-mt-24">
-          <div className="relative mx-auto w-full overflow-hidden rounded-xl shadow-2xl md:w-4/5 lg:w-3/4">
+        <div className="relative mx-auto mt-8 w-full md:-mt-20 lg:-mt-24">
+          <div className="relative mx-auto w-full overflow-hidden rounded-xl shadow-2xl md:w-4/5 lg:w-3/4 bg-white border">
             <picture className="block w-full">
               {/* Mobile image */}
-              <source media="(max-width: 767px)" srcSet="/videos/studio_demo_mobile.gif" />
+              {/* <source media="(max-width: 767px)" srcSet="/videos/journa_demo.gif" /> */}
               {/* Desktop image */}
-              <source media="(min-width: 768px)" srcSet="/videos/studio_demo.gif" />
+              <source srcSet="/videos/journa_demo.gif" />
               {/* Fallback image */}
               <Image
-                src="/videos/studio_demo.gif"
+                src="/videos/journa_demo.gif"
                 alt="Journa studio demo"
                 width={1920}
                 height={1080}
