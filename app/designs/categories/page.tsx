@@ -24,7 +24,7 @@ export default async function CategoryPage() {
           {categories.map((category) => (
             <Link
               key={category.uuid}
-              href={`/designs/categories/${category.uuid}`}
+              href={`/designs/categories/${category.path}`}
               className="group"
             >
               <div className="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
