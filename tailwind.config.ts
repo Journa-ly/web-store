@@ -18,8 +18,16 @@ const config: Config = {
           primary: '#00d7c0',
           secondary: '#ff00d3',
           accent: '#4a00ff',
-          neutral: '#f2f2f2',
-          'base-100': '#ffffff'
+          neutral: '#3d4451',
+          'base-100': '#ffffff',
+          'base-200': '#f2f2f2',
+          'base-300': '#e5e7eb',
+          'base-400': '#d1d5db',
+          'base-500': '#9ca3af',
+          'base-600': '#6b7280',
+          'base-700': '#374151',
+          'base-800': '#1f2937',
+          'base-900': '#111827'
         }
       }
     ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]

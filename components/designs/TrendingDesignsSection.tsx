@@ -11,7 +11,7 @@ export default async function TrendingDesignsSection() {
 
   return (
     <div className="px-4 py-4 md:px-8">
-      <div className="w-full overflow-hidden rounded-3xl bg-neutral shadow-lg">
+      <div className="w-full overflow-hidden rounded-3xl bg-base-200 shadow-lg">
         <div className="px-4 py-12 md:px-8">
           <div className="mb-10 text-center">
             <h2 className="mb-6 text-3xl font-black md:text-4xl lg:text-5xl">
