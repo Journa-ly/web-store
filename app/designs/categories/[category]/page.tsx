@@ -3,6 +3,7 @@ import { getCategory } from '@/requests/categories';
 import { CategoryDesignList } from '@/components/designs/CategoryDesignList';
 import { Category } from '@/types/category';
 import Image from 'next/image';
+import { redirect } from 'next/navigation';
 
 function CategoryHeader({ category }: { category: Category }) {
   return (
@@ -41,10 +42,7 @@ export async function generateMetadata({
   const { data: category } = await getCategory(pageParams.category);
 
   if (!category) {
-    return {
-      title: 'Category Not Found',
-      description: 'The requested category could not be found'
-    };
+    return redirect(`/designs/categories?message=${pageParams.category} not found`);
   }
 
   return {

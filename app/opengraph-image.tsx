@@ -47,16 +47,6 @@ export default async function Image() {
         </div>
         <p
           style={{
-            marginTop: '48px',
-            fontSize: '48px',
-            fontWeight: 'bold',
-            color: 'white'
-          }}
-        >
-          Journa
-        </p>
-        <p
-          style={{
             marginTop: '12px',
             fontSize: '24px',
             color: '#888'
