@@ -80,7 +80,7 @@ export default function DesignStudioContent() {
       <div className="w-full">
         <NumberLabel label="Choose a product">3</NumberLabel>
         <div className="w-full">
-          <div id="product-carousel-container" className="max-w-full" />
+          {/* <div id="product-carousel-container" className="max-w-full" /> */}
         </div>
       </div>
     </div>

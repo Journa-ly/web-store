@@ -168,7 +168,7 @@ export default function DesignCard({ design }: DesignCardProps) {
             <div className="mb-4">
               <Link
                 href={shareUrl}
-                className="inline-flex items-center rounded-md bg-white/90 px-4 py-2 text-sm font-medium text-black backdrop-blur-sm transition-colors hover:bg-white active:bg-white"
+                className="inline-flex items-center rounded-md bg-secondary/90 px-4 py-2 text-sm font-medium text-white backdrop-blur-sm transition-colors active:bg-accent"
                 onClick={handleAddToMyDesigns}
               >
                 <PlusIcon className="mr-2 h-5 w-5" />

@@ -95,7 +95,7 @@ export default async function Image() {
         >
           <p
             style={{
-              fontSize: '32px',
+              fontSize: '44px',
               fontWeight: '600',
               color: colors.base100,
               textAlign: 'center',
@@ -121,7 +121,7 @@ export default async function Image() {
         <p
           style={{
             marginTop: '30px',
-            fontSize: '22px',
+            fontSize: '32px',
             color: 'rgba(255, 255, 255, 0.8)',
             fontWeight: '400'
           }}
