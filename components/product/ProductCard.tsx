@@ -52,7 +52,8 @@ export function ProductCard({ product }: ProductCardProps) {
             {new Intl.NumberFormat('en-US', {
               style: 'currency',
               currency: product.priceRange.minVariantPrice.currencyCode,
-              minimumFractionDigits: 0
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2
             }).format(parseFloat(product.priceRange.minVariantPrice.amount))}
           </span>
         </div>
