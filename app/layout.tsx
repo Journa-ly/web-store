@@ -44,8 +44,7 @@ export const metadata = {
     'ai design app',
     'ai design platform',
     'ai design marketplace',
-    'ai design generator',
-    
+    'ai design generator'
   ],
   authors: [{ name: 'Journa Team' }],
   creator: 'Journa',

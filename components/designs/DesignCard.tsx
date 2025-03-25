@@ -4,10 +4,7 @@ import { TrendingDesign } from 'types/design';
 import Image from 'next/image';
 import Link from 'next/link';
 import { HeartIcon, FireIcon, PlusIcon } from '@heroicons/react/24/outline';
-import {
-  HeartIcon as HeartIconSolid,
-  FireIcon as FireIconSolid,
-} from '@heroicons/react/24/solid';
+import { HeartIcon as HeartIconSolid, FireIcon as FireIconSolid } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import { toggleInteraction } from 'requests/designs';
 import { useState, useCallback, useEffect, useRef } from 'react';

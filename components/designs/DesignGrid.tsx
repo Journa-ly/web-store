@@ -10,7 +10,7 @@ interface DesignGridProps {
 
 export default function DesignGrid({ designs, columns = 3 }: DesignGridProps) {
   if (!designs || designs.length === 0) {
-    return <div className="text-center py-8 text-base-content/70">No designs to display</div>;
+    return <div className="py-8 text-center text-base-content/70">No designs to display</div>;
   }
 
   const getGridClass = () => {
@@ -35,4 +35,4 @@ export default function DesignGrid({ designs, columns = 3 }: DesignGridProps) {
       ))}
     </div>
   );
-} 
+}

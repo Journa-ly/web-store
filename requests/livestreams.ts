@@ -80,7 +80,12 @@ export const getLiveStreamDesigns = async (
  */
 export const useLiveStreamDesigns = (livestreamUuid: string) => {
   // Initial data fetch with SWR
-  const { data, error, isLoading: isSWRLoading, mutate } = useSWR<TrendingDesignListResponse>(
+  const {
+    data,
+    error,
+    isLoading: isSWRLoading,
+    mutate
+  } = useSWR<TrendingDesignListResponse>(
     livestreamUuid ? `/designs/trending/livestream/${livestreamUuid}/` : null,
     fetcher,
     {
@@ -112,16 +117,16 @@ export const useLiveStreamDesigns = (livestreamUuid: string) => {
     try {
       if (wsData.type === 'image_data' && Array.isArray(wsData.data)) {
         const newDesigns = wsData.data as TrendingDesign[];
-        
+
         // If we received new designs, update our local state
         if (newDesigns.length > 0) {
-          setLocalDesigns(prevDesigns => {
+          setLocalDesigns((prevDesigns) => {
             // Start with existing designs
             const updatedDesigns = [...prevDesigns];
-            
-            newDesigns.forEach(newDesign => {
-              const existingIndex = updatedDesigns.findIndex(d => d.uuid === newDesign.uuid);
-              
+
+            newDesigns.forEach((newDesign) => {
+              const existingIndex = updatedDesigns.findIndex((d) => d.uuid === newDesign.uuid);
+
               if (existingIndex >= 0) {
                 // Update existing design
                 updatedDesigns[existingIndex] = newDesign;
@@ -130,7 +135,7 @@ export const useLiveStreamDesigns = (livestreamUuid: string) => {
                 updatedDesigns.unshift(newDesign);
               }
             });
-            
+
             return updatedDesigns;
           });
         }
@@ -146,7 +151,7 @@ export const useLiveStreamDesigns = (livestreamUuid: string) => {
   }, [isSWRLoading]);
 
   // Get designs from localDesigns if available, otherwise fall back to API results
-  const designs = wsInitialized ? localDesigns : (data?.results || []);
+  const designs = wsInitialized ? localDesigns : data?.results || [];
 
   // Custom refresh function to update both local state and SWR cache
   const refreshDesigns = useCallback(async () => {
@@ -172,4 +177,4 @@ export const useLiveStreamDesigns = (livestreamUuid: string) => {
     isError: error || wsError,
     mutate: refreshDesigns
   };
-}; 
+};

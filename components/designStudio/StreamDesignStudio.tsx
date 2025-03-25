@@ -19,19 +19,19 @@ export default function StreamDesignStudio({ livestream }: { livestream: LiveStr
       {/* Design Form and Preview Section */}
       <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-10">
         {/* Left Column - Design Form and Carousel */}
-        <div className="w-full lg:w-1/2 flex flex-col space-y-4">
+        <div className="flex w-full flex-col space-y-4 lg:w-1/2">
           {/* Step 1: Design Form */}
           <div>
             <NumberLabel label="Describe your design">1</NumberLabel>
-            <div className="w-full mt-2">
+            <div className="mt-2 w-full">
               <DesignForm livestream={livestream} />
             </div>
           </div>
-          
+
           {/* Step 2: Design Selection - Now in the left column */}
           <div>
             <NumberLabel label="Select a design">2</NumberLabel>
-            <div className="w-full mt-2">
+            <div className="mt-2 w-full">
               <DesignStudioCarousel />
             </div>
           </div>
@@ -42,10 +42,10 @@ export default function StreamDesignStudio({ livestream }: { livestream: LiveStr
           <div className="sticky top-8">
             <Suspense
               fallback={
-                <div className="w-full aspect-square overflow-hidden rounded-2xl bg-gray-100" />
+                <div className="aspect-square w-full overflow-hidden rounded-2xl bg-gray-100" />
               }
             >
-              <div className="w-full aspect-square overflow-hidden rounded-2xl bg-gray-100 flex items-center justify-center">
+              <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-100">
                 {selectedDesign ? (
                   isGenerating ? (
                     <div className="flex flex-col items-center gap-3">
@@ -53,7 +53,7 @@ export default function StreamDesignStudio({ livestream }: { livestream: LiveStr
                       <p className="text-sm text-gray-600">Generating design...</p>
                     </div>
                   ) : imageUrl ? (
-                    <div className="relative w-full h-full">
+                    <div className="relative h-full w-full">
                       <Image
                         src={imageUrl}
                         alt={selectedDesign.name || 'Selected Design'}

@@ -14,9 +14,9 @@ export default function LoadingSpinner({ size = 'md', color }: LoadingSpinnerPro
   };
 
   return (
-    <span 
-      className={`loading loading-spinner ${sizeClasses[size]} ${color ? '' : 'text-primary'}`} 
+    <span
+      className={`loading loading-spinner ${sizeClasses[size]} ${color ? '' : 'text-primary'}`}
       style={color ? { color } : undefined}
     />
   );
-} 
+}

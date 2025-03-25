@@ -14,9 +14,7 @@ interface PageProps {
   }>;
 }
 
-export default async function ResetPasswordPage({
-  params
-}: PageProps) {
+export default async function ResetPasswordPage({ params }: PageProps) {
   const { customer_id, token } = await params;
 
   return (
