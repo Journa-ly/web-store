@@ -16,6 +16,7 @@ const config: Config = {
       {
         journaTheme: {
           primary: '#00d7c0',
+          'primary-content': '#ffffff',
           secondary: '#ff00d3',
           accent: '#4a00ff',
           neutral: '#3d4451',

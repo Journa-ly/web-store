@@ -31,9 +31,9 @@ export interface GenerationImage {
 
 export interface ProductImage {
   uuid: string;
-  image: string;
-  created_at: string;
-  pipeline_job_id: number;
+  image?: string;
+  product_id?: string;
+  image_url?: string;
 }
 
 // Base interface for common design properties
@@ -66,23 +66,24 @@ export interface UserDesign extends BaseDesign {
 
 // Response interfaces for different endpoints
 export interface TrendingDesignListResponse {
-  count: number;
+  results: TrendingDesign[];
   next: string | null;
   previous: string | null;
-  results: TrendingDesign[];
+  count: number;
 }
 
 export interface UserDesignListResponse {
-  count: number;
+  results: UserDesign[];
   next: string | null;
   previous: string | null;
-  results: UserDesign[];
+  count: number;
 }
 
 export interface CreateDesignRequest {
   prompt: string;
   quote_prompt?: string;
   theme?: string;
+  livestream_uuid?: string;
 }
 
 // Response interfaces for actions
@@ -101,17 +102,5 @@ export interface ShareDesignResponse {
 
 export interface AttachUserResponse {
   detail: string;
-}
-
-export interface Design {
-  uuid: string;
-  name?: string;
-  prompt?: string;
-  quote_prompt?: string;
-  product_image: ProductImage | null;
-  heart_count: number;
-  laugh_count: number;
-  fire_count: number;
-  user_reactions?: string[];
-  is_favorite?: boolean;
+  designs_attached_count: number;
 }

@@ -50,7 +50,7 @@ export default function HeroSection() {
             >
               <source src="/videos/homepage_hero_mobile.mp4" type="video/mp4" />
             </video>
-            
+
             {/* Desktop Video (hidden on smaller screens) */}
             <video
               className="absolute inset-0 hidden h-full w-full object-contain object-center lg:block"
@@ -62,7 +62,7 @@ export default function HeroSection() {
             >
               <source src="/videos/homepage_hero_desktop.mp4" type="video/mp4" />
             </video>
-            
+
             <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent mix-blend-overlay"></div>
           </div>
         </div>

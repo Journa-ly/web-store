@@ -1,11 +1,12 @@
-import { Design } from 'types/design';
+'use client';
+
+import { TrendingDesign } from 'types/design';
 import Image from 'next/image';
 import Link from 'next/link';
-import { HeartIcon, FireIcon, FaceSmileIcon, PlusIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, FireIcon, PlusIcon } from '@heroicons/react/24/outline';
 import {
   HeartIcon as HeartIconSolid,
   FireIcon as FireIconSolid,
-  FaceSmileIcon as FaceSmileIconSolid
 } from '@heroicons/react/24/solid';
 import clsx from 'clsx';
 import { toggleInteraction } from 'requests/designs';
@@ -23,7 +24,7 @@ const AuthModal = dynamic(() => import('components/modals/AuthModal'), {
 });
 
 interface DesignCardProps {
-  design: Design;
+  design: TrendingDesign;
 }
 
 type ReactionCounts = {
@@ -141,6 +142,11 @@ export default function DesignCard({ design }: DesignCardProps) {
   const handleAddToMyDesigns = (e: React.MouseEvent) => {
     e.stopPropagation(); // Just stop propagation, don't prevent default
   };
+
+  // Check if the user has reacted with specific reactions
+  const hasHeart = design.user_reactions?.includes('HEART');
+  const hasFire = design.user_reactions?.includes('FIRE');
+  const hasLaugh = design.user_reactions?.includes('LAUGH');
 
   return (
     <>

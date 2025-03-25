@@ -6,7 +6,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AuthFormType } from 'types/authForm';
 import { z } from 'zod';
 import { useAuth } from '../../requests/users';
-import { FieldErrorsImpl } from 'react-hook-form';
+import Link from 'next/link';
+import { useState } from 'react';
+import { ClipLoader } from 'react-spinners';
 
 // Update the schemas to match backend expectations
 const loginSchema = z.object({
@@ -46,19 +48,31 @@ interface AuthFormProps {
 
 const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
   const isLogin = formType === AuthFormType.LOGIN;
+  const isSignUp = formType === AuthFormType.SIGNUP;
+
   const router = useRouter();
-  const { login, register: registerUser } = useAuth();
+  const [success, setSuccess] = useState(false);
+
+  // Use the auth hook for all authentication functionality
+  const { login, register: registerUser, isLoading } = useAuth();
+
+  // Determine which schema to use based on form type
+  const getSchema = () => {
+    if (isLogin) return loginSchema;
+    if (isSignUp) return signUpSchema;
+    return loginSchema; // Default
+  };
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setError
-  } = useForm<SignUpFormValues>({
-    resolver: zodResolver(isLogin ? loginSchema : signUpSchema) as any
+  } = useForm({
+    resolver: zodResolver(getSchema())
   });
 
-  const onSubmit: SubmitHandler<SignUpFormValues> = async (values) => {
+  const onSubmit: SubmitHandler<any> = async (values) => {
     try {
       if (isLogin) {
         const result = await login(values as LoginFormValues);
@@ -70,7 +84,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             message: 'Invalid email or password'
           });
         }
-      } else {
+      } else if (isSignUp) {
         const result = await registerUser(values as SignUpFormValues);
         if (result.success) {
           router.push('/designs/trending');
@@ -105,29 +119,22 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="mx-auto w-full rounded-lg bg-base-200 p-6 shadow-lg"
-    >
-      <h2 className="mb-6 text-center text-2xl font-bold">
-        {isLogin ? 'Login to Your Account' : 'Create an Account'}
-      </h2>
-
-      {/* Display root errors */}
+    <form onSubmit={handleSubmit(onSubmit)} className="rounded-lg bg-base-100 p-8 shadow-md">
+      {/* Show any form-level errors */}
       {errors.root && (
         <div className="alert alert-error mb-4">
-          <p>{errors.root.message}</p>
+          <p>{errors.root.message as string}</p>
         </div>
       )}
 
-      {/* Email Field (for both Login and Sign Up) */}
-      <div className="mt-4">
+      {/* Email Field */}
+      <div className="form-control">
         <label className="label">
           <span className="label-text">Email</span>
         </label>
         <input
           type="email"
-          placeholder="example@example.com"
+          placeholder="your@email.com"
           className={`input input-bordered w-full ${errors.email ? 'input-error' : ''}`}
           {...register('email')}
         />
@@ -137,17 +144,14 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       </div>
 
       {/* Username Field (Sign Up only) */}
-      {!isLogin && (
+      {isSignUp && (
         <div className="mt-4">
           <label className="label">
             <span className="label-text">Username</span>
-            <span className="label-text-alt text-base-content/60">
-              Letters, numbers, underscores, hyphens only
-            </span>
           </label>
           <input
             type="text"
-            placeholder="your_username"
+            placeholder="username"
             className={`input input-bordered w-full ${errors.username ? 'input-error' : ''}`}
             {...register('username')}
           />
@@ -158,7 +162,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       )}
 
       {/* Name Fields (Sign Up only) */}
-      {!isLogin && (
+      {isSignUp && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* First Name */}
           <div>
@@ -171,8 +175,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               className={`input input-bordered w-full ${errors.first_name ? 'input-error' : ''}`}
               {...register('first_name')}
             />
-            {!isLogin && errors.first_name && (
-              <p className="mt-1 text-sm text-error">{errors.first_name.message}</p>
+            {errors.first_name && (
+              <p className="mt-1 text-sm text-error">{errors.first_name.message as string}</p>
             )}
           </div>
 
@@ -187,8 +191,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               className={`input input-bordered w-full ${errors.last_name ? 'input-error' : ''}`}
               {...register('last_name')}
             />
-            {!isLogin && errors.last_name && (
-              <p className="mt-1 text-sm text-error">{errors.last_name.message}</p>
+            {errors.last_name && (
+              <p className="mt-1 text-sm text-error">{errors.last_name.message as string}</p>
             )}
           </div>
         </div>
@@ -211,7 +215,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       </div>
 
       {/* Confirm Password (Sign Up only) */}
-      {!isLogin && (
+      {isSignUp && (
         <div className="mt-4">
           <label className="label">
             <span className="label-text">Confirm Password</span>
@@ -229,7 +233,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       )}
 
       {/* Accepts Marketing (Sign Up only) */}
-      {!isLogin && (
+      {isSignUp && (
         <div className="form-control mt-4">
           <label className="label cursor-pointer justify-start gap-2">
             <input
@@ -244,23 +248,18 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       )}
 
       {/* Terms of Service Acceptance (Sign Up only) */}
-      {!isLogin && (
+      {isSignUp && (
         <div className="form-control mt-4">
           <label className="label cursor-pointer justify-start gap-2">
-            <input
-              type="checkbox"
-              className={`checkbox ${errors.accepts_terms ? 'checkbox-error' : ''}`}
-              {...register('accepts_terms')}
-            />
+            <input type="checkbox" className="checkbox" {...register('accepts_terms')} />
             <span className="label-text">
-              I accept the{' '}
-              <a
-                href="/policies/terms-of-service"
-                className="link link-primary"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                terms of service
+              I agree to the{' '}
+              <a href="/terms" className="text-primary hover:underline">
+                Terms of Service
+              </a>{' '}
+              and{' '}
+              <a href="/privacy" className="text-primary hover:underline">
+                Privacy Policy
               </a>
             </span>
           </label>
@@ -270,13 +269,45 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         </div>
       )}
 
-      {/* Submit Button */}
-      <button
-        type="submit"
-        className="btn btn-primary mt-6 w-full transition-transform hover:scale-[1.02]"
-      >
-        {isLogin ? 'Login' : 'Sign Up'}
+      {/* Forgot Password Link (Login only) */}
+      {isLogin && (
+        <div className="mt-2 text-right">
+          <Link href="/forgot-password" className="text-sm text-primary hover:underline">
+            Forgot your password?
+          </Link>
+        </div>
+      )}
+
+      <button type="submit" className="btn btn-primary mt-6 w-full text-white" disabled={isLoading}>
+        {isLoading ? (
+          <ClipLoader size={20} color="#ffffff" />
+        ) : (
+          <>
+            {isLogin && 'Login'}
+            {isSignUp && 'Create Account'}
+          </>
+        )}
       </button>
+
+      {/* Form Footer Links */}
+      <div className="mt-4 text-center">
+        {isLogin && (
+          <p>
+            Don't have an account?{' '}
+            <Link href="/sign-up" className="text-primary hover:underline">
+              Sign up
+            </Link>
+          </p>
+        )}
+        {isSignUp && (
+          <p>
+            Already have an account?{' '}
+            <Link href="/login" className="text-primary hover:underline">
+              Login
+            </Link>
+          </p>
+        )}
+      </div>
     </form>
   );
 };

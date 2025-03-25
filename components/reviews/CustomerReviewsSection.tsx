@@ -108,7 +108,7 @@ export default function CustomerReviewsSection() {
               </div>
             ))}
           </div>
-          
+
           {/* View All Reviews Link (Mobile Only)
           <div className="mt-8 text-center block md:hidden">
             <a 

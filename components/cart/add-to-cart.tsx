@@ -7,7 +7,7 @@ import { useProduct } from 'components/product/product-context';
 import { Product, ProductVariant } from 'lib/shopify/types';
 import { useActionState } from 'react';
 import { useCart } from './cart-context';
-import { Design } from '@/types/design';
+import { UserDesign } from '@/types/design';
 import { useDesign } from '../designs/design-context';
 
 function SubmitButton({
@@ -19,7 +19,7 @@ function SubmitButton({
   availableForSale: boolean;
   selectedVariantId: string | undefined;
   selectedDesignRequired: boolean;
-  selectedDesign: Design | null;
+  selectedDesign: UserDesign | null;
 }) {
   const buttonClasses =
     'relative flex w-full items-center justify-center rounded-full bg-accent p-4 tracking-wide text-white';

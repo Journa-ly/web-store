@@ -14,6 +14,7 @@ import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useAuth } from 'requests/users';
 import AuthModal from 'components/modals/AuthModal';
+import { LiveStream } from '@/requests/livestreams';
 
 // Define the form schema
 const formSchema = z.object({
@@ -24,7 +25,7 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>;
 
-const DesignForm = () => {
+const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) => {
   const { selectedDesign } = useDesign();
   const { isAuthenticated } = useAuth();
   const promptRef = useRef<HTMLTextAreaElement>(null);
@@ -72,10 +73,11 @@ const DesignForm = () => {
     try {
       const designData: CreateDesignRequest = {
         prompt: data.prompt,
-        quote_prompt: data.imageText || undefined
+        quote_prompt: data.imageText || undefined,
+        livestream_uuid: livestream?.uuid || undefined
       };
 
-      const createdDesigns = await createDesign(designData);
+      await createDesign(designData);
       await mutate();
     } catch (error) {
       console.error('Error creating design:', error);

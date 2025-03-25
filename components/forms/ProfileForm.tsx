@@ -56,6 +56,18 @@ export default function ProfileForm({ user }: ProfileFormProps) {
 
       <div>
         <label className="label">
+          <span className="label-text">Username</span>
+        </label>
+        <input
+          type="text"
+          value={user?.username || ''}
+          disabled
+          className="input input-bordered w-full bg-base-200"
+        />
+      </div>
+
+      <div>
+        <label className="label">
           <span className="label-text">First Name</span>
         </label>
         <input

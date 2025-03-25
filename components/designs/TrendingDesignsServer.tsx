@@ -1,6 +1,5 @@
 'use server';
 
-import { Design } from '@/types/design';
 import { getTrendingDesigns } from '@/requests/server-designs';
 import TrendingDesignsCarousel from './TrendingDesignsCarousel';
 

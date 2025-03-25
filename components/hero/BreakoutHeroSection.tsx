@@ -24,18 +24,26 @@ export default function BreakoutHeroSection() {
       </div>
 
       {/* Breakout video that extends beyond the hero section and spans full width */}
-      <div className="relative mt-8 w-full md:m-auto md:max-w-[64rem] md:rounded-lg md:-mt-20 lg:-mt-24">
+      <div className="relative mt-8 w-full md:m-auto md:-mt-20 md:max-w-[64rem] md:rounded-lg lg:-mt-24">
         <div className="relative w-full overflow-hidden">
-          <video 
+          <video
             className="h-auto w-full md:rounded-lg"
-            autoPlay 
-            muted 
-            loop 
+            autoPlay
+            muted
+            loop
             playsInline
             poster="/videos/scratch_that_cat_desktop.mp4"
           >
-            <source src="/videos/scratch_that_cat_desktop.mp4" type="video/mp4" media="(min-width: 768px)" />
-            <source src="/videos/scratch_that_cat_mobile.mp4" type="video/mp4" media="(max-width: 767px)" />
+            <source
+              src="/videos/scratch_that_cat_desktop.mp4"
+              type="video/mp4"
+              media="(min-width: 768px)"
+            />
+            <source
+              src="/videos/scratch_that_cat_mobile.mp4"
+              type="video/mp4"
+              media="(max-width: 767px)"
+            />
             Your browser does not support the video tag.
           </video>
         </div>

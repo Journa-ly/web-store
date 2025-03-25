@@ -3,6 +3,7 @@ import DesignStudioContent from 'components/designStudio/DesignStudioContent';
 import ProductCarousel from 'components/ProductCarousel';
 import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
+import NumberLabel from '@/components/numberLabel';
 
 export default async function StudioPage() {
   return (
@@ -11,6 +12,9 @@ export default async function StudioPage() {
         <div className="overflow-hidden rounded-2xl bg-white shadow">
           <div className="p-4 md:p-6 lg:p-8">
             <DesignStudioContent />
+            <div className="w-full">
+              <NumberLabel label="Choose a product">3</NumberLabel>
+            </div>
             <div className="pt-8">
               <Suspense
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}

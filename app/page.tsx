@@ -26,8 +26,7 @@ export const metadata = {
     description:
       'Design and create custom apparel using AI. Browse community-created designs or make your own unique clothing.',
     images: ['/twitter-image']
-  },
-  themeColor: '#fff'
+  }
 };
 
 export default function Page() {

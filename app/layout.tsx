@@ -1,3 +1,4 @@
+import { Providers } from './providers';
 import { CartProvider } from 'components/cart/cart-context';
 import { DesignProvider } from 'components/designs/design-context';
 import Footer from 'components/layout/footer';
@@ -23,7 +24,28 @@ export const metadata = {
     'independent creators',
     'unique products',
     'design marketplace',
-    'print on demand'
+    'print on demand',
+    'ai design',
+    'custom apparel',
+    'custom t-shirts',
+    'custom hoodies',
+    'custom shirts',
+    'custom hats',
+    'custom bags',
+    'ai t-shirt design',
+    'ai hoodie design',
+    'ai shirt design',
+    'ai hat design',
+    'ai bag design',
+    'ai design marketplace',
+    'ai design generator',
+    'ai design tool',
+    'ai design software',
+    'ai design app',
+    'ai design platform',
+    'ai design marketplace',
+    'ai design generator',
+    
   ],
   authors: [{ name: 'Journa Team' }],
   creator: 'Journa',
@@ -92,12 +114,14 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
   return (
     <html lang="en" data-theme="journaTheme" className={inter.className}>
       <body>
-        <CartProvider cartPromise={cart}>
-          <DesignProvider>
-            <Navbar />
-            <main>{children}</main>
-          </DesignProvider>
-        </CartProvider>
+        <Providers>
+          <CartProvider cartPromise={cart}>
+            <DesignProvider>
+              <Navbar />
+              <main>{children}</main>
+            </DesignProvider>
+          </CartProvider>
+        </Providers>
         <Footer />
         <GoogleAnalytics gaId={gaId} />
       </body>

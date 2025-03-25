@@ -7,25 +7,32 @@ import NumberLabel from 'components/numberLabel';
 import Image from 'next/image';
 import { useDesign } from 'components/designs/design-context';
 import { ClipLoader } from 'react-spinners';
+import { LiveStream } from '@/requests/livestreams';
 
-export default function DesignStudioContent() {
+export default function StreamDesignStudio({ livestream }: { livestream: LiveStream }) {
   const { selectedDesign } = useDesign();
   const imageUrl = selectedDesign?.product_image?.image;
   const isGenerating = !Boolean(imageUrl);
 
   return (
-    <div className="flex w-full flex-col gap-8">
+    <div className="flex w-full flex-col">
       {/* Design Form and Preview Section */}
-      <div className="flex w-full flex-col lg:flex-row lg:gap-8">
-        {/* Left Column - Design Form */}
-        <div className="w-full lg:w-1/2">
-          <h1 className="text-3xl font-bold text-gray-900">Design Studio</h1>
-          <p className="mt-2 text-gray-600">Create your custom design with AI</p>
-
-          <div className="mt-8">
+      <div className="flex w-full flex-col gap-6 lg:flex-row lg:gap-10">
+        {/* Left Column - Design Form and Carousel */}
+        <div className="w-full lg:w-1/2 flex flex-col space-y-4">
+          {/* Step 1: Design Form */}
+          <div>
             <NumberLabel label="Describe your design">1</NumberLabel>
-            <div className="w-full">
-              <DesignForm />
+            <div className="w-full mt-2">
+              <DesignForm livestream={livestream} />
+            </div>
+          </div>
+          
+          {/* Step 2: Design Selection - Now in the left column */}
+          <div>
+            <NumberLabel label="Select a design">2</NumberLabel>
+            <div className="w-full mt-2">
+              <DesignStudioCarousel />
             </div>
           </div>
         </div>
@@ -35,10 +42,10 @@ export default function DesignStudioContent() {
           <div className="sticky top-8">
             <Suspense
               fallback={
-                <div className="relative aspect-square h-full max-h-[650px] w-full overflow-hidden rounded-2xl bg-gray-100" />
+                <div className="w-full aspect-square overflow-hidden rounded-2xl bg-gray-100" />
               }
             >
-              <div className="relative flex aspect-square h-full max-h-[650px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-100">
+              <div className="w-full aspect-square overflow-hidden rounded-2xl bg-gray-100 flex items-center justify-center">
                 {selectedDesign ? (
                   isGenerating ? (
                     <div className="flex flex-col items-center gap-3">
@@ -46,14 +53,16 @@ export default function DesignStudioContent() {
                       <p className="text-sm text-gray-600">Generating design...</p>
                     </div>
                   ) : imageUrl ? (
-                    <Image
-                      src={imageUrl}
-                      alt={selectedDesign.name || 'Selected Design'}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      priority
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={imageUrl}
+                        alt={selectedDesign.name || 'Selected Design'}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        priority
+                      />
+                    </div>
                   ) : (
                     <p className="px-8 text-center text-gray-500">Loading design preview...</p>
                   )
@@ -65,14 +74,6 @@ export default function DesignStudioContent() {
               </div>
             </Suspense>
           </div>
-        </div>
-      </div>
-
-      {/* Full Width Design Selection Section */}
-      <div className="w-full">
-        <NumberLabel label="Select a design">2</NumberLabel>
-        <div className="w-full">
-          <DesignStudioCarousel />
         </div>
       </div>
     </div>

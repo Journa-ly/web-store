@@ -62,7 +62,7 @@ export default async function Image() {
             filter: 'blur(50px)'
           }}
         />
-        
+
         {/* Logo container */}
         <div
           style={{
@@ -83,7 +83,7 @@ export default async function Image() {
             }}
           />
         </div>
-        
+
         {/* Tagline */}
         <div
           style={{
@@ -104,7 +104,7 @@ export default async function Image() {
           >
             Create Custom Apparel with AI
           </p>
-          
+
           {/* Accent line */}
           <div
             style={{
@@ -116,7 +116,7 @@ export default async function Image() {
             }}
           />
         </div>
-        
+
         {/* Call to action */}
         <p
           style={{
@@ -134,4 +134,4 @@ export default async function Image() {
       ...size
     }
   );
-} 
+}

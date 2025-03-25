@@ -1,21 +1,31 @@
-// pages/sign-up.tsx
-import AuthForm from 'components/forms/authForm';
-import { AuthFormType } from 'types/authForm';
+'use client';
+
+import ForgotPasswordForm from 'components/forms/ForgotPasswordForm';
+import { useAuth } from 'requests/users';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 import Link from 'next/link';
 
-const SignUpPage = () => {
+const ForgotPasswordPage = () => {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  // Redirect if already authenticated
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/profile');
+    }
+  }, [isAuthenticated, router]);
+
   return (
     <div className="flex flex-col items-center justify-center bg-base-100 px-4 pb-24 pt-8 sm:px-6 lg:px-8">
-      <div className="w-full max-w-xl">
+      <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h2 className="mt-6 text-3xl font-extrabold text-base-content">Create Your Account</h2>
-          <p className="mt-2 text-base-content/70">
-            Join Journa to discover and shop unique designs from independent creators.
-          </p>
+          <h2 className="mt-6 text-3xl font-extrabold text-base-content">Reset Your Password</h2>
         </div>
 
         <div className="mt-8">
-          <AuthForm formType={AuthFormType.SIGNUP} />
+          <ForgotPasswordForm />
         </div>
 
         <div className="mt-8 text-center">
@@ -24,11 +34,8 @@ const SignUpPage = () => {
               Login
             </Link>
             <span className="text-base-content/30">•</span>
-            <Link
-              href="/forgot-password"
-              className="text-sm text-base-content/70 hover:text-primary"
-            >
-              Forgot Password
+            <Link href="/sign-up" className="text-sm text-base-content/70 hover:text-primary">
+              Create Account
             </Link>
             <span className="text-base-content/30">•</span>
             <Link href="/" className="text-sm text-base-content/70 hover:text-primary">
@@ -41,4 +48,4 @@ const SignUpPage = () => {
   );
 };
 
-export default SignUpPage;
+export default ForgotPasswordPage;

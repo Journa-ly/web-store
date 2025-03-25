@@ -1,11 +1,11 @@
 'use client';
 
-import { Design } from '@/types/design';
+import { TrendingDesign } from '@/types/design';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface TrendingDesignsCarouselProps {
-  designs: Design[];
+  designs: TrendingDesign[];
 }
 
 export default function TrendingDesignsCarousel({ designs }: TrendingDesignsCarouselProps) {

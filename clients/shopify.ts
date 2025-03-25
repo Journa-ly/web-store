@@ -9,7 +9,7 @@ const API_VERSION = '2023-07'; // or also store this in an env var if needed
 const shopifyAxios = axios.create({
   baseURL: `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${API_VERSION}`,
   headers: {
-    'X-Shopify-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
+    'X-Shopify-Storefront-Access-Token': SHOPIFY_ADMIN_ACCESS_TOKEN,
     'Content-Type': 'application/json'
   }
 });

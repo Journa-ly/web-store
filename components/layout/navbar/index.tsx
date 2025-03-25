@@ -25,7 +25,7 @@ export function Navbar() {
           </Link>
         </div>
         <div className="navbar-center hidden lg:flex">
-          <ul className="menu menu-horizontal px-1">
+          <ul className="menu menu-horizontal gap-4 px-1">
             {menu.length
               ? menu.map((item) => (
                   <li key={item.title}>

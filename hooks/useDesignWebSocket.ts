@@ -1,18 +1,18 @@
 import useSWRSubscription, { SWRSubscriptionOptions } from 'swr/subscription';
 import { WEBSOCKET_URL } from 'lib/constants';
-import { Design } from 'types/design';
+import { UserDesign } from 'types/design';
 
 interface WebSocketMessage {
   type: 'image_data' | 'error';
-  data: Design[] | { error: string };
+  data: UserDesign[] | { error: string };
 }
 
 /**
  * Hook for WebSocket connection that receives design updates
  */
-export function useDesignWebSocket() {
+export function useDesignWebSocket(liveStreamUuid: string | null = null) {
   return useSWRSubscription<WebSocketMessage>(
-    '/ws/images/',
+    `/ws/images/${liveStreamUuid ? `?stream_id=${liveStreamUuid}` : ''}`,
     (key: string, { next }: SWRSubscriptionOptions<WebSocketMessage, Error>) => {
       const socket = new WebSocket(`${WEBSOCKET_URL}${key}`);
       const heartbeatInterval = setInterval(() => {

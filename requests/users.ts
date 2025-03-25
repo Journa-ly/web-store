@@ -20,6 +20,7 @@ interface LoginCredentials {
 }
 
 interface RegisterData {
+  username: string;
   email: string;
   password: string;
   password2: string;
@@ -30,6 +31,7 @@ interface RegisterData {
 }
 
 interface UpdateUserData {
+  username?: string;
   email?: string;
   first_name?: string;
   last_name?: string;
@@ -42,7 +44,7 @@ interface PasswordResetInitiate {
 }
 
 interface PasswordResetConfirm {
-  uid: string;
+  customer_id: string;
   token: string;
   new_password: string;
   new_password2: string;
@@ -122,6 +124,26 @@ export function useAuth() {
     }
   };
 
+  // Add initiatePasswordReset method
+  const initiatePasswordReset = async (data: PasswordResetInitiate) => {
+    try {
+      const response = await userRequests.initiatePasswordReset(data);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error };
+    }
+  };
+
+  // Add confirmPasswordReset method
+  const confirmPasswordReset = async (data: PasswordResetConfirm) => {
+    try {
+      const response = await userRequests.confirmPasswordReset(data);
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error };
+    }
+  };
+
   return {
     user,
     isAuthenticated: !!user,
@@ -130,6 +152,8 @@ export function useAuth() {
     login,
     logout,
     register,
+    initiatePasswordReset,
+    confirmPasswordReset,
     mutate
   };
 }
