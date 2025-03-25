@@ -24,7 +24,7 @@ export default async function ResetPasswordPage({ params }: PageProps) {
           <h1 className="text-3xl font-bold text-base-content">Reset Your Password</h1>
           <p className="mt-2 text-base-content/70">Create a new password for your account</p>
         </div>
-        <ResetPasswordForm customerId={customer_id} token={token}/>
+        <ResetPasswordForm customerId={customer_id} token={token} />
       </div>
     </div>
   );

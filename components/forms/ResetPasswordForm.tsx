@@ -23,10 +23,9 @@ const resetPasswordSchema = z
 // Type for form values
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-const ResetPasswordForm = ({customerId, token}: {customerId: string, token: string}) => {
+const ResetPasswordForm = ({ customerId, token }: { customerId: string; token: string }) => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
-
 
   // Use the auth hook for password reset functionality
   const { confirmPasswordReset, loading } = useAuth();
