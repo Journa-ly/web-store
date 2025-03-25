@@ -23,25 +23,13 @@ const resetPasswordSchema = z
 // Type for form values
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-const ResetPasswordForm = () => {
+const ResetPasswordForm = ({customerId, token}: {customerId: string, token: string}) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [success, setSuccess] = useState(false);
-  const [invalidLink, setInvalidLink] = useState(false);
 
-  // Get customer_id and token from URL for password reset
-  const customerId = searchParams?.get('customer_id') || '';
-  const token = searchParams?.get('token') || '';
 
   // Use the auth hook for password reset functionality
   const { confirmPasswordReset, loading } = useAuth();
-
-  // Check if the reset link is valid
-  useEffect(() => {
-    if (!customerId || !token) {
-      setInvalidLink(true);
-    }
-  }, [customerId, token]);
 
   const {
     register,
@@ -90,44 +78,6 @@ const ResetPasswordForm = () => {
       });
     }
   };
-
-  // If the link is invalid, show an error message
-  if (invalidLink) {
-    return (
-      <div className="rounded-lg border border-base-200 bg-base-100 p-8 shadow-lg">
-        <div className="mb-6 flex justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-error/20">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-8 w-8 text-error"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
-          </div>
-        </div>
-        <h2 className="mb-4 text-center text-2xl font-bold text-base-content">
-          Invalid Reset Link
-        </h2>
-        <p className="mb-6 text-center text-base-content/70">
-          The password reset link is invalid or has expired. Please request a new password reset
-          link.
-        </p>
-        <div className="flex justify-center">
-          <Link href="/forgot-password" className="btn btn-primary btn-wide">
-            Request New Reset Link
-          </Link>
-        </div>
-      </div>
-    );
-  }
 
   // If the form was successfully submitted, show a success message
   if (success) {
