@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
   const cookieStore = await cookies();
   const sessionId = cookieStore.get('sessionid')?.value;
   const csrfToken = cookieStore.get('csrftoken')?.value;
+  const authToken = cookieStore.get('auth_token')?.value;
 
   if (!designId) {
     return redirect(returnUrl);
@@ -27,7 +28,7 @@ export async function GET(request: NextRequest) {
         {},
         {
           headers: {
-            Cookie: `sessionid=${sessionId}; csrftoken=${csrfToken}`,
+            Cookie: `sessionid=${sessionId}; csrftoken=${csrfToken}; auth_token=${authToken}`,
             'X-CSRFToken': csrfToken
           }
         }
@@ -43,6 +44,8 @@ export async function GET(request: NextRequest) {
           }
         });
       });
+
+    console.log('response: ', response);
 
     // Get the current request's origin to use as base URL
     const requestOrigin = request.headers.get('host');
