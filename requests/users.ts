@@ -44,7 +44,6 @@ interface PasswordResetInitiate {
 }
 
 interface PasswordResetConfirm {
-  customer_id: string;
   token: string;
   new_password: string;
   new_password2: string;

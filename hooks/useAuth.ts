@@ -46,7 +46,7 @@ interface ResetPasswordInitiate {
 }
 
 interface ResetPasswordConfirm {
-  customer_id: string;
+  user_id: string;
   token: string;
   new_password: string;
   new_password2: string;

@@ -23,7 +23,7 @@ const resetPasswordSchema = z
 // Type for form values
 type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;
 
-const ResetPasswordForm = ({ customerId, token }: { customerId: string; token: string }) => {
+const ResetPasswordForm = ({ user_id, token }: { user_id: string; token: string }) => {
   const router = useRouter();
   const [success, setSuccess] = useState(false);
 
@@ -41,7 +41,7 @@ const ResetPasswordForm = ({ customerId, token }: { customerId: string; token: s
 
   const onSubmit: SubmitHandler<ResetPasswordFormValues> = async (values) => {
     try {
-      if (!customerId || !token) {
+      if (!token) {
         setError('root', {
           type: 'manual',
           message: 'Invalid reset link. Please request a new password reset.'
@@ -50,7 +50,7 @@ const ResetPasswordForm = ({ customerId, token }: { customerId: string; token: s
       }
 
       const result = await confirmPasswordReset({
-        customer_id: customerId,
+        user_id,
         token,
         new_password: values.new_password,
         new_password2: values.new_password2
