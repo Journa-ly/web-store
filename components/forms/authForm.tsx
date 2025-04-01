@@ -331,7 +331,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       <div className="mt-4 flex justify-center">
         <Turnstile
           key={turnstileKey}
-          sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
+          sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
           onVerify={onTurnstileVerify}
           onError={onTurnstileError}
           onExpire={onTurnstileExpire}

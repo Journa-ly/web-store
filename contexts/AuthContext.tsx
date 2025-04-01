@@ -27,7 +27,7 @@ interface AuthContextType {
   }) => Promise<any>;
   initiatePasswordReset: (data: { email: string }) => Promise<any>;
   confirmPasswordReset: (data: {
-    customer_id: string;
+    user_id: string;
     token: string;
     new_password: string;
     new_password2: string;
@@ -48,7 +48,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return await auth.initiatePasswordReset(data);
     },
     confirmPasswordReset: async (data: {
-      customer_id: string;
+      user_id: string;
       token: string;
       new_password: string;
       new_password2: string;
