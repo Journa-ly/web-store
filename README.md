@@ -36,3 +36,59 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 ## Vercel, Next.js Commerce, and Shopify Integration Guide
 
 You can use this comprehensive [integration guide](https://vercel.com/docs/integrations/ecommerce/shopify) with step-by-step instructions on how to configure Shopify as a headless CMS using Next.js Commerce as your headless Shopify storefront on Vercel.
+
+## Cloudflare Turnstile Integration
+
+The application uses Cloudflare Turnstile for protection against bots on authentication forms. Follow these steps to set it up:
+
+### 1. Create a Cloudflare Turnstile Site
+
+1. Go to the [Cloudflare Dashboard](https://dash.cloudflare.com/) and sign in
+2. Navigate to **Security** > **Turnstile**
+3. Click **Add Site**
+4. Configure your site with the following settings:
+   - **Name**: Your site name
+   - **Domains**: Add your domain(s) where the widget will be used
+   - **Widget Mode**: Select "Invisible" for a non-intrusive experience or "Managed" for a visible challenge
+   - **Type**: "Non-Interactive" is recommended for most use cases
+
+### 2. Get Your Turnstile Keys
+
+After creating your site, you'll receive:
+- **Site Key**: Used in the frontend to render the widget
+- **Secret Key**: Used in the backend to verify the token
+
+### 3. Configure Environment Variables
+
+Add the following to your `.env.local` file:
+
+```
+NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY=your_site_key_here
+CLOUDFLARE_TURNSTILE_SECRET_KEY=your_secret_key_here
+```
+
+### 4. Backend Integration
+
+Make sure your backend API is configured to validate the Turnstile token with Cloudflare's API. The token is sent with login and registration requests as `cfTurnstileResponse`.
+
+Example validation in Django:
+```python
+import requests
+
+def validate_turnstile(token, remote_ip):
+    data = {
+        'secret': os.environ.get('CLOUDFLARE_TURNSTILE_SECRET_KEY'),
+        'response': token,
+        'remoteip': remote_ip
+    }
+    
+    response = requests.post(
+        'https://challenges.cloudflare.com/turnstile/v0/siteverify',
+        data=data
+    )
+    
+    result = response.json()
+    return result.get('success', False)
+```
+
+The authentication forms in the application now include Turnstile protection and will automatically send the token with login and registration requests.

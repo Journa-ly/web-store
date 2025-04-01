@@ -7,13 +7,15 @@ import { AuthFormType } from 'types/authForm';
 import { z } from 'zod';
 import { useAuth } from '../../requests/users';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { ClipLoader } from 'react-spinners';
+import Turnstile from 'react-turnstile';
 
 // Update the schemas to match backend expectations
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
-  password: z.string().min(6, 'Your password must have at least 6 characters')
+  password: z.string().min(6, 'Your password must have at least 6 characters'),
+  cfTurnstileResponse: z.string().min(1, 'Please complete the CAPTCHA')
 });
 
 const signUpSchema = z
@@ -31,7 +33,8 @@ const signUpSchema = z
     accepts_marketing: z.boolean().optional().default(true),
     accepts_terms: z.boolean().refine((val) => val === true, {
       message: 'You must accept the terms of service to create an account'
-    })
+    }),
+    cfTurnstileResponse: z.string().min(1, 'Please complete the CAPTCHA')
   })
   .refine((data) => data.password === data.password2, {
     message: "Passwords don't match",
@@ -52,6 +55,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
 
   const router = useRouter();
   const [success, setSuccess] = useState(false);
+  const [turnstileToken, setTurnstileToken] = useState('');
+  const [turnstileError, setTurnstileError] = useState(false);
+  const [turnstileKey, setTurnstileKey] = useState(Date.now().toString());
 
   // Use the auth hook for all authentication functionality
   const { login, register: registerUser, isLoading } = useAuth();
@@ -67,15 +73,54 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
     register,
     handleSubmit,
     formState: { errors },
-    setError
+    setError,
+    setValue
   } = useForm({
     resolver: zodResolver(getSchema())
   });
 
+  const onTurnstileVerify = (token: string) => {
+    setTurnstileToken(token);
+    setValue('cfTurnstileResponse', token);
+    setTurnstileError(false);
+  };
+
+  const onTurnstileError = () => {
+    setTurnstileError(true);
+    setValue('cfTurnstileResponse', '');
+  };
+
+  const onTurnstileExpire = () => {
+    setTurnstileToken('');
+    setValue('cfTurnstileResponse', '');
+    setTurnstileError(true);
+  };
+
+  const resetTurnstile = useCallback(() => {
+    // Reset the Turnstile component by changing its key, forcing a re-render
+    setTurnstileKey(Date.now().toString());
+    setTurnstileToken('');
+    setValue('cfTurnstileResponse', '');
+  }, [setValue]);
+
   const onSubmit: SubmitHandler<any> = async (values) => {
+    if (!turnstileToken) {
+      setTurnstileError(true);
+      setError('cfTurnstileResponse', {
+        type: 'manual',
+        message: 'Please complete the CAPTCHA verification'
+      });
+      return;
+    }
+
     try {
       if (isLogin) {
-        const result = await login(values as LoginFormValues);
+        const loginData = {
+          ...values as LoginFormValues,
+          cfTurnstileResponse: turnstileToken
+        };
+        
+        const result = await login(loginData);
         if (result.success && result.data) {
           router.push('/designs/trending');
         } else {
@@ -83,9 +128,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             type: 'manual',
             message: 'Invalid email or password'
           });
+          // Reset turnstile on failed login
+          resetTurnstile();
         }
       } else if (isSignUp) {
-        const result = await registerUser(values as SignUpFormValues);
+        const signUpData = {
+          ...values as SignUpFormValues,
+          cfTurnstileResponse: turnstileToken
+        };
+        
+        const result = await registerUser(signUpData);
         if (result.success) {
           router.push('/designs/trending');
         } else {
@@ -107,6 +159,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               message: 'Registration failed. Please try again.'
             });
           }
+          
+          // Reset turnstile on failed signup
+          resetTurnstile();
         }
       }
     } catch (error) {
@@ -115,6 +170,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         type: 'manual',
         message: 'An unexpected error occurred'
       });
+      
+      // Reset turnstile on error
+      resetTurnstile();
     }
   };
 
@@ -267,6 +325,24 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
             <p className="mt-1 text-sm text-error">{errors.accepts_terms.message as string}</p>
           )}
         </div>
+      )}
+
+      {/* Cloudflare Turnstile */}
+      <div className="mt-4 flex justify-center">
+        <Turnstile
+          key={turnstileKey}
+          sitekey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY}
+          onVerify={onTurnstileVerify}
+          onError={onTurnstileError}
+          onExpire={onTurnstileExpire}
+          theme="light"
+          refreshExpired="auto"
+        />
+      </div>
+      {(errors.cfTurnstileResponse || turnstileError) && (
+        <p className="mt-1 text-center text-sm text-error">
+          {errors.cfTurnstileResponse?.message as string || 'Please complete the CAPTCHA verification'}
+        </p>
       )}
 
       {/* Forgot Password Link (Login only) */}

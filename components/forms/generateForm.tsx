@@ -32,7 +32,10 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authModalTitle, setAuthModalTitle] = useState('Sign in to create designs');
   const [pendingDesignData, setPendingDesignData] = useState<FormValues | null>(null);
+  const [remainingDesigns, setRemainingDesigns] = useState<number | null>(null);
+  
   const {
     register,
     handleSubmit,
@@ -43,7 +46,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     resolver: zodResolver(formSchema)
   });
 
-  const { mutate } = usePaginatedMyDesigns();
+  const { mutate, myDesigns } = usePaginatedMyDesigns();
 
   // Update form when selected design changes
   useEffect(() => {
@@ -53,16 +56,23 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     }
   }, [selectedDesign, setValue]);
 
+  // Check remaining designs for anonymous users
+  useEffect(() => {
+    if (!isAuthenticated && myDesigns) {
+      // Use the same limit as the backend (ANON_MAX_DESIGNS = 3)
+      const maxDesigns = 3;
+      const designCount = myDesigns.length;
+      setRemainingDesigns(Math.max(0, maxDesigns - designCount));
+    } else {
+      setRemainingDesigns(null);
+    }
+  }, [isAuthenticated, myDesigns]);
+
   const onSubmit = async (data: FormValues) => {
     if (isSubmitDisabled) return;
 
-    // Check authentication before proceeding
-    if (!isAuthenticated) {
-      setPendingDesignData(data);
-      setShowAuthModal(true);
-      return;
-    }
-
+    // Allow anonymous users to generate designs directly
+    // (up to their limit) without forcing sign in first
     await submitDesign(data);
   };
 
@@ -79,9 +89,34 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
       await createDesign(designData);
       await mutate();
-    } catch (error) {
+      
+      // Update remaining designs count after successful creation
+      if (!isAuthenticated && remainingDesigns !== null) {
+        setRemainingDesigns(Math.max(0, remainingDesigns - 1));
+      }
+    } catch (error: any) {
       console.error('Error creating design:', error);
-      if (error instanceof Error) {
+      
+      // Check if this is a 403 error indicating the user hit their design limit
+      if (error?.response?.status === 403 && !isAuthenticated) {
+        // Show auth modal with a special message about limit reached
+        setAuthModalTitle('Design limit reached');
+        setPendingDesignData(data);
+        setShowAuthModal(true);
+        return;
+      }
+      
+      // Handle rate limit exceeded (429) error
+      if (error?.response?.status === 429) {
+        setErrorMessage(error.response.data.detail || 
+          "You've reached the rate limit for design creation. Please wait a few minutes before trying again.");
+        return;
+      }
+      
+      // Handle other types of errors
+      if (error?.response?.data?.detail) {
+        setErrorMessage(error.response.data.detail);
+      } else if (error instanceof Error) {
         setErrorMessage(error.message);
       } else if (typeof error === 'string') {
         setErrorMessage(error);
@@ -146,6 +181,48 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
           {errors.imageText && <p className="text-sm text-red-500">{errors.imageText.message}</p>}
         </div>
 
+        {/* Remaining designs for anonymous users */}
+        {!isAuthenticated && remainingDesigns !== null && (
+          <div className={clsx(
+            "rounded-md p-3",
+            remainingDesigns > 0 ? "bg-blue-50" : "bg-amber-50"
+          )}>
+            <div className="flex">
+              <div className="ml-3 flex-1 md:flex md:justify-between">
+                {remainingDesigns > 0 ? (
+                  <p className="text-sm text-blue-700">
+                    You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining. 
+                    <a href="#" 
+                       onClick={(e) => {
+                         e.preventDefault();
+                         setAuthModalTitle('Sign in for unlimited designs');
+                         setShowAuthModal(true);
+                       }}
+                       className="ml-2 font-medium underline"
+                    >
+                      Sign in for unlimited designs.
+                    </a>
+                  </p>
+                ) : (
+                  <p className="text-sm text-amber-700">
+                    You've used all your guest designs.  
+                    <a href="#" 
+                       onClick={(e) => {
+                         e.preventDefault();
+                         setAuthModalTitle('Sign in for unlimited designs');
+                         setShowAuthModal(true);
+                       }}
+                       className="ml-2 font-medium underline"
+                    >
+                      Sign in to continue designing.
+                    </a>
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Style Field (Optional) */}
         {/* Uncomment or adjust the style field as needed */}
         {/* <div>
@@ -197,14 +274,29 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
           <button
             type="submit"
-            disabled={isSubmitting || isSubmitDisabled}
+            disabled={isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)}
             className={clsx(
-              'btn btn-secondary flex items-center gap-2 text-white',
-              (isSubmitting || isSubmitDisabled) && 'cursor-not-allowed opacity-50'
+              'btn btn-secondary flex items-center gap-2 text-white relative group',
+              (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) && 'cursor-not-allowed opacity-50'
             )}
+            onClick={() => {
+              // If it's disabled due to no remaining designs, show auth modal instead
+              if (!isAuthenticated && remainingDesigns === 0) {
+                setAuthModalTitle('Design limit reached');
+                setShowAuthModal(true);
+                return false; // Prevent form submission
+              }
+            }}
           >
             <PaintBrushIcon width={24} height={24} />
             {isSubmitting ? 'Generating...' : 'Generate'}
+            
+            {/* Tooltip for when button is disabled due to no remaining designs */}
+            {!isAuthenticated && remainingDesigns === 0 && (
+              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+                Sign in to create more designs
+              </div>
+            )}
           </button>
         </div>
       </form>
@@ -217,7 +309,10 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
           setPendingDesignData(null);
         }}
         onSuccess={handleAuthSuccess}
-        title="Sign in to create designs"
+        title={authModalTitle}
+        description={authModalTitle === 'Design limit reached' ? 
+          "You've reached the maximum number of designs for anonymous users. Sign in or create an account to continue designing." : 
+          undefined}
       />
     </>
   );

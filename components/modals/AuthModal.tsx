@@ -10,13 +10,15 @@ interface AuthModalProps {
   onClose: () => void;
   onSuccess: () => void;
   title?: string;
+  description?: string;
 }
 
 export default function AuthModal({
   isOpen,
   onClose,
   onSuccess,
-  title = 'Sign in to your account'
+  title = 'Sign in to your account',
+  description
 }: AuthModalProps) {
   const [activeTab, setActiveTab] = useState(AuthFormType.LOGIN);
 
@@ -67,9 +69,9 @@ export default function AuthModal({
                     </div>
                   </Dialog.Title>
                   <p className="mt-2 text-sm text-gray-500">
-                    {activeTab === AuthFormType.LOGIN
+                    {description || (activeTab === AuthFormType.LOGIN
                       ? 'Welcome back! Please enter your details'
-                      : 'Create an account to get started'}
+                      : 'Create an account to get started')}
                   </p>
                 </div>
 

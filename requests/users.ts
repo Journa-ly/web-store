@@ -17,6 +17,7 @@ export interface User {
 interface LoginCredentials {
   email: string;
   password: string;
+  cfTurnstileResponse: string;
 }
 
 interface RegisterData {
@@ -28,6 +29,8 @@ interface RegisterData {
   last_name: string;
   phone_number?: string;
   accepts_marketing?: boolean;
+  accepts_terms: boolean;
+  cfTurnstileResponse: string;
 }
 
 interface UpdateUserData {
