@@ -5,6 +5,7 @@ import { HIDDEN_PRODUCT_TAG, PRODUCT_TYPES } from 'lib/constants';
 import { getProduct } from 'lib/shopify';
 import TemplateProduct from '@/components/product/template-product';
 import ReadyToShipProduct from '@/components/product/ready-to-ship-product';
+import ProductTutorialWrapper from '@/components/tutorial/ProductTutorialWrapper';
 // import { getDesign } from '@/requests/designs';
 
 export async function generateMetadata(props: {
@@ -84,11 +85,13 @@ export default async function ProductPage({ params }: ProductPageProps) {
         }}
       />
       <div className="mx-auto max-w-screen-2xl">
-        {product.productType === PRODUCT_TYPES.readyToShip ? (
-          <ReadyToShipProduct product={product} />
-        ) : (
-          <TemplateProduct product={product} />
-        )}
+        <ProductTutorialWrapper>
+          {product.productType === PRODUCT_TYPES.readyToShip ? (
+            <ReadyToShipProduct product={product} />
+          ) : (
+            <TemplateProduct product={product} />
+          )}
+        </ProductTutorialWrapper>
       </div>
     </ProductProvider>
   );

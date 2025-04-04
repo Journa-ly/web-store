@@ -4,10 +4,11 @@ import ProductCarousel from 'components/ProductCarousel';
 import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
 import NumberLabel from '@/components/numberLabel';
+import StudioTutorialWrapper from 'components/tutorial/StudioTutorialWrapper';
 
 export default async function StudioPage() {
   return (
-    <>
+    <StudioTutorialWrapper>
       <div className="w-full">
         <div className="overflow-hidden rounded-2xl bg-white shadow">
           <div className="p-4 md:p-6 lg:p-8">
@@ -33,6 +34,6 @@ export default async function StudioPage() {
       <div className="mt-8">
         <FAQ />
       </div>
-    </>
+    </StudioTutorialWrapper>
   );
 }

@@ -46,3 +46,61 @@ button {
 .animate-carousel {
   animation: carousel 60s linear infinite;
 }
+
+/* Tutorial tooltip styles */
+.tutorial-highlight {
+  position: relative;
+  z-index: 10;
+}
+
+.tutorial-tooltip {
+  position: absolute;
+  z-index: 9999; /* Ensure it's above all other elements */
+  max-width: 90%;
+  width: 18rem;
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) 
+         drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  pointer-events: auto; /* Ensure clicks work */
+}
+
+.tooltip-arrow {
+  position: absolute;
+  width: 1rem;
+  height: 1rem;
+  background-color: rgb(238, 242, 255);
+  transform: rotate(45deg);
+  border: 1px solid rgb(224, 231, 255);
+  z-index: -1; /* Place behind the tooltip content */
+}
+
+.tooltip-arrow-top {
+  top: -0.5rem;
+  left: 50%;
+  margin-left: -0.5rem;
+  border-bottom: none;
+  border-right: none;
+}
+
+.tooltip-arrow-bottom {
+  bottom: -0.5rem;
+  left: 50%;
+  margin-left: -0.5rem;
+  border-top: none;
+  border-left: none;
+}
+
+.tooltip-arrow-left {
+  left: -0.5rem;
+  top: 50%;
+  margin-top: -0.5rem;
+  border-top: none;
+  border-right: none;
+}
+
+.tooltip-arrow-right {
+  right: -0.5rem;
+  top: 50%;
+  margin-top: -0.5rem;
+  border-bottom: none;
+  border-left: none;
+}

@@ -27,7 +27,7 @@ function SubmitButton({
 
   if (!availableForSale) {
     return (
-      <button disabled className={clsx(buttonClasses, disabledClasses)}>
+      <button id="add-to-cart-button" disabled className={clsx(buttonClasses, disabledClasses)}>
         Out Of Stock
       </button>
     );
@@ -36,6 +36,7 @@ function SubmitButton({
   if ((!selectedDesign || selectedDesign.product_image?.image === null) && selectedDesignRequired) {
     return (
       <button
+        id="add-to-cart-button"
         aria-label="Please select an image"
         disabled
         className={clsx(buttonClasses, disabledClasses)}
@@ -51,6 +52,7 @@ function SubmitButton({
   if (!selectedVariantId) {
     return (
       <button
+        id="add-to-cart-button"
         aria-label="Please select an image"
         disabled
         className={clsx(buttonClasses, disabledClasses)}
@@ -65,6 +67,7 @@ function SubmitButton({
 
   return (
     <button
+      id="add-to-cart-button"
       aria-label="Add to cart"
       className={clsx(buttonClasses, {
         'hover:opacity-90': true

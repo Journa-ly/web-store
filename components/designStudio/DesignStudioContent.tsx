@@ -19,7 +19,6 @@ export default function DesignStudioContent() {
       <div className="flex w-full flex-col lg:flex-row lg:gap-8">
         {/* Left Column - Design Form */}
         <div className="w-full lg:w-1/2">
-          <h1 className="text-3xl font-bold text-gray-900">Design Studio</h1>
           <p className="mt-2 text-gray-600">Create your custom design with AI</p>
 
           <div className="mt-8">

@@ -1,6 +1,7 @@
 import { Providers } from './providers';
 import { CartProvider } from 'components/cart/cart-context';
 import { DesignProvider } from 'components/designs/design-context';
+import { TutorialProvider } from '@/contexts/TutorialContext';
 import Footer from 'components/layout/footer';
 import { Navbar } from 'components/layout/navbar';
 import { getCart } from 'lib/shopify';
@@ -116,8 +117,10 @@ export default async function RootLayout({ children }: { children: ReactNode }) 
         <Providers>
           <CartProvider cartPromise={cart}>
             <DesignProvider>
-              <Navbar />
-              <main>{children}</main>
+              <TutorialProvider>
+                <Navbar />
+                <main>{children}</main>
+              </TutorialProvider>
             </DesignProvider>
           </CartProvider>
         </Providers>

@@ -13,7 +13,6 @@ import { Gallery } from 'components/product/gallery';
 import { AddToCart } from 'components/cart/add-to-cart';
 import DesignForm from 'components/forms/generateForm';
 import RelatedProducts from 'components/product/related-products';
-import DesignPreview from '../designs/DesignPreview';
 
 export default function TemplateProduct({ product }: { product: Product }) {
   return (
@@ -41,7 +40,9 @@ export default function TemplateProduct({ product }: { product: Product }) {
           <div className="mb-8 w-full">
             <NumberLabel label="Describe your design">1</NumberLabel>
             <DesignForm />
-            <NumberLabel label="Select a design">2</NumberLabel>
+            <div className="pb-2">
+              <NumberLabel label="Select a design">2</NumberLabel>
+            </div>
             <div className="w-full overflow-hidden">
               <MyDesignsCarousel />
             </div>

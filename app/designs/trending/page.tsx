@@ -5,6 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import DesignCard from '@/components/designs/DesignCard';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import TrendingTutorial from '@/components/tutorial/TrendingTutorial';
 import { Metadata } from 'next';
 
 // export function generateMetadata(): Metadata {
@@ -56,6 +57,9 @@ export default function TrendingPage() {
           </div>
         </>
       )}
+      
+      {/* Tutorial component */}
+      <TrendingTutorial />
     </section>
   );
 }
