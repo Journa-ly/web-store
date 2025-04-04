@@ -16,9 +16,11 @@ const StudioTutorial: React.FC = () => {
 
     const initializeTargets = () => {
       if (hasInitializedRef.current) return;
-      
+
       // Find the relevant elements and add classes for easier targeting
-      const promptTextarea = document.querySelector('textarea[placeholder="Enter your design description..."]');
+      const promptTextarea = document.querySelector(
+        'textarea[placeholder="Enter your design description..."]'
+      );
       const imageTextInput = document.querySelector('input[placeholder="Image Text"]');
       const generateButton = document.querySelector('button[type="submit"]');
       const productCarousel = document.querySelector('.max-w-4xl');
@@ -37,7 +39,7 @@ const StudioTutorial: React.FC = () => {
       if (imageTextInput) imageTextInput.classList.add('tutorial-target-image-text');
       if (generateButton) generateButton.classList.add('tutorial-target-generate');
       if (productCarousel) productCarousel.classList.add('tutorial-target-products');
-      
+
       return true;
     };
 
@@ -47,47 +49,55 @@ const StudioTutorial: React.FC = () => {
       const timerId = setTimeout(() => {
         initializeTargets();
       }, 500);
-      
+
       return () => clearTimeout(timerId);
     }
-    
+
     return () => {
       // Clean up classes on unmount
       cleanupTargetClasses();
-      
+
       hasInitializedRef.current = false;
     };
   }, [isStudioTutorialActive]);
-  
+
   // Helper function to clean up target classes
   const cleanupTargetClasses = () => {
-    document.querySelectorAll('.tutorial-target-prompt, .tutorial-target-image-text, .tutorial-target-generate, .tutorial-target-products')
-      .forEach(el => {
+    document
+      .querySelectorAll(
+        '.tutorial-target-prompt, .tutorial-target-image-text, .tutorial-target-generate, .tutorial-target-products'
+      )
+      .forEach((el) => {
         el.classList.remove(
-          'tutorial-target-prompt', 
-          'tutorial-target-image-text', 
-          'tutorial-target-generate', 
+          'tutorial-target-prompt',
+          'tutorial-target-image-text',
+          'tutorial-target-generate',
           'tutorial-target-products'
         );
       });
   };
 
   // Define tutorial steps content - with positions for the studio tutorial
-  const steps: Record<StudioPageStep, {
-    title: string;
-    content: string;
-    selector: string;
-    position?: 'top' | 'bottom' | 'left' | 'right';
-  }> = {
+  const steps: Record<
+    StudioPageStep,
+    {
+      title: string;
+      content: string;
+      selector: string;
+      position?: 'top' | 'bottom' | 'left' | 'right';
+    }
+  > = {
     'input-prompt': {
       title: 'Enter Your Design Prompt',
-      content: 'Start by entering a prompt that describes the design you want to create. Be specific about colors, style, and elements.',
+      content:
+        'Start by entering a prompt that describes the design you want to create. Be specific about colors, style, and elements.',
       selector: '.tutorial-target-prompt, textarea[placeholder="Enter your design description..."]',
       position: 'bottom'
     },
     'input-image-text': {
       title: 'Add Image Text (Optional)',
-      content: 'If you want text on your design, enter it here. This is optional but can enhance your design.',
+      content:
+        'If you want text on your design, enter it here. This is optional but can enhance your design.',
       selector: '.tutorial-target-image-text, input[placeholder="Image Text"]',
       position: 'right'
     },
@@ -103,30 +113,30 @@ const StudioTutorial: React.FC = () => {
       selector: '.tutorial-target-products, .max-w-4xl',
       position: 'top'
     },
-    'completed': {
+    completed: {
       title: 'Completed!',
       content: 'You have completed the design studio tutorial.',
       selector: 'h1',
       position: 'bottom'
     }
   };
-  
+
   // Get current step data
   const currentStep = steps[studioStep];
-  
+
   // Calculate step number
   const getStepNumber = () => {
-    const stepKeys = Object.keys(steps).filter(key => key !== 'completed');
+    const stepKeys = Object.keys(steps).filter((key) => key !== 'completed');
     return stepKeys.indexOf(studioStep as string) + 1;
   };
-  
+
   const stepNumber = getStepNumber();
-  const totalSteps = Object.keys(steps).filter(key => key !== 'completed').length;
-  
+  const totalSteps = Object.keys(steps).filter((key) => key !== 'completed').length;
+
   if (!isStudioTutorialActive || studioStep === 'completed') {
     return null;
   }
-  
+
   return (
     <TutorialTooltip
       targetSelector={currentStep.selector}
@@ -142,4 +152,4 @@ const StudioTutorial: React.FC = () => {
   );
 };
 
-export default StudioTutorial; 
+export default StudioTutorial;

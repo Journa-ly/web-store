@@ -58,8 +58,7 @@ button {
   z-index: 9999; /* Ensure it's above all other elements */
   max-width: 90%;
   width: 18rem;
-  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) 
-         drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
+  filter: drop-shadow(0 10px 8px rgb(0 0 0 / 0.04)) drop-shadow(0 4px 3px rgb(0 0 0 / 0.1));
   pointer-events: auto; /* Ensure clicks work */
 }
 

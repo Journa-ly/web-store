@@ -35,7 +35,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [authModalTitle, setAuthModalTitle] = useState('Sign in to create designs');
   const [pendingDesignData, setPendingDesignData] = useState<FormValues | null>(null);
   const [remainingDesigns, setRemainingDesigns] = useState<number | null>(null);
-  
+
   const {
     register,
     handleSubmit,
@@ -89,14 +89,14 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
       await createDesign(designData);
       await mutate();
-      
+
       // Update remaining designs count after successful creation
       if (!isAuthenticated && remainingDesigns !== null) {
         setRemainingDesigns(Math.max(0, remainingDesigns - 1));
       }
     } catch (error: any) {
       console.error('Error creating design:', error);
-      
+
       // Check if this is a 403 error indicating the user hit their design limit
       if (error?.response?.status === 403 && !isAuthenticated) {
         // Show auth modal with a special message about limit reached
@@ -105,14 +105,16 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         setShowAuthModal(true);
         return;
       }
-      
+
       // Handle rate limit exceeded (429) error
       if (error?.response?.status === 429) {
-        setErrorMessage(error.response.data.detail || 
-          "You've reached the rate limit for design creation. Please wait a few minutes before trying again.");
+        setErrorMessage(
+          error.response.data.detail ||
+            "You've reached the rate limit for design creation. Please wait a few minutes before trying again."
+        );
         return;
       }
-      
+
       // Handle other types of errors
       if (error?.response?.data?.detail) {
         setErrorMessage(error.response.data.detail);
@@ -183,36 +185,37 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
         {/* Remaining designs for anonymous users */}
         {!isAuthenticated && remainingDesigns !== null && (
-          <div className={clsx(
-            "rounded-md p-3",
-            remainingDesigns > 0 ? "bg-blue-50" : "bg-amber-50"
-          )}>
+          <div
+            className={clsx('rounded-md p-3', remainingDesigns > 0 ? 'bg-blue-50' : 'bg-amber-50')}
+          >
             <div className="flex">
               <div className="ml-3 flex-1 md:flex md:justify-between">
                 {remainingDesigns > 0 ? (
                   <p className="text-sm text-blue-700">
-                    You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining. 
-                    <a href="#" 
-                       onClick={(e) => {
-                         e.preventDefault();
-                         setAuthModalTitle('Sign in for unlimited designs');
-                         setShowAuthModal(true);
-                       }}
-                       className="ml-2 font-medium underline"
+                    You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining.
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAuthModalTitle('Sign in for unlimited designs');
+                        setShowAuthModal(true);
+                      }}
+                      className="ml-2 font-medium underline"
                     >
                       Sign in for unlimited designs.
                     </a>
                   </p>
                 ) : (
                   <p className="text-sm text-amber-700">
-                    You've used all your guest designs.  
-                    <a href="#" 
-                       onClick={(e) => {
-                         e.preventDefault();
-                         setAuthModalTitle('Sign in for unlimited designs');
-                         setShowAuthModal(true);
-                       }}
-                       className="ml-2 font-medium underline"
+                    You've used all your guest designs.
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setAuthModalTitle('Sign in for unlimited designs');
+                        setShowAuthModal(true);
+                      }}
+                      className="ml-2 font-medium underline"
                     >
                       Sign in to continue designing.
                     </a>
@@ -274,10 +277,13 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
           <button
             type="submit"
-            disabled={isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)}
+            disabled={
+              isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
+            }
             className={clsx(
-              'btn btn-secondary flex items-center gap-2 text-white relative group',
-              (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) && 'cursor-not-allowed opacity-50'
+              'group btn btn-secondary relative flex items-center gap-2 text-white',
+              (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) &&
+                'cursor-not-allowed opacity-50'
             )}
             onClick={() => {
               // If it's disabled due to no remaining designs, show auth modal instead
@@ -290,10 +296,10 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
           >
             <PaintBrushIcon width={24} height={24} />
             {isSubmitting ? 'Generating...' : 'Generate'}
-            
+
             {/* Tooltip for when button is disabled due to no remaining designs */}
             {!isAuthenticated && remainingDesigns === 0 && (
-              <div className="absolute -top-10 left-1/2 transform -translate-x-1/2 hidden group-hover:block bg-gray-800 text-white text-xs rounded py-1 px-2 whitespace-nowrap">
+              <div className="absolute -top-10 left-1/2 hidden -translate-x-1/2 transform whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
                 Sign in to create more designs
               </div>
             )}
@@ -310,9 +316,11 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         }}
         onSuccess={handleAuthSuccess}
         title={authModalTitle}
-        description={authModalTitle === 'Design limit reached' ? 
-          "You've reached the maximum number of designs for anonymous users. Sign in or create an account to continue designing." : 
-          undefined}
+        description={
+          authModalTitle === 'Design limit reached'
+            ? "You've reached the maximum number of designs for anonymous users. Sign in or create an account to continue designing."
+            : undefined
+        }
       />
     </>
   );

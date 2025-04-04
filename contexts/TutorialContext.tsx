@@ -4,8 +4,17 @@ import React, { createContext, useContext, useState, useEffect, ReactNode } from
 import axios from 'axios';
 
 // Tutorial step types for each page
-export type TrendingPageStep = 'view-designs' | 'interact-design' | 'add-to-mydesigns' | 'completed';
-export type StudioPageStep = 'input-prompt' | 'input-image-text' | 'create-design' | 'select-product' | 'completed';
+export type TrendingPageStep =
+  | 'view-designs'
+  | 'interact-design'
+  | 'add-to-mydesigns'
+  | 'completed';
+export type StudioPageStep =
+  | 'input-prompt'
+  | 'input-image-text'
+  | 'create-design'
+  | 'select-product'
+  | 'completed';
 export type ProductPageStep = 'select-design' | 'add-to-cart' | 'completed';
 
 // Main tutorial state interface
@@ -72,39 +81,38 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
       try {
         const response = await axios.get('/api/tutorial/state');
         console.log('Tutorial state from server:', response.data);
-        
+
         // If there's no server state yet or it's a new user, use default with tutorials active
         const isNewUser = !response.data || Object.keys(response.data).length === 0;
-        
+
         if (isNewUser) {
           // For new users, activate all tutorials
           setTutorialState({
             ...defaultTutorialState,
             isTrendingTutorialActive: true,
             isStudioTutorialActive: true,
-            isProductTutorialActive: true,
+            isProductTutorialActive: true
           });
           console.log('New user detected, activating all tutorials');
         } else if (response.data) {
           // For existing users with data, use their saved state
-          const productTutorialActive = !response.data.isDismissed?.product && 
-                                      response.data.productStep !== 'completed';
-          
+          const productTutorialActive =
+            !response.data.isDismissed?.product && response.data.productStep !== 'completed';
+
           setTutorialState({
             ...defaultTutorialState,
             ...response.data,
-            isTrendingTutorialActive: 
-              !response.data.isDismissed?.trending && 
-              response.data.trendingStep !== 'completed',
-            isStudioTutorialActive: 
-              !response.data.isDismissed?.studio && 
-              response.data.studioStep !== 'completed',
-            isProductTutorialActive: productTutorialActive,
+            isTrendingTutorialActive:
+              !response.data.isDismissed?.trending && response.data.trendingStep !== 'completed',
+            isStudioTutorialActive:
+              !response.data.isDismissed?.studio && response.data.studioStep !== 'completed',
+            isProductTutorialActive: productTutorialActive
           });
-          
+
           console.log('Existing user, product tutorial active:', productTutorialActive);
           console.log('Tutorial state set:', {
-            trending: !response.data.isDismissed?.trending && response.data.trendingStep !== 'completed',
+            trending:
+              !response.data.isDismissed?.trending && response.data.trendingStep !== 'completed',
             studio: !response.data.isDismissed?.studio && response.data.studioStep !== 'completed',
             product: productTutorialActive
           });
@@ -116,7 +124,7 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
           ...defaultTutorialState,
           isTrendingTutorialActive: true,
           isStudioTutorialActive: true,
-          isProductTutorialActive: true,
+          isProductTutorialActive: true
         });
       } finally {
         setIsInitialized(true);
@@ -148,10 +156,10 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Advance trending tutorial step
   const advanceTrendingStep = () => {
-    setTutorialState(prev => {
+    setTutorialState((prev) => {
       const nextStep = getNextTrendingStep(prev.trendingStep);
       const isCompleted = nextStep === 'completed';
-      
+
       return {
         ...prev,
         trendingStep: nextStep,
@@ -162,10 +170,10 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Advance studio tutorial step
   const advanceStudioStep = () => {
-    setTutorialState(prev => {
+    setTutorialState((prev) => {
       const nextStep = getNextStudioStep(prev.studioStep);
       const isCompleted = nextStep === 'completed';
-      
+
       return {
         ...prev,
         studioStep: nextStep,
@@ -176,10 +184,10 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Advance product tutorial step
   const advanceProductStep = () => {
-    setTutorialState(prev => {
+    setTutorialState((prev) => {
       const nextStep = getNextProductStep(prev.productStep);
       const isCompleted = nextStep === 'completed';
-      
+
       return {
         ...prev,
         productStep: nextStep,
@@ -190,7 +198,7 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Dismiss tutorial for specific page
   const dismissTutorial = (page: 'trending' | 'studio' | 'product') => {
-    setTutorialState(prev => ({
+    setTutorialState((prev) => ({
       ...prev,
       isDismissed: {
         ...prev.isDismissed,
@@ -204,7 +212,7 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   // Reset tutorial for specific page
   const resetTutorial = (page: 'trending' | 'studio' | 'product') => {
-    setTutorialState(prev => {
+    setTutorialState((prev) => {
       const updates: Partial<TutorialState> = {
         isDismissed: {
           ...prev.isDismissed,
@@ -230,38 +238,50 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
   // Helper functions to get next steps
   const getNextTrendingStep = (currentStep: TrendingPageStep): TrendingPageStep => {
     switch (currentStep) {
-      case 'view-designs': return 'interact-design';
-      case 'interact-design': return 'add-to-mydesigns';
-      case 'add-to-mydesigns': return 'completed';
-      default: return 'completed';
+      case 'view-designs':
+        return 'interact-design';
+      case 'interact-design':
+        return 'add-to-mydesigns';
+      case 'add-to-mydesigns':
+        return 'completed';
+      default:
+        return 'completed';
     }
   };
 
   const getNextStudioStep = (currentStep: StudioPageStep): StudioPageStep => {
     switch (currentStep) {
-      case 'input-prompt': return 'input-image-text';
-      case 'input-image-text': return 'create-design';
-      case 'create-design': return 'select-product';
-      case 'select-product': return 'completed';
-      default: return 'completed';
+      case 'input-prompt':
+        return 'input-image-text';
+      case 'input-image-text':
+        return 'create-design';
+      case 'create-design':
+        return 'select-product';
+      case 'select-product':
+        return 'completed';
+      default:
+        return 'completed';
     }
   };
 
   const getNextProductStep = (currentStep: ProductPageStep): ProductPageStep => {
     switch (currentStep) {
-      case 'select-design': return 'add-to-cart';
-      case 'add-to-cart': return 'completed';
-      default: return 'completed';
+      case 'select-design':
+        return 'add-to-cart';
+      case 'add-to-cart':
+        return 'completed';
+      default:
+        return 'completed';
     }
   };
 
   return (
-    <TutorialContext.Provider 
-      value={{ 
-        tutorialState, 
-        advanceTrendingStep, 
-        advanceStudioStep, 
-        advanceProductStep, 
+    <TutorialContext.Provider
+      value={{
+        tutorialState,
+        advanceTrendingStep,
+        advanceStudioStep,
+        advanceProductStep,
         dismissTutorial,
         resetTutorial
       }}
@@ -269,4 +289,4 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
       {children}
     </TutorialContext.Provider>
   );
-}; 
+};

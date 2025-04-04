@@ -69,9 +69,10 @@ export default function AuthModal({
                     </div>
                   </Dialog.Title>
                   <p className="mt-2 text-sm text-gray-500">
-                    {description || (activeTab === AuthFormType.LOGIN
-                      ? 'Welcome back! Please enter your details'
-                      : 'Create an account to get started')}
+                    {description ||
+                      (activeTab === AuthFormType.LOGIN
+                        ? 'Welcome back! Please enter your details'
+                        : 'Create an account to get started')}
                   </p>
                 </div>
 

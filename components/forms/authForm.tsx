@@ -116,10 +116,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
     try {
       if (isLogin) {
         const loginData = {
-          ...values as LoginFormValues,
+          ...(values as LoginFormValues),
           cfTurnstileResponse: turnstileToken
         };
-        
+
         const result = await login(loginData);
         if (result.success && result.data) {
           router.push('/designs/trending');
@@ -133,10 +133,10 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         }
       } else if (isSignUp) {
         const signUpData = {
-          ...values as SignUpFormValues,
+          ...(values as SignUpFormValues),
           cfTurnstileResponse: turnstileToken
         };
-        
+
         const result = await registerUser(signUpData);
         if (result.success) {
           router.push('/designs/trending');
@@ -159,7 +159,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
               message: 'Registration failed. Please try again.'
             });
           }
-          
+
           // Reset turnstile on failed signup
           resetTurnstile();
         }
@@ -170,7 +170,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
         type: 'manual',
         message: 'An unexpected error occurred'
       });
-      
+
       // Reset turnstile on error
       resetTurnstile();
     }
@@ -341,7 +341,8 @@ const AuthForm: React.FC<AuthFormProps> = ({ formType }) => {
       </div>
       {(errors.cfTurnstileResponse || turnstileError) && (
         <p className="mt-1 text-center text-sm text-error">
-          {errors.cfTurnstileResponse?.message as string || 'Please complete the CAPTCHA verification'}
+          {(errors.cfTurnstileResponse?.message as string) ||
+            'Please complete the CAPTCHA verification'}
         </p>
       )}
 

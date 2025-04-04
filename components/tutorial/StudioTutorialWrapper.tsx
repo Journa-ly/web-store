@@ -16,4 +16,4 @@ const StudioTutorialWrapper: React.FC<StudioTutorialWrapperProps> = ({ children 
   );
 };
 
-export default StudioTutorialWrapper; 
+export default StudioTutorialWrapper;

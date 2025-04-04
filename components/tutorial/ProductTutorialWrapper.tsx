@@ -16,4 +16,4 @@ const ProductTutorialWrapper: React.FC<ProductTutorialWrapperProps> = ({ childre
   );
 };
 
-export default ProductTutorialWrapper; 
+export default ProductTutorialWrapper;

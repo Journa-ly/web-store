@@ -57,7 +57,7 @@ export default function TrendingPage() {
           </div>
         </>
       )}
-      
+
       {/* Tutorial component */}
       <TrendingTutorial />
     </section>
