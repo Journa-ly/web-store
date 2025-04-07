@@ -27,7 +27,7 @@ function LivestreamDesignGrid({ designs }: { designs: TrendingDesign[] }) {
   }
 
   return (
-    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:grid-cols-4 lg:grid-cols-5 lg:gap-4">
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {designs.map((design) => (
         <div key={design.uuid} className="aspect-square">
           <DesignCard design={design} />
