@@ -47,8 +47,12 @@ export default function TrendingPage() {
       ) : (
         <>
           <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {trendingDesigns.map((design) => (
-              <DesignCard key={design.uuid} design={design} />
+            {trendingDesigns.map((design, index) => (
+              <DesignCard
+                key={design.uuid}
+                design={design}
+                id={index === 0 ? 'first-trending-design' : undefined}
+              />
             ))}
           </div>
 

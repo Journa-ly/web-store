@@ -8,55 +8,37 @@ const TrendingTutorial: React.FC = () => {
   const firstDesignRef = useRef<Element | null>(null);
   const hasInitializedRef = useRef<boolean>(false);
 
-  // Initialize tutorial target (first design element)
+  // Initialize target elements
   useEffect(() => {
     if (!isTrendingTutorialActive) {
-      // Clean up on tutorial inactive
-      cleanupTutorial();
+      cleanupTargets();
       return;
     }
 
     if (hasInitializedRef.current) return;
 
-    // Initialize the tutorial
-    initializeTutorial();
+    // Find and mark target elements using ID
+    const firstDesign = document.getElementById('first-trending-design');
+
+    if (firstDesign) {
+      firstDesign.classList.add('tutorial-target-design');
+    } else {
+      console.log('First trending design not found for tutorial');
+    }
+
+    hasInitializedRef.current = true;
 
     return () => {
-      // Clean up when component unmounts
-      cleanupTutorial();
+      cleanupTargets();
     };
   }, [isTrendingTutorialActive]);
 
-  // Set up the target element for the tutorial
-  const initializeTutorial = () => {
-    // Find the first design
-    const firstDesign = document.querySelector('.grid-cols-1 > div:first-child');
-    if (!firstDesign) {
-      console.warn('First design not found for tutorial');
-      return;
-    }
+  // Cleanup function
+  const cleanupTargets = () => {
+    document.querySelectorAll('.tutorial-target-design').forEach((el) => {
+      el.classList.remove('tutorial-target-design');
+    });
 
-    // Mark the first design with a special class
-    firstDesign.classList.add('tutorial-target-design');
-    firstDesignRef.current = firstDesign;
-
-    // Mark as initialized
-    hasInitializedRef.current = true;
-  };
-
-  // Clean up tutorial classes
-  const cleanupTutorial = () => {
-    // Remove the target class from the first design
-    if (firstDesignRef.current instanceof HTMLElement) {
-      firstDesignRef.current.classList.remove('tutorial-target-design');
-    } else {
-      const tutorialTarget = document.querySelector('.tutorial-target-design');
-      if (tutorialTarget) {
-        tutorialTarget.classList.remove('tutorial-target-design');
-      }
-    }
-
-    // Reset initialization flag when cleaning up
     hasInitializedRef.current = false;
   };
 
@@ -74,27 +56,27 @@ const TrendingTutorial: React.FC = () => {
       title: 'Browse Trending Designs',
       content:
         'Here you can explore our most popular designs. Take a moment to browse through them.',
-      selector: '.tutorial-target-design, .grid-cols-1 > div:first-child',
+      selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
     'interact-design': {
       title: 'Interact with Designs',
       content: 'Tap on a design to see more details, like the prompt used to generate it.',
-      selector: '.tutorial-target-design, .grid-cols-1 > div:first-child',
+      selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
     'add-to-mydesigns': {
       title: 'Save to Your Designs',
       content:
         'Found a design you like? Save it to your personal collection by clicking the "Add to My Designs" button.',
-      selector: '.tutorial-target-design, .grid-cols-1 > div:first-child',
+      selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
     completed: {
       title: 'Completed!',
       content: 'You have completed the trending designs tutorial.',
-      selector: '.tutorial-target-design, .grid-cols-1 > div:first-child',
-      position: 'right'
+      selector: 'h1',
+      position: 'bottom'
     }
   };
 

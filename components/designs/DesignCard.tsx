@@ -22,6 +22,7 @@ const AuthModal = dynamic(() => import('components/modals/AuthModal'), {
 
 interface DesignCardProps {
   design: TrendingDesign;
+  id?: string;
 }
 
 type ReactionCounts = {
@@ -36,7 +37,7 @@ const reactionToCountKey: Record<string, keyof ReactionCounts> = {
   FIRE: 'fire_count'
 };
 
-export default function DesignCard({ design }: DesignCardProps) {
+export default function DesignCard({ design, id }: DesignCardProps) {
   const [reactions, setReactions] = useState<string[]>(design.user_reactions || []);
   const [counts, setCounts] = useState<ReactionCounts>({
     heart_count: design.heart_count || 0,
@@ -146,9 +147,9 @@ export default function DesignCard({ design }: DesignCardProps) {
   const hasLaugh = design.user_reactions?.includes('LAUGH');
 
   return (
-    <>
+    <div id={id} className="group relative">
       <div
-        className="design-card group relative overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg"
+        className="design-card overflow-hidden rounded-lg bg-white shadow-md transition-all hover:shadow-lg"
         onClick={toggleOverlay}
         role="button"
         tabIndex={0}
@@ -282,6 +283,6 @@ export default function DesignCard({ design }: DesignCardProps) {
         onSuccess={handleAuthSuccess}
         title={authModalTitle}
       />
-    </>
+    </div>
   );
 }

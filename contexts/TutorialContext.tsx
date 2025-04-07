@@ -80,7 +80,6 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
     const fetchTutorialState = async () => {
       try {
         const response = await axios.get('/api/tutorial/state');
-        console.log('Tutorial state from server:', response.data);
 
         // If there's no server state yet or it's a new user, use default with tutorials active
         const isNewUser = !response.data || Object.keys(response.data).length === 0;
@@ -107,14 +106,6 @@ export const TutorialProvider: React.FC<{ children: ReactNode }> = ({ children }
             isStudioTutorialActive:
               !response.data.isDismissed?.studio && response.data.studioStep !== 'completed',
             isProductTutorialActive: productTutorialActive
-          });
-
-          console.log('Existing user, product tutorial active:', productTutorialActive);
-          console.log('Tutorial state set:', {
-            trending:
-              !response.data.isDismissed?.trending && response.data.trendingStep !== 'completed',
-            studio: !response.data.isDismissed?.studio && response.data.studioStep !== 'completed',
-            product: productTutorialActive
           });
         }
       } catch (error) {
