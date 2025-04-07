@@ -1,61 +1,77 @@
-import React, { useEffect, useRef, useCallback } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TutorialTooltip from './TutorialTooltip';
 import { useTutorial, TrendingPageStep } from '@/contexts/TutorialContext';
 
 const TrendingTutorial: React.FC = () => {
   const { tutorialState, advanceTrendingStep, dismissTutorial } = useTutorial();
   const { isTrendingTutorialActive, trendingStep } = tutorialState;
-  const firstDesignRef = useRef<Element | null>(null);
   const hasInitializedRef = useRef<boolean>(false);
+  const [isTargetReady, setIsTargetReady] = useState(false);
+  const retryCountRef = useRef(0);
+  const maxRetries = 5;
+  const retryInterval = 1000; // 1 second
 
-  // Initialize target elements
+  // Initialize target elements with retry logic
   useEffect(() => {
     if (!isTrendingTutorialActive) {
       cleanupTargets();
+      setIsTargetReady(false);
       return;
     }
 
     if (hasInitializedRef.current) return;
 
-    // Find and mark target elements using ID
-    const firstDesign = document.getElementById('first-trending-design');
+    const findAndMarkTarget = () => {
+      // Find and mark target elements using ID
+      const firstDesign = document.getElementById('first-trending-design');
+      
+      if (firstDesign) {
+        firstDesign.classList.add('tutorial-target-design');
+        setIsTargetReady(true);
+        hasInitializedRef.current = true;
+      } else {
+        console.log('First trending design not found for tutorial, retrying...');
+        retryCountRef.current++;
+        
+        if (retryCountRef.current < maxRetries) {
+          setTimeout(findAndMarkTarget, retryInterval);
+        } else {
+          console.error('Failed to find first trending design after multiple attempts');
+          // If we can't find the target, we should dismiss the tutorial
+          dismissTutorial('trending');
+        }
+      }
+    };
 
-    if (firstDesign) {
-      firstDesign.classList.add('tutorial-target-design');
-    } else {
-      console.log('First trending design not found for tutorial');
-    }
-
-    hasInitializedRef.current = true;
+    findAndMarkTarget();
 
     return () => {
       cleanupTargets();
+      setIsTargetReady(false);
+      retryCountRef.current = 0;
     };
-  }, [isTrendingTutorialActive]);
+  }, [isTrendingTutorialActive, dismissTutorial]);
 
   // Cleanup function
   const cleanupTargets = () => {
-    document.querySelectorAll('.tutorial-target-design').forEach((el) => {
-      el.classList.remove('tutorial-target-design');
-    });
-
+    document.querySelectorAll('.tutorial-target-design')
+      .forEach(el => {
+        el.classList.remove('tutorial-target-design');
+      });
+    
     hasInitializedRef.current = false;
   };
 
   // Define tutorial steps content
-  const steps: Record<
-    TrendingPageStep,
-    {
-      title: string;
-      content: string;
-      selector: string;
-      position?: 'top' | 'bottom' | 'left' | 'right';
-    }
-  > = {
+  const steps: Record<TrendingPageStep, {
+    title: string;
+    content: string;
+    selector: string;
+    position?: 'top' | 'bottom' | 'left' | 'right';
+  }> = {
     'view-designs': {
       title: 'Browse Trending Designs',
-      content:
-        'Here you can explore our most popular designs. Take a moment to browse through them.',
+      content: 'Here you can explore our most popular designs. Take a moment to browse through them.',
       selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
@@ -67,12 +83,11 @@ const TrendingTutorial: React.FC = () => {
     },
     'add-to-mydesigns': {
       title: 'Save to Your Designs',
-      content:
-        'Found a design you like? Save it to your personal collection by clicking the "Add to My Designs" button.',
+      content: 'Found a design you like? Save it to your personal collection by clicking the "Add to My Designs" button.',
       selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
-    completed: {
+    'completed': {
       title: 'Completed!',
       content: 'You have completed the trending designs tutorial.',
       selector: 'h1',
@@ -84,20 +99,16 @@ const TrendingTutorial: React.FC = () => {
   const currentStep = steps[trendingStep];
 
   // Calculate step number
-  const stepNumber = (() => {
-    const stepKeys = Object.keys(steps).filter((key) => key !== 'completed');
+  const getStepNumber = () => {
+    const stepKeys = Object.keys(steps).filter(key => key !== 'completed');
     return stepKeys.indexOf(trendingStep as string) + 1;
-  })();
+  };
 
-  const totalSteps = Object.keys(steps).filter((key) => key !== 'completed').length;
+  const stepNumber = getStepNumber();
+  const totalSteps = Object.keys(steps).filter(key => key !== 'completed').length;
 
-  // Simple advance step handler
-  const handleAdvanceStep = useCallback(() => {
-    advanceTrendingStep();
-  }, [advanceTrendingStep]);
-
-  // Don't render anything if tutorial is not active or completed
-  if (!isTrendingTutorialActive || trendingStep === 'completed') {
+  // Don't render the tooltip until we've found the target
+  if (!isTrendingTutorialActive || trendingStep === 'completed' || !isTargetReady) {
     return null;
   }
 
@@ -108,7 +119,7 @@ const TrendingTutorial: React.FC = () => {
       content={currentStep.content}
       position={currentStep.position}
       isActive={isTrendingTutorialActive}
-      onComplete={handleAdvanceStep}
+      onComplete={advanceTrendingStep}
       onDismiss={() => dismissTutorial('trending')}
       stepNumber={stepNumber}
       totalSteps={totalSteps}
