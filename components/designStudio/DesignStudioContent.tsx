@@ -13,9 +13,38 @@ export default function DesignStudioContent() {
   const imageUrl = selectedDesign?.product_image?.image;
   const isGenerating = !Boolean(imageUrl);
 
+  // Preview content component to avoid duplication
+  const DesignPreview = () => (
+    <div className="relative flex aspect-square h-full max-h-[650px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-100">
+      {selectedDesign ? (
+        isGenerating ? (
+          <div className="flex flex-col items-center gap-3">
+            <ClipLoader color="#6B7280" size={32} />
+            <p className="text-sm text-gray-600">Generating design...</p>
+          </div>
+        ) : imageUrl ? (
+          <Image
+            src={imageUrl}
+            alt={selectedDesign.name || 'Selected Design'}
+            fill
+            className="object-cover"
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            priority
+          />
+        ) : (
+          <p className="px-8 text-center text-gray-500">Loading design preview...</p>
+        )
+      ) : (
+        <p className="px-8 text-center text-gray-500">
+          Select a design to preview it here
+        </p>
+      )}
+    </div>
+  );
+
   return (
-    <div className="flex w-full flex-col gap-8">
-      {/* Design Form and Preview Section */}
+    <div className="flex w-full flex-col lg:gap-8">
+      {/* Design Form Section */}
       <div className="flex w-full flex-col lg:flex-row lg:gap-8">
         {/* Left Column - Design Form */}
         <div className="w-full lg:w-1/2">
@@ -29,39 +58,15 @@ export default function DesignStudioContent() {
           </div>
         </div>
 
-        {/* Right Column - Preview */}
-        <div className="mt-8 w-full lg:mt-0 lg:w-1/2">
+        {/* Right Column - Preview (visible only on desktop) */}
+        <div className="mt-8 hidden w-full lg:mt-0 lg:block lg:w-1/2">
           <div className="sticky top-8">
             <Suspense
               fallback={
                 <div className="relative aspect-square h-full max-h-[650px] w-full overflow-hidden rounded-2xl bg-gray-100" />
               }
             >
-              <div className="relative flex aspect-square h-full max-h-[650px] w-full items-center justify-center overflow-hidden rounded-2xl bg-gray-100">
-                {selectedDesign ? (
-                  isGenerating ? (
-                    <div className="flex flex-col items-center gap-3">
-                      <ClipLoader color="#6B7280" size={32} />
-                      <p className="text-sm text-gray-600">Generating design...</p>
-                    </div>
-                  ) : imageUrl ? (
-                    <Image
-                      src={imageUrl}
-                      alt={selectedDesign.name || 'Selected Design'}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      priority
-                    />
-                  ) : (
-                    <p className="px-8 text-center text-gray-500">Loading design preview...</p>
-                  )
-                ) : (
-                  <p className="px-8 text-center text-gray-500">
-                    Select a design to preview it here
-                  </p>
-                )}
-              </div>
+              <DesignPreview />
             </Suspense>
           </div>
         </div>
@@ -72,6 +77,19 @@ export default function DesignStudioContent() {
         <NumberLabel label="Select a design">2</NumberLabel>
         <div className="w-full">
           <DesignStudioCarousel />
+        </div>
+      </div>
+
+      {/* Mobile Preview Section (below carousel, only visible on mobile) */}
+      <div className="my-8 block w-full lg:hidden">
+        <div className="w-full">
+          <Suspense
+            fallback={
+              <div className="relative aspect-square h-full max-h-[650px] w-full overflow-hidden rounded-2xl bg-gray-100" />
+            }
+          >
+            <DesignPreview />
+          </Suspense>
         </div>
       </div>
     </div>
