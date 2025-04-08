@@ -30,6 +30,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [targetElement, setTargetElement] = useState<Element | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
+  const [adjustedPosition, setAdjustedPosition] = useState<'top' | 'bottom' | 'left' | 'right'>(position);
 
   // Find target element and calculate initial tooltip position
   useEffect(() => {
@@ -64,44 +65,183 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       if (!target) return;
 
       const rect = target.getBoundingClientRect();
-      const tooltipWidth = 288; // w-72 = 18rem = 288px
+      const tooltipWidth = tooltipRef.current?.offsetWidth || 288; // w-72 = 18rem = 288px
       const tooltipHeight = tooltipRef.current?.offsetHeight || 200; // Estimated height
       const margin = 16; // Space between target and tooltip
 
-      let top = 0;
-      let left = 0;
+      // Get viewport dimensions
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
 
       // Include scroll offsets for absolute positioning
       const scrollX = window.scrollX || window.pageXOffset;
       const scrollY = window.scrollY || window.pageYOffset;
 
-      switch (position) {
+      // Start with the requested position
+      let positionToUse = position;
+      let top = 0;
+      let left = 0;
+
+      // Check if tooltip would extend beyond viewport in the requested position
+      // and adjust position if necessary
+      const calculateTopPosition = () => {
+        top = rect.top - tooltipHeight - margin + scrollY;
+        left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
+        
+        // Check if tooltip would extend beyond top of viewport
+        if (rect.top - tooltipHeight - margin < 0) {
+          return false;
+        }
+        // Check if tooltip would extend beyond left/right edges
+        if (left < scrollX || left + tooltipWidth > scrollX + viewportWidth) {
+          // Center it as best as possible
+          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+        }
+        return true;
+      };
+
+      const calculateBottomPosition = () => {
+        top = rect.bottom + margin + scrollY;
+        left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
+        
+        // Check if tooltip would extend beyond bottom of viewport
+        if (rect.bottom + margin + tooltipHeight > viewportHeight + scrollY) {
+          return false;
+        }
+        // Check if tooltip would extend beyond left/right edges
+        if (left < scrollX || left + tooltipWidth > scrollX + viewportWidth) {
+          // Center it as best as possible
+          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+        }
+        return true;
+      };
+
+      const calculateLeftPosition = () => {
+        top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
+        left = rect.left - tooltipWidth - margin + scrollX;
+        
+        // Check if tooltip would extend beyond left of viewport
+        if (rect.left - tooltipWidth - margin < 0) {
+          return false;
+        }
+        // Check if tooltip would extend beyond top/bottom edges
+        if (top < scrollY || top + tooltipHeight > scrollY + viewportHeight) {
+          // Center it as best as possible
+          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
+        }
+        return true;
+      };
+
+      const calculateRightPosition = () => {
+        top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
+        left = rect.right + margin + scrollX;
+        
+        // Check if tooltip would extend beyond right of viewport
+        if (rect.right + margin + tooltipWidth > viewportWidth + scrollX) {
+          return false;
+        }
+        // Check if tooltip would extend beyond top/bottom edges
+        if (top < scrollY || top + tooltipHeight > scrollY + viewportHeight) {
+          // Center it as best as possible
+          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
+        }
+        return true;
+      };
+
+      // Try the requested position first
+      let positionFits = false;
+      switch (positionToUse) {
         case 'top':
-          top = rect.top - tooltipHeight - margin + scrollY;
-          left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
+          positionFits = calculateTopPosition();
           break;
         case 'bottom':
-          top = rect.bottom + margin + scrollY;
-          left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
+          positionFits = calculateBottomPosition();
           break;
         case 'left':
-          top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
-          left = rect.left - tooltipWidth - margin + scrollX;
+          positionFits = calculateLeftPosition();
           break;
         case 'right':
-          top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
-          left = rect.right + margin + scrollX;
+          positionFits = calculateRightPosition();
           break;
       }
 
+      // If the requested position doesn't fit, try alternatives
+      if (!positionFits) {
+        // Order of fallback positions
+        const positions: ('top' | 'bottom' | 'left' | 'right')[] = ['bottom', 'top', 'right', 'left'];
+        
+        // Remove the position we already tried
+        const remainingPositions = positions.filter(p => p !== positionToUse);
+        
+        // Try each remaining position until one fits
+        for (const pos of remainingPositions) {
+          switch (pos) {
+            case 'top':
+              if (calculateTopPosition()) {
+                positionToUse = 'top';
+                positionFits = true;
+                break;
+              }
+              continue;
+            case 'bottom':
+              if (calculateBottomPosition()) {
+                positionToUse = 'bottom';
+                positionFits = true;
+                break;
+              }
+              continue;
+            case 'left':
+              if (calculateLeftPosition()) {
+                positionToUse = 'left';
+                positionFits = true;
+                break;
+              }
+              continue;
+            case 'right':
+              if (calculateRightPosition()) {
+                positionToUse = 'right';
+                positionFits = true;
+                break;
+              }
+              continue;
+          }
+          if (positionFits) break;
+        }
+        
+        // If no position fits perfectly, use the original position but ensure
+        // the tooltip remains within viewport bounds
+        if (!positionFits) {
+          switch (positionToUse) {
+            case 'top':
+              calculateTopPosition();
+              break;
+            case 'bottom':
+              calculateBottomPosition();
+              break;
+            case 'left':
+              calculateLeftPosition();
+              break;
+            case 'right':
+              calculateRightPosition();
+              break;
+          }
+          
+          // Final adjustments to keep tooltip within viewport
+          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
+          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+        }
+      }
+
+      setAdjustedPosition(positionToUse);
       setTooltipPosition({ top, left });
     };
 
     // Calculate initial position
     calculatePosition();
 
-    // Recalculate if window is resized
+    // Recalculate if window is resized or scrolled
     window.addEventListener('resize', calculatePosition);
+    window.addEventListener('scroll', calculatePosition);
 
     // Highlight target element
     if (target instanceof HTMLElement) {
@@ -120,6 +260,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
     return () => {
       // Remove event listeners
       window.removeEventListener('resize', calculatePosition);
+      window.removeEventListener('scroll', calculatePosition);
 
       // Remove highlight
       if (target instanceof HTMLElement) {
@@ -136,9 +277,9 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
 
   if (!isActive || !targetElement) return null;
 
-  // Create arrow class based on position
+  // Create arrow class based on adjusted position
   const getArrowClass = () => {
-    switch (position) {
+    switch (adjustedPosition) {
       case 'top':
         return 'tooltip-arrow tooltip-arrow-bottom';
       case 'bottom':
@@ -165,13 +306,14 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         ref={tooltipRef}
         className={clsx(
           'tutorial-tooltip w-72 rounded-lg border border-indigo-100 bg-indigo-50 shadow-lg',
-          `tutorial-tooltip-${position}`
+          `tutorial-tooltip-${adjustedPosition}`
         )}
         style={{
           position: 'absolute', // Use absolute instead of fixed positioning
           top: `${tooltipPosition.top}px`,
           left: `${tooltipPosition.left}px`,
-          zIndex: 9999
+          zIndex: 9999,
+          maxWidth: '90vw' // Ensure tooltip doesn't exceed viewport width on mobile
         }}
       >
         <div className={getArrowClass()} />
