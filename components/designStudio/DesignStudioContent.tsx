@@ -48,9 +48,9 @@ export default function DesignStudioContent() {
       <div className="flex w-full flex-col lg:flex-row lg:gap-8">
         {/* Left Column - Design Form */}
         <div className="w-full lg:w-1/2">
-          <p className="mt-2 text-gray-600">Create your custom design with AI</p>
+          {/* <p className="mt-1 text-gray-600">Create your custom design with AI</p> */}
 
-          <div className="mt-8">
+          <div className="mt-2">
             <NumberLabel label="Describe your design">1</NumberLabel>
             <div className="w-full">
               <DesignForm />

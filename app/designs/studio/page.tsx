@@ -11,7 +11,7 @@ export default async function StudioPage() {
     <StudioTutorialWrapper>
       <div className="w-full">
         <div className="overflow-hidden rounded-2xl bg-white shadow">
-          <div className="p-4 md:p-6 lg:p-8">
+          <div className="p-2 md:p-4 lg:p-8">
             <DesignStudioContent />
             <div className="w-full">
               <NumberLabel label="Choose a product">3</NumberLabel>
