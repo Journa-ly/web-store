@@ -7,8 +7,9 @@ import LoadingSpinner from '../ui/LoadingSpinner';
 import { TrendingDesign } from '../../types/design';
 import dynamic from 'next/dynamic';
 import clsx from 'clsx';
-import DesignCard from '../designs/DesignCard';
 import { useState } from 'react';
+import LiveStreamDesignCard from './LiveStreamDesignCard';
+import { useDesignsWithLiveUpdates } from '@/hooks/useDesignsWithLiveUpdates';
 
 // Dynamically import DesignStudioContent to prevent SSR issues
 const StreamDesignStudio = dynamic(() => import('../designStudio/StreamDesignStudio'), {
@@ -21,7 +22,13 @@ const StreamDesignStudio = dynamic(() => import('../designStudio/StreamDesignStu
 });
 
 // Simplified version of DesignGrid for livestream designs
-function LivestreamDesignGrid({ designs }: { designs: TrendingDesign[] }) {
+function LivestreamDesignGrid({ 
+  designs, 
+  onDesignAdded 
+}: { 
+  designs: TrendingDesign[];
+  onDesignAdded: () => Promise<void>;
+}) {
   if (!designs || designs.length === 0) {
     return <div className="py-8 text-center text-base-content/70">No designs to display</div>;
   }
@@ -30,7 +37,12 @@ function LivestreamDesignGrid({ designs }: { designs: TrendingDesign[] }) {
     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
       {designs.map((design) => (
         <div key={design.uuid} className="aspect-square">
-          <DesignCard design={design} />
+          <LiveStreamDesignCard 
+            design={design} 
+            onDesignAdded={async () => {
+              await onDesignAdded();
+            }} 
+          />
         </div>
       ))}
     </div>
@@ -47,9 +59,11 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
   const [isExpanded, setIsExpanded] = useState(false);
   // Only fetch designs when active or when expanded for previous streams
   const shouldFetchDesigns = isActive || (isExpanded && !isActive);
-  const { designs, isLoading, mutate } = useLiveStreamDesigns(
+  const { designs, isLoading } = useLiveStreamDesigns(
     shouldFetchDesigns ? livestream.uuid : ''
   );
+  const { mutate } = useDesignsWithLiveUpdates();
+  
 
   // Format dates for display
   const formatDate = (dateString: string | null) => {
@@ -59,51 +73,6 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
     return format(date, 'MMM d, yyyy h:mm a');
   };
 
-  const formatRelativeTime = (dateString: string | null) => {
-    if (!dateString) return '';
-
-    const date = new Date(dateString);
-    return formatDistanceToNow(date, { addSuffix: true });
-  };
-
-  const getBadgeColor = () => {
-    if (isActive) return 'badge-error';
-
-    switch (livestream.status) {
-      case 'ACTIVE':
-        return 'badge-error';
-      case 'ENDED':
-        return 'badge-ghost';
-      case 'UPCOMING':
-        return 'badge-info';
-      default:
-        return 'badge-warning';
-    }
-  };
-
-  // Calculate time until the stream starts if it's upcoming
-  const calculateStartsIn = (): string | null => {
-    if (isActive || !livestream.active_at) return null;
-
-    const streamDate = new Date(livestream.active_at);
-    const now = new Date();
-
-    if (streamDate > now) {
-      const diffMs = streamDate.getTime() - now.getTime();
-      const diffMins = Math.floor(diffMs / (1000 * 60));
-
-      if (diffMins < 60) {
-        return `${diffMins} minute${diffMins !== 1 ? 's' : ''}`;
-      } else {
-        const hours = Math.floor(diffMins / 60);
-        return `${hours} hour${hours !== 1 ? 's' : ''}`;
-      }
-    }
-
-    return null;
-  };
-
-  const startsIn = calculateStartsIn();
 
   const toggleExpand = () => {
     if (!isActive) {
@@ -223,7 +192,12 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
                 </div>
               ) : designs.length > 0 ? (
                 <div className="px-2 pb-6 md:px-4">
-                  <LivestreamDesignGrid designs={designs} />
+                  <LivestreamDesignGrid 
+                    designs={designs} 
+                    onDesignAdded={async () => {
+                      await mutate();
+                    }} 
+                  />
                 </div>
               ) : (
                 <div className="py-10 text-center">
@@ -258,7 +232,12 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
                 </div>
               ) : designs && designs.length > 0 ? (
                 <div>
-                  <LivestreamDesignGrid designs={designs} />
+                  <LivestreamDesignGrid 
+                    designs={designs} 
+                    onDesignAdded={async () => {
+                      await mutate();
+                    }} 
+                  />
                 </div>
               ) : (
                 <div className="py-8 text-center">
