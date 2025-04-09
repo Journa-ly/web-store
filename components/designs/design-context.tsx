@@ -11,6 +11,7 @@ import {
 } from 'react';
 import { UserDesign } from 'types/design';
 import { LocalStorageCache } from 'utils/localStorage';
+import { useDesignWebSocket } from 'hooks/useDesignWebSocket';
 
 interface DesignContextType {
   selectedDesign: UserDesign | null;
@@ -31,6 +32,22 @@ const designCache = new LocalStorageCache<{
 export function DesignProvider({ children }: { children: ReactNode }) {
   const [selectedDesign, setSelectedDesign] = useState<UserDesign | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // Use WebSocket for real-time updates
+  const { data: wsData } = useDesignWebSocket();
+
+  // Update selected design when WebSocket data is received
+  useEffect(() => {
+    if (wsData?.type === 'image_data' && selectedDesign) {
+      const updatedDesigns = wsData.data as UserDesign[];
+      if (!Array.isArray(updatedDesigns)) return;
+
+      const updatedDesign = updatedDesigns.find(d => d.uuid === selectedDesign.uuid);
+      if (updatedDesign) {
+        setSelectedDesign(updatedDesign);
+      }
+    }
+  }, [wsData, selectedDesign]);
 
   // Load initial state from localStorage
   useEffect(() => {
