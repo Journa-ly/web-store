@@ -154,7 +154,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-lg space-y-4 py-4">
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-4 py-4">
         {/* Description Field */}
         <div>
           <textarea

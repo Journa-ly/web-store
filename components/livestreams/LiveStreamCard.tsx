@@ -173,7 +173,7 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
             <div className="space-y-12">
               {/* Design Studio Section */}
               <div>
-                <div className="bg-base-100 p-6 shadow-sm">
+                <div className="bg-base-100 p-2 lg:p-6 shadow-sm">
                   <StreamDesignStudio livestream={livestream} />
                 </div>
               </div>
