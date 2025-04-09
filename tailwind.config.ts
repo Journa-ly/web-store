@@ -18,7 +18,7 @@ const config: Config = {
           primary: '#00d7c0',
           'primary-content': '#ffffff',
           secondary: '#ff00d3',
-          accent: 'black',
+          accent: '#4a00ff',
           neutral: '#3d4451',
           'base-100': '#ffffff',
           'base-200': '#f2f2f2',
@@ -31,7 +31,8 @@ const config: Config = {
           'base-900': '#111827'
         }
       }
-    ],
+    ], // false: only light + dark | true: all themes | array: specific themes like this ["light", "dark", "cupcake"]
+    base: true, // applies background color and foreground color for root element by default
     styled: true, // include daisyUI colors and design decisions for all components
     utils: true, // adds responsive and modifier utility classes
     prefix: '', // prefix for daisyUI classnames (components, modifiers and responsive class names. Not colors)
