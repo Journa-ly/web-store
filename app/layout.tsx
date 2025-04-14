@@ -10,17 +10,19 @@ import { Inter } from 'next/font/google';
 import { cookies, headers } from 'next/headers';
 import { ReactNode } from 'react';
 import './globals.css';
-
+import { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || '';
 
-export const metadata = {
+export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
     default: 'Journa - Discover Unique Designs',
     template: '%s | Journa'
   },
   description: 'Explore and shop thousands of custom designs from independent creators on Journa.',
-  themeColor: '#fff',
+  appleWebApp: {
+    statusBarStyle: 'black-translucent',
+  },
   keywords: [
     'custom designs',
     'independent creators',
