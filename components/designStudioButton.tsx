@@ -1,11 +1,11 @@
-import { PaintBrushIcon } from '@heroicons/react/24/solid';
+import { PaintBrushIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
 const DesignStudioButton = () => (
   <Link href="/designs/studio">
-    <button className="btn btn-secondary flex items-center gap-2 text-white">
+    <button className="btn btn-ghost px-2 flex items-center">
       {/* Icon is always visible */}
-      <PaintBrushIcon width={24} height={24} />
+      <PaintBrushIcon width={16} height={16} />
 
       {/* Text is hidden on small screens and shown on sm+ */}
       <span className="hidden md:inline">Design Studio</span>

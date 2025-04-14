@@ -53,7 +53,7 @@ export default function MobileMenu({ children }: MobileMenuProps) {
   return (
     <div className="relative lg:hidden" ref={menuRef}>
       <button
-        className="btn btn-ghost m-1"
+        className="btn btn-ghost px-1"
         onClick={() => setIsMenuOpen(!isMenuOpen)}
         aria-expanded={isMenuOpen}
         aria-label="Toggle navigation menu"

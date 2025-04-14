@@ -14,13 +14,13 @@ export function Navbar() {
   ];
 
   return (
-    <div className="bg-white px-2 pb-4 pt-4 lg:px-6">
-      <div className="navbar rounded-box bg-base-100 shadow-md">
+    <div className="bg-white px-2 mb-2 shadow lg:shadow-none lg:px-4">
+      <div className="navbar lg:rounded-box bg-base-100 lg:shadow-md">
         <div className="navbar-start flex items-center">
           <MobileMenu>
             <Menu />
           </MobileMenu>
-          <Link href="/" className="relative ml-4 mt-2 h-[28px] w-[107px]">
+          <Link href="/" className="relative ml-2 h-[28px] w-[107px]">
             <Image src="/icon_black.svg" alt="Journa" fill className="object-contain" priority />
           </Link>
         </div>
@@ -35,7 +35,7 @@ export function Navbar() {
               : null}
           </ul>
         </div>
-        <div className="navbar-end gap-2">
+        <div className="navbar-end">
           <UserMenu />
           <DesignStudioButton />
           <CartModal />

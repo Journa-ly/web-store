@@ -20,6 +20,7 @@ export const metadata = {
     template: '%s | Journa'
   },
   description: 'Explore and shop thousands of custom designs from independent creators on Journa.',
+  themeColor: '#fff',
   keywords: [
     'custom designs',
     'independent creators',
