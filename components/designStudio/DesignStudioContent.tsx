@@ -43,15 +43,20 @@ export default function DesignStudioContent() {
   );
 
   return (
-    <div className="flex w-full flex-col lg:gap-8">
+    <div className="flex w-full flex-col items-center lg:gap-8">
+      {/* Full Width Design Selection Section */}
+      <div className="w-full flex justify-center">
+        
+      </div>
       {/* Design Form Section */}
-      <div className="flex w-full flex-col lg:flex-row lg:gap-8">
-        {/* Left Column - Design Form */}
-        <div className="w-full lg:w-1/2">
-          {/* <p className="mt-1 text-gray-600">Create your custom design with AI</p> */}
+      <div className="flex w-full flex-col items-center">
+        {/* Full Width Column with Centered Content */}
+        <div className="w-full max-w-3xl mx-auto flex flex-col items-center">
+          <div className="w-full flex justify-center">
+            <DesignStudioCarousel />
+          </div>
 
-          <div className="mt-2">
-            <NumberLabel label="Describe your design">1</NumberLabel>
+          <div className="mt-2 w-full flex justify-center">
             <div className="w-full">
               <DesignForm />
             </div>
@@ -59,7 +64,7 @@ export default function DesignStudioContent() {
         </div>
 
         {/* Right Column - Preview (visible only on desktop) */}
-        <div className="mt-8 hidden w-full lg:mt-0 lg:block lg:w-1/2">
+        {/* <div className="mt-8 hidden w-full lg:mt-0 lg:block lg:w-1/2">
           <div className="sticky top-8">
             <Suspense
               fallback={
@@ -69,19 +74,11 @@ export default function DesignStudioContent() {
               <DesignPreview />
             </Suspense>
           </div>
-        </div>
-      </div>
-
-      {/* Full Width Design Selection Section */}
-      <div className="w-full">
-        <NumberLabel label="Select a design">2</NumberLabel>
-        <div className="w-full">
-          <DesignStudioCarousel />
-        </div>
+        </div> */}
       </div>
 
       {/* Mobile Preview Section (below carousel, only visible on mobile) */}
-      <div className="my-8 block w-full lg:hidden">
+      {/* <div className="my-8 block w-full lg:hidden">
         <div className="w-full">
           <Suspense
             fallback={
@@ -91,7 +88,7 @@ export default function DesignStudioContent() {
             <DesignPreview />
           </Suspense>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

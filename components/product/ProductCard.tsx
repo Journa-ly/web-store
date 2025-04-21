@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 // Define the Product type
 export type Product = {
@@ -23,16 +24,29 @@ export type Product = {
 
 interface ProductCardProps {
   product: Product;
+  imageHeight?: string; // Customizable image height (Tailwind class)
+  cardHeight?: string; // Customizable card height (Tailwind class)
+  cardWidth?: string; // Customizable card width (Tailwind class)
+  className?: string; // Additional classes for the card
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ 
+  product, 
+  imageHeight = 'h-64', 
+  cardHeight = 'h-full', 
+  cardWidth = 'w-full',
+  className = ''
+}: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.handle}`}
-      className="group relative flex h-full flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl"
+      className={clsx(
+        `group relative flex flex-col overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:shadow-xl ${cardHeight} ${cardWidth}`,
+        className
+      )}
     >
       {/* Card Image with Hover Effect */}
-      <div className="relative h-64 overflow-hidden">
+      <div className={`relative overflow-hidden ${imageHeight}`}>
         <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/30 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"></div>
         <Image
           src={product.featuredImage.url}

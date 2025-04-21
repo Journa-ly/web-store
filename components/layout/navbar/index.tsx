@@ -14,7 +14,7 @@ export function Navbar() {
   ];
 
   return (
-    <div className="bg-white px-2 mb-2 shadow lg:shadow-none lg:px-4">
+    <div className="bg-white px-2 mb-2 mt-1 shadow lg:shadow-none lg:px-4">
       <div className="navbar lg:rounded-box bg-base-100 lg:shadow-md">
         <div className="navbar-start flex items-center">
           <MobileMenu>

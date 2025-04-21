@@ -1,20 +1,18 @@
 'use client';
 
-import { PaintBrushIcon } from '@heroicons/react/24/solid';
+import { SparklesIcon, ArrowPathIcon } from '@heroicons/react/24/solid';
 import { zodResolver } from '@hookform/resolvers/zod';
-import NewGenerationButton from 'components/buttons/newGenerationButton';
 import { useForm } from 'react-hook-form';
 import { createDesign, usePaginatedMyDesigns } from 'requests/designs';
 import { z } from 'zod';
 import { CreateDesignRequest } from 'types/design';
-import MyDesignsButton from 'components/buttons/MyDesignsButton';
-import ShareButton from 'components/buttons/ShareButton';
 import { useDesign } from 'components/designs/design-context';
 import { useEffect, useRef, useState } from 'react';
 import clsx from 'clsx';
 import { useAuth } from 'requests/users';
 import AuthModal from 'components/modals/AuthModal';
 import { LiveStream } from '@/requests/livestreams';
+import { serverClient } from '@/clients/server';
 
 // Define the form schema
 const formSchema = z.object({
@@ -35,6 +33,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [authModalTitle, setAuthModalTitle] = useState('Sign in to create designs');
   const [pendingDesignData, setPendingDesignData] = useState<FormValues | null>(null);
   const [remainingDesigns, setRemainingDesigns] = useState<number | null>(null);
+  const [isPillLoading, setIsPillLoading] = useState<string | null>(null);
 
   const {
     register,
@@ -152,160 +151,226 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     promptRef.current?.focus();
   };
 
+  const handleStyleClick = async (style: string) => {
+    try {
+      setIsPillLoading(style);
+      setErrorMessage(null);
+      
+      console.log(`Generating prompt for style: ${style}`);
+      
+      // Call the generate_prompt API with the style theme and create_design=true
+      const response = await serverClient.get(`/designs/generate_prompt?theme=${style.toLowerCase()}&create_design=true`);
+      
+      console.log('API response:', response);
+      
+      // Extract the prompt from the response
+      let generatedPrompt;
+      let isDesignCreating = false;
+      
+      if (typeof response.data === 'string') {
+        generatedPrompt = response.data;
+      } else if (response.data && typeof response.data === 'object') {
+        generatedPrompt = response.data.prompt || '';
+        isDesignCreating = !!response.data.design_creating;
+      } else {
+        console.error('Unexpected response format:', response.data);
+        throw new Error('Unexpected response format');
+      }
+      
+      console.log('Generated prompt:', generatedPrompt);
+      console.log('Design creating:', isDesignCreating);
+      
+      // Update the form with the generated prompt
+      setValue('prompt', generatedPrompt);
+      
+      // If design is being created automatically via the API, just refresh designs
+      if (isDesignCreating) {
+        console.log('Design is being created, will refresh after delay');
+        // Refresh designs list after a short delay to allow backend processing
+        setTimeout(() => {
+          console.log('Refreshing designs list');
+          mutate();
+        }, 3000); // Increase the delay to give backend more time
+      } else {
+        console.log('Manually submitting design with prompt');
+        // If no automatic design creation, submit manually
+        await submitDesign({ prompt: generatedPrompt });
+      }
+    } catch (error: any) {
+      console.error('Error generating prompt:', error);
+      
+      // Special handling for design limit errors
+      if (error?.response?.status === 403 && !isAuthenticated) {
+        setAuthModalTitle('Design limit reached');
+        setShowAuthModal(true);
+      } else {
+        setErrorMessage('Failed to generate prompt. Please try again.');
+      }
+    } finally {
+      setIsPillLoading(null);
+    }
+  };
+
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="max-w-xl space-y-2">
-        {/* Description Field */}
-        <div>
-          <textarea
-            {...register('prompt')}
-            ref={(e) => {
-              register('prompt').ref(e);
-              promptRef.current = e;
-            }}
-            className="textarea mt-1 w-full bg-neutral-100"
-            placeholder="Enter your design description..."
-          />
-          {errors.prompt && <p className="text-sm text-red-500">{errors.prompt.message}</p>}
-        </div>
-
-        {/* Text Field (Optional) */}
-        <div>
-          <label className="block text-sm font-medium text-base-content">
-            Image Text (Optional)
-          </label>
-          <input
-            {...register('imageText')}
-            type="text"
-            className="input mt-1 w-full bg-neutral-100"
-            placeholder="Image Text"
-          />
-          {errors.imageText && <p className="text-sm text-red-500">{errors.imageText.message}</p>}
-        </div>
-
-        {/* Remaining designs for anonymous users */}
-        {!isAuthenticated && remainingDesigns !== null && (
-          <div
-            className={clsx('rounded-md p-3', remainingDesigns > 0 ? 'bg-blue-50' : 'bg-amber-50')}
-          >
-            <div className="flex">
-              <div className="ml-3 flex-1 md:flex md:justify-between">
-                {remainingDesigns > 0 ? (
-                  <p className="text-sm text-blue-700">
-                    You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining.
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setAuthModalTitle('Sign in for unlimited designs');
-                        setShowAuthModal(true);
-                      }}
-                      className="ml-2 font-medium underline"
-                    >
-                      Sign in for unlimited designs.
-                    </a>
-                  </p>
-                ) : (
-                  <p className="text-sm text-amber-700">
-                    You've used all your guest designs.
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setAuthModalTitle('Sign in for unlimited designs');
-                        setShowAuthModal(true);
-                      }}
-                      className="ml-2 font-medium underline"
-                    >
-                      Sign in to continue designing.
-                    </a>
-                  </p>
-                )}
+      <div>
+        {/* My Designs Button - Top Right */}
+        {/* <div className="flex justify-end mb-2">
+          <MyDesignsButton />
+        </div> */}
+        
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
+          {/* Description Field with Overlaid Buttons */}
+          <div className="relative">
+            <div className="text-xs text-base-content/60 mb-2 ml-2 block">
+              Make me something...
+              <div className="flex flex-nowrap overflow-x-auto py-1 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                {["Funny", "Artsy", "Nostalgic", "Chaotic", "Trendy", "Random"].map((style) => (
+                  <button
+                    key={style}
+                    type="button"
+                    onClick={() => handleStyleClick(style)}
+                    disabled={isPillLoading !== null || isSubmitDisabled}
+                    className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-neutral-200 text-neutral-700 mr-2 whitespace-nowrap flex-shrink-0 hover:bg-secondary hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    {isPillLoading === style && (
+                      <div className="h-3 w-3 animate-spin rounded-full border-2 border-neutral-700 border-t-transparent mr-1" />
+                    )}
+                    {style}
+                  </button>
+                ))}
               </div>
             </div>
+            <textarea
+              {...register('prompt')}
+              ref={(e) => {
+                register('prompt').ref(e);
+                promptRef.current = e;
+              }}
+              className="textarea w-full bg-neutral-100 min-h-[150px] pb-20 text-[14px] leading-[1.3] font-extralight overflow-y-auto"
+              placeholder='A colorful, grafiti-style design that says "I love you"'
+            />
+            
+            {/* New Generation Button - Bottom Left */}
+            <button
+              type="button"
+              onClick={handleNewGeneration}
+              className="absolute left-3 bottom-4 transform rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95 flex items-center justify-center"
+              aria-label="New generation"
+            >
+              <ArrowPathIcon className="h-4 w-4 text-gray-600" />
+            </button>
+            
+            {/* Generate Button - Bottom Right */}
+            <button
+              type="submit"
+              disabled={
+                isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
+              }
+              className={clsx(
+                'absolute right-3 bottom-4 transform rounded-full bg-secondary p-2 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95 flex items-center justify-center',
+                (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) &&
+                  'cursor-not-allowed opacity-50'
+              )}
+              onClick={() => {
+                // If it's disabled due to no remaining designs, show auth modal instead
+                if (!isAuthenticated && remainingDesigns === 0) {
+                  setAuthModalTitle('Design limit reached');
+                  setShowAuthModal(true);
+                  return false; // Prevent form submission
+                }
+              }}
+              aria-label={isSubmitting ? "Generating design..." : "Generate design"}
+            >
+              {isSubmitting ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                <SparklesIcon className="h-5 w-5 text-white" />
+              )}
+
+              {/* Tooltip for when button is disabled due to no remaining designs */}
+              {!isAuthenticated && remainingDesigns === 0 && (
+                <div className="absolute -top-10 left-1/2 hidden -translate-x-1/2 transform whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
+                  Sign in to create more designs
+                </div>
+              )}
+            </button>
+            
+            {errors.prompt && <p className="text-sm text-red-500 mt-1">{errors.prompt.message}</p>}
           </div>
-        )}
 
-        {/* Style Field (Optional) */}
-        {/* Uncomment or adjust the style field as needed */}
-        {/* <div>
-          <label className="block text-sm font-medium text-base-content">
-            Style (Optional)
-          </label>
-          <select {...register("style")} className="select select-bordered w-full mt-1 bg-neutral-100">
-            <option value="">Select a style</option>
-            <option value="modern">Modern</option>
-            <option value="vintage">Vintage</option>
-            <option value="minimalist">Minimalist</option>
-          </select>
-        </div> */}
-
-        {/* Error Message */}
-        {errorMessage && (
-          <div className="rounded-md bg-red-50 p-4">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg
-                  className="h-5 w-5 text-red-400"
-                  viewBox="0 0 20 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Error</h3>
-                <div className="mt-2 text-sm text-red-700">
-                  <p>{errorMessage}</p>
+          {/* Remaining designs for anonymous users */}
+          {!isAuthenticated && remainingDesigns !== null && (
+            <div
+              className={clsx('rounded-md p-3', remainingDesigns > 0 ? 'bg-blue-50' : 'bg-amber-50')}
+            >
+              <div className="flex">
+                <div className="ml-3 flex-1 md:flex md:justify-between">
+                  {remainingDesigns > 0 ? (
+                    <p className="text-sm text-blue-700">
+                      You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining.
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setAuthModalTitle('Sign in for unlimited designs');
+                          setShowAuthModal(true);
+                        }}
+                        className="ml-2 font-medium underline"
+                      >
+                        Sign in for unlimited designs.
+                      </a>
+                    </p>
+                  ) : (
+                    <p className="text-sm text-amber-700">
+                      You've used all your guest designs.
+                      <a
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setAuthModalTitle('Sign in for unlimited designs');
+                          setShowAuthModal(true);
+                        }}
+                        className="ml-2 font-medium underline"
+                      >
+                        Sign in to continue designing.
+                      </a>
+                    </p>
+                  )}
                 </div>
               </div>
             </div>
-          </div>
-        )}
+          )}
 
-        <div className="flex items-center justify-between gap-4">
-          <div className="flex items-center gap-5">
-            <NewGenerationButton onClick={handleNewGeneration} />
-            <MyDesignsButton />
-            <ShareButton />
-          </div>
-
-          <button
-            type="submit"
-            disabled={
-              isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
-            }
-            className={clsx(
-              'group btn btn-secondary relative flex items-center gap-2 text-white',
-              (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) &&
-                'cursor-not-allowed opacity-50'
-            )}
-            onClick={() => {
-              // If it's disabled due to no remaining designs, show auth modal instead
-              if (!isAuthenticated && remainingDesigns === 0) {
-                setAuthModalTitle('Design limit reached');
-                setShowAuthModal(true);
-                return false; // Prevent form submission
-              }
-            }}
-          >
-            <PaintBrushIcon width={24} height={24} />
-            {isSubmitting ? 'Generating...' : 'Generate'}
-
-            {/* Tooltip for when button is disabled due to no remaining designs */}
-            {!isAuthenticated && remainingDesigns === 0 && (
-              <div className="absolute -top-10 left-1/2 hidden -translate-x-1/2 transform whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
-                Sign in to create more designs
+          {/* Error Message */}
+          {errorMessage && (
+            <div className="rounded-md bg-red-50 p-4">
+              <div className="flex">
+                <div className="flex-shrink-0">
+                  <svg
+                    className="h-5 w-5 text-red-400"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.28 7.22a.75.75 0 00-1.06 1.06L8.94 10l-1.72 1.72a.75.75 0 101.06 1.06L10 11.06l1.72 1.72a.75.75 0 101.06-1.06L11.06 10l1.72-1.72a.75.75 0 00-1.06-1.06L10 8.94 8.28 7.22z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <h3 className="text-sm font-medium text-red-800">Error</h3>
+                  <div className="mt-2 text-sm text-red-700">
+                    <p>{errorMessage}</p>
+                  </div>
+                </div>
               </div>
-            )}
-          </button>
-        </div>
-      </form>
+            </div>
+          )}
+        </form>
+      </div>
 
       {/* Auth Modal */}
       <AuthModal

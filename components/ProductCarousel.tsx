@@ -5,12 +5,14 @@ interface ProductCarouselProps {
   collectionHandle: string;
   title?: string;
   className?: string;
+  size?: 'default' | 'small';
 }
 
 export default async function ProductCarousel({
   collectionHandle,
   title,
-  className
+  className,
+  size = 'default'
 }: ProductCarouselProps) {
   const products = await getCollectionProducts({ collection: collectionHandle });
 
@@ -18,5 +20,5 @@ export default async function ProductCarousel({
     return null;
   }
 
-  return <ProductCarouselClient products={products} title={title} className={className} />;
+  return <ProductCarouselClient products={products} title={title} className={className} size={size} />;
 }

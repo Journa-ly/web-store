@@ -10,18 +10,18 @@ export default async function StudioPage() {
   return (
     <StudioTutorialWrapper>
       <div className="w-full">
-        <div className="overflow-hidden rounded-2xl bg-white shadow">
-          <div className="p-2 md:p-4 lg:p-8">
+        <div className="overflow-hidden">
+          <div className="md:p-2 lg:p-4">
             <DesignStudioContent />
             <div className="w-full">
-              <NumberLabel label="Choose a product">3</NumberLabel>
+              {/* <NumberLabel label="Choose a product">3</NumberLabel> */}
             </div>
-            <div className="pt-8">
+            <div className="pt-1">
               <Suspense
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}
               >
                 <div className="mx-auto max-w-4xl">
-                  <ProductCarousel collectionHandle="all" className="w-full md:max-w-none" />
+                  <ProductCarousel collectionHandle="all" className="w-full md:max-w-none" size="small" />
                 </div>
               </Suspense>
             </div>

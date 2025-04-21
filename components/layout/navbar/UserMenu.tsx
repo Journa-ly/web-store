@@ -42,12 +42,12 @@ export default function UserMenu() {
   // Show login/signup menu when not authenticated
   if (!isAuthenticated || !user) {
     return (
-      <div className="dropdown dropdown-end">
+      <div className="z-[1000] dropdown dropdown-end">
         <div tabIndex={0} role="button" className="btn btn-ghost px-2">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
-            viewBox="0 0 20 20"
+            viewBox="0 0 24 20"
             strokeWidth={1.5}
             stroke="currentColor"
             className="h-4 w-4"
@@ -75,7 +75,7 @@ export default function UserMenu() {
   }
 
   return (
-    <div className="dropdown dropdown-end">
+    <div className="z-[1000] dropdown dropdown-end">
       <div tabIndex={0} role="button" className="btn btn-ghost">
         <span>Hi, {user.first_name}</span>
       </div>
