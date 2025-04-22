@@ -13,7 +13,7 @@ export default async function CategoryPage() {
 
   return (
     <div className="container mx-auto px-4 pb-8">
-      <h1 className="mb-8 text-center text-3xl font-bold">Design Categories</h1>
+      <h1 className="my-8 text-center text-3xl font-bold">Design Categories</h1>
 
       {categories.length === 0 ? (
         <div className="flex h-[400px] items-center justify-center">
@@ -28,7 +28,7 @@ export default async function CategoryPage() {
               className="group"
             >
               <div className="card bg-base-100 shadow-xl transition-all duration-300 hover:shadow-2xl">
-                <figure className="relative h-[18rem] w-full">
+                <figure className="relative aspect-square w-full">
                   {category.image_url ? (
                     <Image
                       src={category.image_url}

@@ -3,7 +3,6 @@ import DesignStudioContent from 'components/designStudio/DesignStudioContent';
 import ProductCarousel from 'components/ProductCarousel';
 import FAQ from 'components/FAQ';
 import HowTo from 'components/HowTo';
-import NumberLabel from '@/components/numberLabel';
 import StudioTutorialWrapper from 'components/tutorial/StudioTutorialWrapper';
 
 export default async function StudioPage() {
@@ -20,8 +19,9 @@ export default async function StudioPage() {
               <Suspense
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}
               >
-                <div className="mx-auto">
+                <div className="mx-auto mt-4">
                   <ProductCarousel
+                    title="Select a product"
                     collectionHandle="all"
                     className="xl:max-width-5xl max-w-2xl lg:max-w-3xl"
                     size="small"
@@ -31,12 +31,12 @@ export default async function StudioPage() {
             </div>
           </div>
         </div>
-      </div>
-      <div className="mt-8">
-        <HowTo />
-      </div>
-      <div className="mt-8">
-        <FAQ />
+        <div className="mt-8">
+          <HowTo />
+        </div>
+        <div className="mt-8">
+          <FAQ />
+        </div>
       </div>
     </StudioTutorialWrapper>
   );

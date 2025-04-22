@@ -10,7 +10,7 @@ export default function MenuLayout({ children }: MenuLayoutProps) {
       <div className="order-first mb-12 hidden h-full w-full lg:sticky lg:top-4 lg:block lg:w-[300px] lg:min-w-[300px]">
         <Menu />
       </div>
-      <div>{children}</div>
+      <>{children}</>
     </div>
   );
 }

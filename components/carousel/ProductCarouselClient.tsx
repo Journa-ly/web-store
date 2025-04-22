@@ -31,7 +31,7 @@ export default function ProductCarouselClient({
     <div className={clsx('mx-auto', className)}>
       {title && <h2 className="mb-4 text-lg font-semibold text-base-content">{title}</h2>}
       <div>
-        <div className="hide-scrollbar flex overflow-x-auto py-8">
+        <div className="hide-scrollbar flex overflow-x-auto pb-8">
           <div className="flex gap-4">
             {products.map((product) => (
               <div key={product.id} className={clsx(cardWidth, 'flex-shrink-0')}>
