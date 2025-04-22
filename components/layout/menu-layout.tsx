@@ -7,7 +7,7 @@ interface MenuLayoutProps {
 export default function MenuLayout({ children }: MenuLayoutProps) {
   return (
     <div className="mb-[48px] flex w-full flex-col gap-2 px-2 text-black lg:flex-row lg:px-6">
-      <div className="order-first mb-12 hidden h-full w-full lg:sticky lg:top-4 lg:block lg:w-[300px] lg:min-w-[300px]">
+      <div className="order-first mb-12 hidden h-full w-full lg:sticky lg:top-4 lg:block lg:w-[250px] lg:min-w-[250px]">
         <Menu />
       </div>
       <>{children}</>

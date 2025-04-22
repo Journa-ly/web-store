@@ -13,6 +13,7 @@ import { useAuth } from 'requests/users';
 import AuthModal from 'components/modals/AuthModal';
 import { LiveStream } from '@/requests/livestreams';
 import { serverClient } from '@/clients/server';
+import MyDesignsButton from '../buttons/MyDesignsButton';
 
 // Define the form schema
 const formSchema = z.object({
@@ -55,7 +56,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       promptRef.current.style.height = 'auto';
       
       // Calculate required height with bottom padding for buttons
-      const buttonAreaHeight = 4;
+      const buttonAreaHeight = 8;
       
       // Set new height based on scroll height
       const newHeight = Math.max(100, promptRef.current.scrollHeight + buttonAreaHeight);
@@ -240,7 +241,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           {/* Description Field with Overlaid Buttons */}
           <div className="relative" ref={textareaContainerRef}>
-            <div className="mb-2 ml-2 text-lg font-semibold text-secondary/60">
+            <div className="mb-2 text-lg font-semibold text-secondary/60">
               Make me something...
               <div
                 className="scrollbar-hide flex flex-nowrap overflow-x-auto py-1"
@@ -270,7 +271,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
               }}
               className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
               placeholder='A colorful, grafiti-style design that says "I love you"'
-              style={{ minHeight: '100px', paddingBottom: '56px' }}
+              style={{ minHeight: '100px', paddingBottom: '64px' }}
               onChange={() => adjustTextareaHeight()}
             />
 
@@ -284,6 +285,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
               >
                 <ArrowPathIcon className="h-4 w-4 text-gray-600" />
               </button>
+              <MyDesignsButton />
             </div>
 
             {/* Generate Button - Bottom Right */}

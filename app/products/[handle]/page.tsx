@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: ProductPageProps) {
           __html: JSON.stringify(productJsonLd)
         }}
       />
-      <div className="mx-auto max-w-screen-2xl">
+      <div>
         <ProductTutorialWrapper>
           {product.productType === PRODUCT_TYPES.readyToShip ? (
             <ReadyToShipProduct product={product} />

@@ -17,7 +17,7 @@ import RelatedProducts from 'components/product/related-products';
 export default function TemplateProduct({ product }: { product: Product }) {
   return (
     <>
-      <div className="flex flex-col rounded-lg bg-white p-2 md:p-8 lg:flex-row lg:gap-8 lg:pr-12">
+      <div className="flex flex-col rounded-lg p-2 xl:p-8 lg:flex-row lg:gap-2 lg:pr-8">
         {/* Left Column - Title, Price, Design Form, Add to Cart */}
         <div className="w-full lg:w-1/2">
           <div className="mb-2">
@@ -38,8 +38,12 @@ export default function TemplateProduct({ product }: { product: Product }) {
           </div>
 
           <div className="mb-8 w-full">
-            <DesignForm />
-            <div className="pb-2"></div>
+            <div className="w-full max-w-full overflow-hidden box-border">
+              <div className="max-w-[95%] sm:max-w-[90%] lg:max-w-[450px]">
+                <DesignForm />
+              </div>
+            </div>
+            <div className="pb-2"/>
             <div className="w-full overflow-hidden">
               <MyDesignsCarousel />
             </div>
