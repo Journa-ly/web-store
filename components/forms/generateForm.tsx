@@ -210,7 +210,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 className="scrollbar-hide flex flex-nowrap overflow-x-auto py-1"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {['Funny', 'Artsy', 'Nostalgic', 'Chaotic', 'Trendy', 'Random', 'Mother\'s Day', 'Bachelorette Party', 'Birthday', 'Graduation', 'Father\'s Day', 'Anniversary', 'Valentine\'s Day', 'Easter', 'Thanksgiving', 'Christmas', 'New Year', 'Memorial Day', 'Labor Day', 'Independence Day', 'Cinco de Mayo', 'St. Patrick\'s Day', 'Mothers Day', 'Fathers Day', 'Halloween', 'Thanksgiving', 'Christmas', 'New Year', 'Memorial Day', 'Labor Day', 'Independence Day', 'Cinco de Mayo', 'St. Patrick\'s Day'].map((style) => (
+                {['Funny', 'Artsy', 'Nostalgic', 'Chaotic', 'Trendy', 'Random', 'Mother\'s Day', 'Bachelorette Party', 'Birthday', 'Graduation', 'Father\'s Day', 'Anniversary', 'Valentine\'s Day', 'Easter', 'Mothers Day', 'Fathers Day', 'Halloween', 'Thanksgiving', 'Christmas', 'New Year', 'Memorial Day', 'Labor Day', 'Independence Day', 'Cinco de Mayo', 'St. Patrick\'s Day'].map((style) => (
                   <button
                     key={style}
                     type="button"
@@ -232,7 +232,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 register('prompt').ref(e);
                 promptRef.current = e;
               }}
-              className="textarea min-h-[150px] w-full overflow-y-auto bg-neutral-100 pb-20 text-[14px] font-extralight leading-[1.3]"
+              className="textarea min-h-[150px] w-full overflow-y-auto bg-neutral-100 pb-20 text-[16px] font-extralight leading-[1.3]"
               placeholder='A colorful, grafiti-style design that says "I love you"'
             />
 
