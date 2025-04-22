@@ -156,14 +156,10 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       setIsPillLoading(style);
       setErrorMessage(null);
 
-      console.log(`Generating prompt for style: ${style}`);
-
       // Call the generate_prompt API with the style theme and create_design=true
       const response = await serverClient.get(
         `/designs/generate_prompt?theme=${style.toLowerCase()}&create_design=true`
       );
-
-      console.log('API response:', response);
 
       // Extract the prompt from the response
       let generatedPrompt;
@@ -179,25 +175,9 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         throw new Error('Unexpected response format');
       }
 
-      console.log('Generated prompt:', generatedPrompt);
-      console.log('Design creating:', isDesignCreating);
-
       // Update the form with the generated prompt
       setValue('prompt', generatedPrompt);
 
-      // If design is being created automatically via the API, just refresh designs
-      if (isDesignCreating) {
-        console.log('Design is being created, will refresh after delay');
-        // Refresh designs list after a short delay to allow backend processing
-        setTimeout(() => {
-          console.log('Refreshing designs list');
-          mutate();
-        }, 3000); // Increase the delay to give backend more time
-      } else {
-        console.log('Manually submitting design with prompt');
-        // If no automatic design creation, submit manually
-        await submitDesign({ prompt: generatedPrompt });
-      }
     } catch (error: any) {
       console.error('Error generating prompt:', error);
 
@@ -230,7 +210,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 className="scrollbar-hide flex flex-nowrap overflow-x-auto py-1"
                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
               >
-                {['Funny', 'Artsy', 'Nostalgic', 'Chaotic', 'Trendy', 'Random'].map((style) => (
+                {['Funny', 'Artsy', 'Nostalgic', 'Chaotic', 'Trendy', 'Random', 'Mother\'s Day', 'Bachelorette Party', 'Birthday', 'Graduation', 'Father\'s Day', 'Anniversary', 'Valentine\'s Day', 'Easter', 'Thanksgiving', 'Christmas', 'New Year', 'Memorial Day', 'Labor Day', 'Independence Day', 'Cinco de Mayo', 'St. Patrick\'s Day', 'Mothers Day', 'Fathers Day', 'Halloween', 'Thanksgiving', 'Christmas', 'New Year', 'Memorial Day', 'Labor Day', 'Independence Day', 'Cinco de Mayo', 'St. Patrick\'s Day'].map((style) => (
                   <button
                     key={style}
                     type="button"
