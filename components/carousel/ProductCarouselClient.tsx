@@ -29,7 +29,7 @@ export default function ProductCarouselClient({
 
   return (
     <div className={clsx('mx-auto', className)}>
-      {title && <h2 className="mb-4 text-lg font-semibold text-base-content">{title}</h2>}
+      {title && <h2 className="mb-4 text-lg font-semibold text-secondary/60">{title}</h2>}
       <div>
         <div className="hide-scrollbar flex overflow-x-auto pb-8">
           <div className="flex gap-4">

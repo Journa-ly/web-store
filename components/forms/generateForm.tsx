@@ -27,6 +27,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const { selectedDesign } = useDesign();
   const { isAuthenticated } = useAuth();
   const promptRef = useRef<HTMLTextAreaElement>(null);
+  const textareaContainerRef = useRef<HTMLDivElement>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -47,11 +48,46 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
   const { mutate, myDesigns } = usePaginatedMyDesigns();
 
-  // Update form when selected design changes
+  // Function to adjust textarea height
+  const adjustTextareaHeight = () => {
+    if (promptRef.current) {
+      // Reset height to get the right scrollHeight
+      promptRef.current.style.height = 'auto';
+      
+      // Calculate required height with bottom padding for buttons
+      const buttonAreaHeight = 4;
+      
+      // Set new height based on scroll height
+      const newHeight = Math.max(100, promptRef.current.scrollHeight + buttonAreaHeight);
+      promptRef.current.style.height = `${newHeight}px`;
+    }
+  };
+
+  // Adjust height when content changes
+  useEffect(() => {
+    const textarea = promptRef.current;
+    if (!textarea) return;
+
+    // Initial adjustment
+    adjustTextareaHeight();
+
+    // Add event listener for input events
+    const handleInput = () => adjustTextareaHeight();
+    textarea.addEventListener('input', handleInput);
+
+    return () => {
+      textarea.removeEventListener('input', handleInput);
+    };
+  }, []);
+
+  // Readjust when selected design changes
   useEffect(() => {
     if (selectedDesign) {
       setValue('prompt', selectedDesign.prompt || '');
       setValue('imageText', selectedDesign.quote_prompt || '');
+      
+      // Ensure height adjustment after value change
+      setTimeout(adjustTextareaHeight, 0);
     }
   }, [selectedDesign, setValue]);
 
@@ -203,8 +239,8 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           {/* Description Field with Overlaid Buttons */}
-          <div className="relative">
-            <div className="mb-2 ml-2 block text-xs text-base-content/60">
+          <div className="relative" ref={textareaContainerRef}>
+            <div className="mb-2 ml-2 text-lg font-semibold text-secondary/60">
               Make me something...
               <div
                 className="scrollbar-hide flex flex-nowrap overflow-x-auto py-1"
@@ -216,7 +252,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                     type="button"
                     onClick={() => handleStyleClick(style)}
                     disabled={isPillLoading !== null || isSubmitDisabled}
-                    className="mr-2 inline-flex flex-shrink-0 items-center whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 transition-colors hover:bg-secondary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+                    className="mr-2 inline-flex flex-shrink-0 items-center whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-secondary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isPillLoading === style && (
                       <div className="mr-1 h-3 w-3 animate-spin rounded-full border-2 border-neutral-700 border-t-transparent" />
@@ -232,56 +268,62 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 register('prompt').ref(e);
                 promptRef.current = e;
               }}
-              className="textarea min-h-[150px] w-full overflow-y-auto bg-neutral-100 pb-20 text-[16px] font-extralight leading-[1.3]"
+              className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
               placeholder='A colorful, grafiti-style design that says "I love you"'
+              style={{ minHeight: '100px', paddingBottom: '56px' }}
+              onChange={() => adjustTextareaHeight()}
             />
 
             {/* New Generation Button - Bottom Left */}
-            <button
-              type="button"
-              onClick={handleNewGeneration}
-              className="absolute bottom-4 left-3 flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
-              aria-label="New generation"
-            >
-              <ArrowPathIcon className="h-4 w-4 text-gray-600" />
-            </button>
+            <div className="absolute bottom-4 left-3 z-10">
+              <button
+                type="button"
+                onClick={handleNewGeneration}
+                className="flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
+                aria-label="New generation"
+              >
+                <ArrowPathIcon className="h-4 w-4 text-gray-600" />
+              </button>
+            </div>
 
             {/* Generate Button - Bottom Right */}
-            <button
-              type="submit"
-              disabled={
-                isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
-              }
-              className={clsx(
-                'absolute bottom-4 right-3 flex transform items-center justify-center rounded-full bg-secondary p-2 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95',
-                (isSubmitting ||
-                  isSubmitDisabled ||
-                  (!isAuthenticated && remainingDesigns === 0)) &&
-                  'cursor-not-allowed opacity-50'
-              )}
-              onClick={() => {
-                // If it's disabled due to no remaining designs, show auth modal instead
-                if (!isAuthenticated && remainingDesigns === 0) {
-                  setAuthModalTitle('Design limit reached');
-                  setShowAuthModal(true);
-                  return false; // Prevent form submission
+            <div className="absolute bottom-4 right-3 z-10">
+              <button
+                type="submit"
+                disabled={
+                  isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
                 }
-              }}
-              aria-label={isSubmitting ? 'Generating design...' : 'Generate design'}
-            >
-              {isSubmitting ? (
-                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              ) : (
-                <SparklesIcon className="h-5 w-5 text-white" />
-              )}
+                className={clsx(
+                  'flex transform items-center justify-center rounded-full bg-secondary p-3 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95',
+                  (isSubmitting ||
+                    isSubmitDisabled ||
+                    (!isAuthenticated && remainingDesigns === 0)) &&
+                    'cursor-not-allowed opacity-50'
+                )}
+                onClick={() => {
+                  // If it's disabled due to no remaining designs, show auth modal instead
+                  if (!isAuthenticated && remainingDesigns === 0) {
+                    setAuthModalTitle('Design limit reached');
+                    setShowAuthModal(true);
+                    return false; // Prevent form submission
+                  }
+                }}
+                aria-label={isSubmitting ? 'Generating design...' : 'Generate design'}
+              >
+                {isSubmitting ? (
+                  <div className="h-6 w-6 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                ) : (
+                  <SparklesIcon className="h-6 w-6 text-white" />
+                )}
 
-              {/* Tooltip for when button is disabled due to no remaining designs */}
-              {!isAuthenticated && remainingDesigns === 0 && (
-                <div className="absolute -top-10 left-1/2 hidden -translate-x-1/2 transform whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
-                  Sign in to create more designs
-                </div>
-              )}
-            </button>
+                {/* Tooltip for when button is disabled due to no remaining designs */}
+                {!isAuthenticated && remainingDesigns === 0 && (
+                  <div className="absolute -top-10 left-1/2 hidden -translate-x-1/2 transform whitespace-nowrap rounded bg-gray-800 px-2 py-1 text-xs text-white group-hover:block">
+                    Sign in to create more designs
+                  </div>
+                )}
+              </button>
+            </div>
 
             {errors.prompt && <p className="mt-1 text-sm text-red-500">{errors.prompt.message}</p>}
           </div>
