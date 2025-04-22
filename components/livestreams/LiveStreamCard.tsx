@@ -22,10 +22,10 @@ const StreamDesignStudio = dynamic(() => import('../designStudio/StreamDesignStu
 });
 
 // Simplified version of DesignGrid for livestream designs
-function LivestreamDesignGrid({ 
-  designs, 
-  onDesignAdded 
-}: { 
+function LivestreamDesignGrid({
+  designs,
+  onDesignAdded
+}: {
   designs: TrendingDesign[];
   onDesignAdded: () => Promise<void>;
 }) {
@@ -34,14 +34,14 @@ function LivestreamDesignGrid({
   }
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
       {designs.map((design) => (
         <div key={design.uuid} className="aspect-square">
-          <LiveStreamDesignCard 
-            design={design} 
+          <LiveStreamDesignCard
+            design={design}
             onDesignAdded={async () => {
               await onDesignAdded();
-            }} 
+            }}
           />
         </div>
       ))}
@@ -59,11 +59,8 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
   const [isExpanded, setIsExpanded] = useState(false);
   // Only fetch designs when active or when expanded for previous streams
   const shouldFetchDesigns = isActive || (isExpanded && !isActive);
-  const { designs, isLoading } = useLiveStreamDesigns(
-    shouldFetchDesigns ? livestream.uuid : ''
-  );
+  const { designs, isLoading } = useLiveStreamDesigns(shouldFetchDesigns ? livestream.uuid : '');
   const { mutate } = useDesignsWithLiveUpdates();
-  
 
   // Format dates for display
   const formatDate = (dateString: string | null) => {
@@ -72,7 +69,6 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
     const date = new Date(dateString);
     return format(date, 'MMM d, yyyy h:mm a');
   };
-
 
   const toggleExpand = () => {
     if (!isActive) {
@@ -173,7 +169,7 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
             <div className="space-y-12">
               {/* Design Studio Section */}
               <div>
-                <div className="bg-base-100 p-2 lg:p-6 shadow-sm">
+                <div className="bg-base-100 p-2 shadow-sm lg:p-6">
                   <StreamDesignStudio livestream={livestream} />
                 </div>
               </div>
@@ -192,11 +188,11 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
                 </div>
               ) : designs.length > 0 ? (
                 <div className="px-2 pb-6 md:px-4">
-                  <LivestreamDesignGrid 
-                    designs={designs} 
+                  <LivestreamDesignGrid
+                    designs={designs}
                     onDesignAdded={async () => {
                       await mutate();
-                    }} 
+                    }}
                   />
                 </div>
               ) : (
@@ -232,11 +228,11 @@ export default function LiveStreamCard({ livestream, isActive = false }: LiveStr
                 </div>
               ) : designs && designs.length > 0 ? (
                 <div>
-                  <LivestreamDesignGrid 
-                    designs={designs} 
+                  <LivestreamDesignGrid
+                    designs={designs}
                     onDesignAdded={async () => {
                       await mutate();
-                    }} 
+                    }}
                   />
                 </div>
               ) : (

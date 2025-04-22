@@ -30,7 +30,9 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
   const tooltipRef = useRef<HTMLDivElement>(null);
   const [targetElement, setTargetElement] = useState<Element | null>(null);
   const [tooltipPosition, setTooltipPosition] = useState({ top: 0, left: 0 });
-  const [adjustedPosition, setAdjustedPosition] = useState<'top' | 'bottom' | 'left' | 'right'>(position);
+  const [adjustedPosition, setAdjustedPosition] = useState<'top' | 'bottom' | 'left' | 'right'>(
+    position
+  );
 
   // Find target element and calculate initial tooltip position
   useEffect(() => {
@@ -87,7 +89,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       const calculateTopPosition = () => {
         top = rect.top - tooltipHeight - margin + scrollY;
         left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
-        
+
         // Check if tooltip would extend beyond top of viewport
         if (rect.top - tooltipHeight - margin < 0) {
           return false;
@@ -95,7 +97,10 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         // Check if tooltip would extend beyond left/right edges
         if (left < scrollX || left + tooltipWidth > scrollX + viewportWidth) {
           // Center it as best as possible
-          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+          left = Math.max(
+            scrollX + 10,
+            Math.min(scrollX + viewportWidth - tooltipWidth - 10, left)
+          );
         }
         return true;
       };
@@ -103,7 +108,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       const calculateBottomPosition = () => {
         top = rect.bottom + margin + scrollY;
         left = rect.left + rect.width / 2 - tooltipWidth / 2 + scrollX;
-        
+
         // Check if tooltip would extend beyond bottom of viewport
         if (rect.bottom + margin + tooltipHeight > viewportHeight + scrollY) {
           return false;
@@ -111,7 +116,10 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         // Check if tooltip would extend beyond left/right edges
         if (left < scrollX || left + tooltipWidth > scrollX + viewportWidth) {
           // Center it as best as possible
-          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+          left = Math.max(
+            scrollX + 10,
+            Math.min(scrollX + viewportWidth - tooltipWidth - 10, left)
+          );
         }
         return true;
       };
@@ -119,7 +127,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       const calculateLeftPosition = () => {
         top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
         left = rect.left - tooltipWidth - margin + scrollX;
-        
+
         // Check if tooltip would extend beyond left of viewport
         if (rect.left - tooltipWidth - margin < 0) {
           return false;
@@ -127,7 +135,10 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         // Check if tooltip would extend beyond top/bottom edges
         if (top < scrollY || top + tooltipHeight > scrollY + viewportHeight) {
           // Center it as best as possible
-          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
+          top = Math.max(
+            scrollY + 10,
+            Math.min(scrollY + viewportHeight - tooltipHeight - 10, top)
+          );
         }
         return true;
       };
@@ -135,7 +146,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       const calculateRightPosition = () => {
         top = rect.top + rect.height / 2 - tooltipHeight / 2 + scrollY;
         left = rect.right + margin + scrollX;
-        
+
         // Check if tooltip would extend beyond right of viewport
         if (rect.right + margin + tooltipWidth > viewportWidth + scrollX) {
           return false;
@@ -143,7 +154,10 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
         // Check if tooltip would extend beyond top/bottom edges
         if (top < scrollY || top + tooltipHeight > scrollY + viewportHeight) {
           // Center it as best as possible
-          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
+          top = Math.max(
+            scrollY + 10,
+            Math.min(scrollY + viewportHeight - tooltipHeight - 10, top)
+          );
         }
         return true;
       };
@@ -168,11 +182,16 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
       // If the requested position doesn't fit, try alternatives
       if (!positionFits) {
         // Order of fallback positions
-        const positions: ('top' | 'bottom' | 'left' | 'right')[] = ['bottom', 'top', 'right', 'left'];
-        
+        const positions: ('top' | 'bottom' | 'left' | 'right')[] = [
+          'bottom',
+          'top',
+          'right',
+          'left'
+        ];
+
         // Remove the position we already tried
-        const remainingPositions = positions.filter(p => p !== positionToUse);
-        
+        const remainingPositions = positions.filter((p) => p !== positionToUse);
+
         // Try each remaining position until one fits
         for (const pos of remainingPositions) {
           switch (pos) {
@@ -207,7 +226,7 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
           }
           if (positionFits) break;
         }
-        
+
         // If no position fits perfectly, use the original position but ensure
         // the tooltip remains within viewport bounds
         if (!positionFits) {
@@ -225,10 +244,16 @@ const TutorialTooltip: React.FC<TutorialTooltipProps> = ({
               calculateRightPosition();
               break;
           }
-          
+
           // Final adjustments to keep tooltip within viewport
-          top = Math.max(scrollY + 10, Math.min(scrollY + viewportHeight - tooltipHeight - 10, top));
-          left = Math.max(scrollX + 10, Math.min(scrollX + viewportWidth - tooltipWidth - 10, left));
+          top = Math.max(
+            scrollY + 10,
+            Math.min(scrollY + viewportHeight - tooltipHeight - 10, top)
+          );
+          left = Math.max(
+            scrollX + 10,
+            Math.min(scrollX + viewportWidth - tooltipWidth - 10, left)
+          );
         }
       }
 

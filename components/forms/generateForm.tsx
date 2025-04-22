@@ -155,18 +155,20 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     try {
       setIsPillLoading(style);
       setErrorMessage(null);
-      
+
       console.log(`Generating prompt for style: ${style}`);
-      
+
       // Call the generate_prompt API with the style theme and create_design=true
-      const response = await serverClient.get(`/designs/generate_prompt?theme=${style.toLowerCase()}&create_design=true`);
-      
+      const response = await serverClient.get(
+        `/designs/generate_prompt?theme=${style.toLowerCase()}&create_design=true`
+      );
+
       console.log('API response:', response);
-      
+
       // Extract the prompt from the response
       let generatedPrompt;
       let isDesignCreating = false;
-      
+
       if (typeof response.data === 'string') {
         generatedPrompt = response.data;
       } else if (response.data && typeof response.data === 'object') {
@@ -176,13 +178,13 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         console.error('Unexpected response format:', response.data);
         throw new Error('Unexpected response format');
       }
-      
+
       console.log('Generated prompt:', generatedPrompt);
       console.log('Design creating:', isDesignCreating);
-      
+
       // Update the form with the generated prompt
       setValue('prompt', generatedPrompt);
-      
+
       // If design is being created automatically via the API, just refresh designs
       if (isDesignCreating) {
         console.log('Design is being created, will refresh after delay');
@@ -198,7 +200,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       }
     } catch (error: any) {
       console.error('Error generating prompt:', error);
-      
+
       // Special handling for design limit errors
       if (error?.response?.status === 403 && !isAuthenticated) {
         setAuthModalTitle('Design limit reached');
@@ -218,23 +220,26 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         {/* <div className="flex justify-end mb-2">
           <MyDesignsButton />
         </div> */}
-        
+
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           {/* Description Field with Overlaid Buttons */}
           <div className="relative">
-            <div className="text-xs text-base-content/60 mb-2 ml-2 block">
+            <div className="mb-2 ml-2 block text-xs text-base-content/60">
               Make me something...
-              <div className="flex flex-nowrap overflow-x-auto py-1 scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                {["Funny", "Artsy", "Nostalgic", "Chaotic", "Trendy", "Random"].map((style) => (
+              <div
+                className="scrollbar-hide flex flex-nowrap overflow-x-auto py-1"
+                style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+              >
+                {['Funny', 'Artsy', 'Nostalgic', 'Chaotic', 'Trendy', 'Random'].map((style) => (
                   <button
                     key={style}
                     type="button"
                     onClick={() => handleStyleClick(style)}
                     disabled={isPillLoading !== null || isSubmitDisabled}
-                    className="inline-flex items-center rounded-full px-3 py-1 text-sm bg-neutral-200 text-neutral-700 mr-2 whitespace-nowrap flex-shrink-0 hover:bg-secondary hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="mr-2 inline-flex flex-shrink-0 items-center whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1 text-sm text-neutral-700 transition-colors hover:bg-secondary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isPillLoading === style && (
-                      <div className="h-3 w-3 animate-spin rounded-full border-2 border-neutral-700 border-t-transparent mr-1" />
+                      <div className="mr-1 h-3 w-3 animate-spin rounded-full border-2 border-neutral-700 border-t-transparent" />
                     )}
                     {style}
                   </button>
@@ -247,20 +252,20 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 register('prompt').ref(e);
                 promptRef.current = e;
               }}
-              className="textarea w-full bg-neutral-100 min-h-[150px] pb-20 text-[14px] leading-[1.3] font-extralight overflow-y-auto"
+              className="textarea min-h-[150px] w-full overflow-y-auto bg-neutral-100 pb-20 text-[14px] font-extralight leading-[1.3]"
               placeholder='A colorful, grafiti-style design that says "I love you"'
             />
-            
+
             {/* New Generation Button - Bottom Left */}
             <button
               type="button"
               onClick={handleNewGeneration}
-              className="absolute left-3 bottom-4 transform rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95 flex items-center justify-center"
+              className="absolute bottom-4 left-3 flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
               aria-label="New generation"
             >
               <ArrowPathIcon className="h-4 w-4 text-gray-600" />
             </button>
-            
+
             {/* Generate Button - Bottom Right */}
             <button
               type="submit"
@@ -268,8 +273,10 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
               }
               className={clsx(
-                'absolute right-3 bottom-4 transform rounded-full bg-secondary p-2 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95 flex items-center justify-center',
-                (isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)) &&
+                'absolute bottom-4 right-3 flex transform items-center justify-center rounded-full bg-secondary p-2 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95',
+                (isSubmitting ||
+                  isSubmitDisabled ||
+                  (!isAuthenticated && remainingDesigns === 0)) &&
                   'cursor-not-allowed opacity-50'
               )}
               onClick={() => {
@@ -280,7 +287,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                   return false; // Prevent form submission
                 }
               }}
-              aria-label={isSubmitting ? "Generating design..." : "Generate design"}
+              aria-label={isSubmitting ? 'Generating design...' : 'Generate design'}
             >
               {isSubmitting ? (
                 <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
@@ -295,20 +302,24 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 </div>
               )}
             </button>
-            
-            {errors.prompt && <p className="text-sm text-red-500 mt-1">{errors.prompt.message}</p>}
+
+            {errors.prompt && <p className="mt-1 text-sm text-red-500">{errors.prompt.message}</p>}
           </div>
 
           {/* Remaining designs for anonymous users */}
           {!isAuthenticated && remainingDesigns !== null && (
             <div
-              className={clsx('rounded-md p-3', remainingDesigns > 0 ? 'bg-blue-50' : 'bg-amber-50')}
+              className={clsx(
+                'rounded-md p-3',
+                remainingDesigns > 0 ? 'bg-blue-50' : 'bg-amber-50'
+              )}
             >
               <div className="flex">
                 <div className="ml-3 flex-1 md:flex md:justify-between">
                   {remainingDesigns > 0 ? (
                     <p className="text-sm text-blue-700">
-                      You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''} remaining.
+                      You have {remainingDesigns} design{remainingDesigns !== 1 ? 's' : ''}{' '}
+                      remaining.
                       <a
                         href="#"
                         onClick={(e) => {

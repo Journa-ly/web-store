@@ -28,15 +28,15 @@ export default function ProductCarouselClient({
   const className2 = size === 'small' ? 'text-xs sm:text-xs' : ''; // Smaller text for small size
 
   return (
-    <div className={clsx('w-full py-4', className)}>
+    <div className={clsx('mx-auto', className)}>
       {title && <h2 className="mb-4 text-lg font-semibold text-base-content">{title}</h2>}
-      <div className="relative">
-        <div className="flex w-full overflow-x-auto pb-8 scrollbar-none">
+      <div>
+        <div className="hide-scrollbar flex overflow-x-auto py-8">
           <div className="flex gap-4">
             {products.map((product) => (
               <div key={product.id} className={clsx(cardWidth, 'flex-shrink-0')}>
-                <ProductCard 
-                  product={product} 
+                <ProductCard
+                  product={product}
                   imageHeight={imageHeight}
                   cardHeight={cardHeight}
                   className={className2}

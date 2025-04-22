@@ -1,7 +1,8 @@
 @tailwind base;
 
 /* Ensure body is full width and not constrained */
-html, body {
+html,
+body {
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -122,9 +123,21 @@ main,
 
 /* Remove any possible width constraints at specific breakpoints */
 @media (min-width: 1024px) and (max-width: 1400px) {
-  html, body, #__next, main {
+  html,
+  body,
+  #__next,
+  main {
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: hidden !important;
   }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

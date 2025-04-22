@@ -24,7 +24,7 @@ const TrendingTutorial: React.FC = () => {
     const findAndMarkTarget = () => {
       // Find and mark target elements using ID
       const firstDesign = document.getElementById('first-trending-design');
-      
+
       if (firstDesign) {
         firstDesign.classList.add('tutorial-target-design');
         setIsTargetReady(true);
@@ -32,7 +32,7 @@ const TrendingTutorial: React.FC = () => {
       } else {
         console.log('First trending design not found for tutorial, retrying...');
         retryCountRef.current++;
-        
+
         if (retryCountRef.current < maxRetries) {
           setTimeout(findAndMarkTarget, retryInterval);
         } else {
@@ -54,24 +54,27 @@ const TrendingTutorial: React.FC = () => {
 
   // Cleanup function
   const cleanupTargets = () => {
-    document.querySelectorAll('.tutorial-target-design')
-      .forEach(el => {
-        el.classList.remove('tutorial-target-design');
-      });
-    
+    document.querySelectorAll('.tutorial-target-design').forEach((el) => {
+      el.classList.remove('tutorial-target-design');
+    });
+
     hasInitializedRef.current = false;
   };
 
   // Define tutorial steps content
-  const steps: Record<TrendingPageStep, {
-    title: string;
-    content: string;
-    selector: string;
-    position?: 'top' | 'bottom' | 'left' | 'right';
-  }> = {
+  const steps: Record<
+    TrendingPageStep,
+    {
+      title: string;
+      content: string;
+      selector: string;
+      position?: 'top' | 'bottom' | 'left' | 'right';
+    }
+  > = {
     'view-designs': {
       title: 'Browse Trending Designs',
-      content: 'Here you can explore our most popular designs. Take a moment to browse through them.',
+      content:
+        'Here you can explore our most popular designs. Take a moment to browse through them.',
       selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
@@ -83,11 +86,12 @@ const TrendingTutorial: React.FC = () => {
     },
     'add-to-mydesigns': {
       title: 'Save to Your Designs',
-      content: 'Found a design you like? Save it to your personal collection by clicking the "Add to My Designs" button.',
+      content:
+        'Found a design you like? Save it to your personal collection by clicking the "Add to My Designs" button.',
       selector: '.tutorial-target-design, #first-trending-design',
       position: 'right'
     },
-    'completed': {
+    completed: {
       title: 'Completed!',
       content: 'You have completed the trending designs tutorial.',
       selector: 'h1',
@@ -100,12 +104,12 @@ const TrendingTutorial: React.FC = () => {
 
   // Calculate step number
   const getStepNumber = () => {
-    const stepKeys = Object.keys(steps).filter(key => key !== 'completed');
+    const stepKeys = Object.keys(steps).filter((key) => key !== 'completed');
     return stepKeys.indexOf(trendingStep as string) + 1;
   };
 
   const stepNumber = getStepNumber();
-  const totalSteps = Object.keys(steps).filter(key => key !== 'completed').length;
+  const totalSteps = Object.keys(steps).filter((key) => key !== 'completed').length;
 
   // Don't render the tooltip until we've found the target
   if (!isTrendingTutorialActive || trendingStep === 'completed' || !isTargetReady) {

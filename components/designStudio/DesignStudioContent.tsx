@@ -35,60 +35,25 @@ export default function DesignStudioContent() {
           <p className="px-8 text-center text-gray-500">Loading design preview...</p>
         )
       ) : (
-        <p className="px-8 text-center text-gray-500">
-          Select a design to preview it here
-        </p>
+        <p className="px-8 text-center text-gray-500">Select a design to preview it here</p>
       )}
     </div>
   );
 
   return (
-    <div className="flex w-full flex-col items-center lg:gap-8">
-      {/* Full Width Design Selection Section */}
-      <div className="w-full flex justify-center">
-        
-      </div>
-      {/* Design Form Section */}
-      <div className="flex w-full flex-col items-center">
-        {/* Full Width Column with Centered Content */}
-        <div className="w-full max-w-3xl mx-auto flex flex-col items-center">
-          <div className="w-full flex justify-center">
-            <DesignStudioCarousel />
-          </div>
-
-          <div className="mt-2 w-full flex justify-center">
-            <div className="w-full">
-              <DesignForm />
-            </div>
-          </div>
+    <div className="flex w-full flex-col items-center">
+      {/* Full Width Column with flex w-full flex-col items-centerCentered Content */}
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center">
+        <div className="flex w-full justify-center">
+          <DesignStudioCarousel />
         </div>
 
-        {/* Right Column - Preview (visible only on desktop) */}
-        {/* <div className="mt-8 hidden w-full lg:mt-0 lg:block lg:w-1/2">
-          <div className="sticky top-8">
-            <Suspense
-              fallback={
-                <div className="relative aspect-square h-full max-h-[650px] w-full overflow-hidden rounded-2xl bg-gray-100" />
-              }
-            >
-              <DesignPreview />
-            </Suspense>
+        <div className="mt-2 flex w-full justify-center">
+          <div className="w-full">
+            <DesignForm />
           </div>
-        </div> */}
-      </div>
-
-      {/* Mobile Preview Section (below carousel, only visible on mobile) */}
-      {/* <div className="my-8 block w-full lg:hidden">
-        <div className="w-full">
-          <Suspense
-            fallback={
-              <div className="relative aspect-square h-full max-h-[650px] w-full overflow-hidden rounded-2xl bg-gray-100" />
-            }
-          >
-            <DesignPreview />
-          </Suspense>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }

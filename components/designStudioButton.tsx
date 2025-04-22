@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 const DesignStudioButton = () => (
   <Link href="/designs/studio">
-    <button className="btn btn-ghost px-2 flex items-center">
+    <button className="btn btn-ghost flex items-center px-2">
       {/* Icon is always visible */}
       <PaintBrushIcon width={16} height={16} />
 

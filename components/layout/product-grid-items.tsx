@@ -17,6 +17,8 @@ export default function ProductGridItems({ products }: { products: Product[] }) 
                 minVariantPrice: product.priceRange.minVariantPrice
               }
             }}
+            cardHeight="h-[400px]"
+            imageHeight="h-64"
           />
         </Grid.Item>
       ))}

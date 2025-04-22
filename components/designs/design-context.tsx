@@ -42,7 +42,7 @@ export function DesignProvider({ children }: { children: ReactNode }) {
       const updatedDesigns = wsData.data as UserDesign[];
       if (!Array.isArray(updatedDesigns)) return;
 
-      const updatedDesign = updatedDesigns.find(d => d.uuid === selectedDesign.uuid);
+      const updatedDesign = updatedDesigns.find((d) => d.uuid === selectedDesign.uuid);
       if (updatedDesign) {
         setSelectedDesign(updatedDesign);
       }

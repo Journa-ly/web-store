@@ -10,8 +10,8 @@ export default async function StudioPage() {
   return (
     <StudioTutorialWrapper>
       <div className="w-full">
-        <div className="overflow-hidden">
-          <div className="md:p-2 lg:p-4">
+        <div>
+          <div>
             <DesignStudioContent />
             <div className="w-full">
               {/* <NumberLabel label="Choose a product">3</NumberLabel> */}
@@ -20,8 +20,12 @@ export default async function StudioPage() {
               <Suspense
                 fallback={<div className="h-[30vh] animate-pulse rounded-xl bg-gray-100" />}
               >
-                <div className="mx-auto max-w-4xl">
-                  <ProductCarousel collectionHandle="all" className="w-full md:max-w-none" size="small" />
+                <div className="mx-auto">
+                  <ProductCarousel
+                    collectionHandle="all"
+                    className="xl:max-width-5xl max-w-2xl lg:max-w-3xl"
+                    size="small"
+                  />
                 </div>
               </Suspense>
             </div>

@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   description: 'Explore and shop thousands of custom designs from independent creators on Journa.',
   appleWebApp: {
-    statusBarStyle: 'black-translucent',
+    statusBarStyle: 'black-translucent'
   },
   keywords: [
     'custom designs',

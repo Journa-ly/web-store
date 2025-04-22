@@ -46,16 +46,18 @@ class WebSocketManager {
 
     this.socket.onerror = (error) => {
       console.error('WebSocket error:', error);
-      this.errorHandlers.forEach(handler => handler(new Error('WebSocket connection error')));
+      this.errorHandlers.forEach((handler) => handler(new Error('WebSocket connection error')));
     };
 
     this.socket.onmessage = (event) => {
       try {
         const message = JSON.parse(event.data) as WebSocketMessage;
-        this.subscribers.forEach(subscriber => subscriber(message));
+        this.subscribers.forEach((subscriber) => subscriber(message));
       } catch (error) {
         console.error('Error parsing WebSocket message:', error);
-        this.errorHandlers.forEach(handler => handler(new Error('Failed to parse WebSocket message')));
+        this.errorHandlers.forEach((handler) =>
+          handler(new Error('Failed to parse WebSocket message'))
+        );
       }
     };
 

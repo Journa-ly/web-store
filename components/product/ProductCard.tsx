@@ -30,10 +30,10 @@ interface ProductCardProps {
   className?: string; // Additional classes for the card
 }
 
-export function ProductCard({ 
-  product, 
-  imageHeight = 'h-64', 
-  cardHeight = 'h-full', 
+export function ProductCard({
+  product,
+  imageHeight = 'h-64',
+  cardHeight = 'h-full',
   cardWidth = 'w-full',
   className = ''
 }: ProductCardProps) {

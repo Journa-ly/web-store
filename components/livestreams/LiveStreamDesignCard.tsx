@@ -34,7 +34,11 @@ const reactionToCountKey: Record<string, keyof ReactionCounts> = {
   FIRE: 'fire_count'
 };
 
-export default function LiveStreamDesignCard({ design, id, onDesignAdded }: LiveStreamDesignCardProps) {
+export default function LiveStreamDesignCard({
+  design,
+  id,
+  onDesignAdded
+}: LiveStreamDesignCardProps) {
   const [reactions, setReactions] = useState<string[]>(design.user_reactions || []);
   const [counts, setCounts] = useState<ReactionCounts>({
     heart_count: design.heart_count || 0,
@@ -137,7 +141,7 @@ export default function LiveStreamDesignCard({ design, id, onDesignAdded }: Live
         <div
           ref={overlayRef}
           className={clsx(
-            'absolute inset-0 z-10 bg-black/60 p-4 transition-all duration-300 rounded-lg',
+            'absolute inset-0 z-10 rounded-lg bg-black/60 p-4 transition-all duration-300',
             isMobile
               ? {
                   'pointer-events-auto opacity-100': showOverlay,
@@ -185,7 +189,7 @@ export default function LiveStreamDesignCard({ design, id, onDesignAdded }: Live
           />
         </div>
 
-        <div className="reaction-bar absolute bottom-0 left-0 right-0 z-20 flex items-center justify-start space-x-6 bg-black/40 p-3 backdrop-blur-sm transition-opacity duration-300 rounded-b-lg">
+        <div className="reaction-bar absolute bottom-0 left-0 right-0 z-20 flex items-center justify-start space-x-6 rounded-b-lg bg-black/40 p-3 backdrop-blur-sm transition-opacity duration-300">
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -260,4 +264,4 @@ export default function LiveStreamDesignCard({ design, id, onDesignAdded }: Live
       />
     </div>
   );
-} 
+}

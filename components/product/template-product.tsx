@@ -39,8 +39,7 @@ export default function TemplateProduct({ product }: { product: Product }) {
 
           <div className="mb-8 w-full">
             <DesignForm />
-            <div className="pb-2">
-            </div>
+            <div className="pb-2"></div>
             <div className="w-full overflow-hidden">
               <MyDesignsCarousel />
             </div>

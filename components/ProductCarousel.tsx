@@ -20,5 +20,7 @@ export default async function ProductCarousel({
     return null;
   }
 
-  return <ProductCarouselClient products={products} title={title} className={className} size={size} />;
+  return (
+    <ProductCarouselClient products={products} title={title} className={className} size={size} />
+  );
 }

@@ -25,7 +25,7 @@ import {
 const ShareOverlay = ({ design }: { design: UserDesign }) => {
   const [shareUrl, setShareUrl] = useState('');
   const [isOpen, setIsOpen] = useState(false);
-  
+
   useEffect(() => {
     // Get the base URL from environment or default to the current origin
     const baseUrl = window.location.origin;
@@ -58,13 +58,19 @@ const ShareOverlay = ({ design }: { design: UserDesign }) => {
   if (!design || !media) return null;
 
   return (
-    <div className="dropdown dropdown-top dropdown-end absolute right-2 bottom-2 z-30">
-      <button 
+    <div className="dropdown dropdown-end dropdown-top absolute bottom-2 right-2 z-30">
+      <button
         onClick={toggleDropdown}
         className="transform rounded-full bg-white/95 p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
         aria-label="Share design"
       >
-        <svg width="16" height="16" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 25 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
           <path
             d="M4.5 12V20C4.5 20.5304 4.71071 21.0391 5.08579 21.4142C5.46086 21.7893 5.96957 22 6.5 22H18.5C19.0304 22 19.5391 21.7893 19.9142 21.4142C20.2893 21.0391 20.5 20.5304 20.5 20V12M16.5 6L12.5 2M12.5 2L8.5 6M12.5 2V15"
             stroke="#757575"
@@ -74,10 +80,10 @@ const ShareOverlay = ({ design }: { design: UserDesign }) => {
           />
         </svg>
       </button>
-      
+
       {isOpen && (
-        <div className="dropdown-content menu z-[40] mt-2 -translate-y-2 rounded-box bg-base-100 p-3 shadow-lg">
-          <div className="flex flex-col gap-2 min-w-40">
+        <div className="menu dropdown-content z-[40] mt-2 -translate-y-2 rounded-box bg-base-100 p-3 shadow-lg">
+          <div className="flex min-w-40 flex-col gap-2">
             <FacebookShareButton
               url={shareUrl}
               hashtag="#design"
@@ -119,11 +125,7 @@ const ShareOverlay = ({ design }: { design: UserDesign }) => {
               <span className="text-xs">Reddit</span>
             </RedditShareButton>
 
-            <button 
-              type="button" 
-              className="btn btn-outline btn-xs mt-1" 
-              onClick={handleCopyLink}
-            >
+            <button type="button" className="btn btn-outline btn-xs mt-1" onClick={handleCopyLink}>
               Copy Link
             </button>
           </div>
@@ -280,10 +282,13 @@ export default function DesignCarousel({
 
   return (
     <>
-      <div className="relative w-full mt-2">
+      <div className="relative mt-2 w-full">
         <div className="relative h-[350px]">
-          <div ref={containerRef} className="hide-scrollbar absolute inset-0 overflow-x-auto px-8 scroll-smooth">
-            <div className="inline-flex h-full items-center gap-4 lg:gap-8 py-4">              
+          <div
+            ref={containerRef}
+            className="hide-scrollbar absolute inset-0 overflow-x-auto scroll-smooth px-8"
+          >
+            <div className="inline-flex h-full items-center gap-4 py-4 lg:gap-8">
               {designs.map((design, index) => {
                 const isGenerating =
                   design.image?.status === 'Pending' || design.image?.status === 'Processing';
@@ -292,13 +297,7 @@ export default function DesignCarousel({
                 const isLastImage = index === designs.length - 1;
 
                 return (
-                  <div 
-                    key={design.uuid}
-                    className={clsx(
-                      'relative', 
-                      isSelected && 'mx-6'
-                    )}
-                  >
+                  <div key={design.uuid} className={clsx('relative', isSelected && 'mx-6')}>
                     <div
                       ref={(el) => {
                         if (isSelected) selectedImageRef.current = el;
@@ -313,9 +312,9 @@ export default function DesignCarousel({
                       }}
                       className={clsx(
                         'relative flex-shrink-0 overflow-hidden rounded-xl transition-transform duration-300',
-                        'group aspect-square cursor-pointer shadow-sm hover:shadow-md z-10',
+                        'group z-10 aspect-square cursor-pointer shadow-sm hover:shadow-md',
                         'h-[264px] w-[264px]',
-                        isSelected && !hasFailed && 'scale-125 z-20'
+                        isSelected && !hasFailed && 'z-20 scale-125'
                       )}
                     >
                       {/* Loading or Generating State */}
@@ -411,10 +410,10 @@ export default function DesignCarousel({
                   </div>
                 );
               })}
-              
+
               {/* Add padding at end to allow last item to be centered */}
               <div className="w-[50%] flex-shrink-0"></div>
-              
+
               {/* Loading indicator for infinite scroll */}
               {isLoading && hasMore && (
                 <div className="flex h-[264px] w-[264px] items-center justify-center">
