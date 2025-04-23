@@ -16,7 +16,6 @@ import { serverClient } from '@/clients/server';
 import MyDesignsButton from '../buttons/MyDesignsButton';
 import ImageGridIcon from 'icons/ImageGrid';
 import MyDesignsModal from 'components/modals/MyDesignsModal';
-import { TypeAnimation } from 'react-type-animation';
 
 // Define the form schema
 const formSchema = z.object({
@@ -32,6 +31,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const { isAuthenticated } = useAuth();
   const promptRef = useRef<HTMLTextAreaElement>(null);
   const textareaContainerRef = useRef<HTMLDivElement>(null);
+  const animationRef = useRef<number | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showAuthModal, setShowAuthModal] = useState(false);
@@ -41,6 +41,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [isPillLoading, setIsPillLoading] = useState<string | null>(null);
   const [showMyDesignsModal, setShowMyDesignsModal] = useState(false);
   const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [isFormValid, setIsFormValid] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const {
@@ -48,10 +49,24 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     handleSubmit,
     reset,
     setValue,
-    formState: { errors, isSubmitting }
+    watch,
+    formState: { errors, isSubmitting, isValid }
   } = useForm<FormValues>({
-    resolver: zodResolver(formSchema)
+    resolver: zodResolver(formSchema),
+    mode: 'onChange' // Enable validation on change
   });
+
+  // Watch prompt field value for real-time validation
+  const promptValue = watch('prompt');
+  
+  // Check if form is valid (prompt has enough characters)
+  useEffect(() => {
+    if (promptValue && promptValue.length >= 8 && !isSubmitting && !isSubmitDisabled && !isAnimating) {
+      setIsFormValid(true);
+    } else {
+      setIsFormValid(false);
+    }
+  }, [promptValue, isSubmitting, isSubmitDisabled, isAnimating]);
 
   const { mutate, myDesigns } = usePaginatedMyDesigns();
 
@@ -68,6 +83,66 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       const newHeight = Math.max(100, promptRef.current.scrollHeight + buttonAreaHeight);
       promptRef.current.style.height = `${newHeight}px`;
     }
+  };
+
+  // Clean DOM-based animation on component unmount
+  useEffect(() => {
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+        animationRef.current = null;
+      }
+    };
+  }, []);
+
+  // Handle DOM-based typing animation without React state updates
+  const animateTyping = (fullText: string) => {
+    if (!promptRef.current) return;
+    
+    // Cancel any existing animation
+    if (animationRef.current) {
+      cancelAnimationFrame(animationRef.current);
+      animationRef.current = null;
+    }
+    
+    // Mark as animating
+    setIsAnimating(true);
+    
+    // Set initial empty value directly on the DOM element
+    promptRef.current.value = '';
+    
+    // Store for form state
+    setGeneratedPrompt(fullText);
+    
+    let currentIndex = 0;
+    
+    // Animation function using requestAnimationFrame
+    const step = () => {
+      if (!promptRef.current) return;
+      
+      // Type 3 characters per frame for speed
+      for (let i = 0; i < 1 && currentIndex < fullText.length; i++) {
+        currentIndex++;
+        // Update value directly on DOM element
+        promptRef.current.value = fullText.substring(0, currentIndex);
+      }
+      
+      // Adjust height on each update
+      adjustTextareaHeight();
+      
+      // Continue animation if not complete
+      if (currentIndex < fullText.length) {
+        animationRef.current = requestAnimationFrame(step);
+      } else {
+        // Animation complete - update React's form state once at the end
+        setValue('prompt', fullText);
+        setIsAnimating(false);
+        promptRef.current.focus();
+      }
+    };
+    
+    // Start animation
+    animationRef.current = requestAnimationFrame(step);
   };
 
   // Adjust height when content changes
@@ -110,23 +185,6 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
     }
   }, [isAuthenticated, myDesigns]);
 
-  // Handle animation completion
-  const onAnimationComplete = () => {
-    // Set the form value
-    setValue('prompt', generatedPrompt);
-    
-    // End animation state
-    setIsAnimating(false);
-    
-    // Adjust height and focus in the next render cycle
-    setTimeout(() => {
-      adjustTextareaHeight();
-      if (promptRef.current) {
-        promptRef.current.focus();
-      }
-    }, 0);
-  };
-
   const onSubmit = async (data: FormValues) => {
     if (isSubmitDisabled) return;
 
@@ -146,13 +204,32 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         livestream_uuid: livestream?.uuid || undefined
       };
 
-      await createDesign(designData);
+      // Create the design
+      const createdDesign = await createDesign(designData);
+      
+      // Refresh the designs list
       await mutate();
-
+      
       // Update remaining designs count after successful creation
       if (!isAuthenticated && remainingDesigns !== null) {
         setRemainingDesigns(Math.max(0, remainingDesigns - 1));
       }
+      
+      // Use the directly returned design from the createDesign function
+      if (createdDesign) {
+        // The API might return a single design or the full list
+        const newDesign = Array.isArray(createdDesign) ? createdDesign[0] : createdDesign;
+        
+        if (newDesign) {
+          setSelectedDesign(newDesign);
+          
+          // If the design has a preview image, set it
+          if (newDesign.product_image?.image) {
+            setPreviewImage(newDesign.product_image.image);
+          }
+        }
+      }
+      
     } catch (error: any) {
       console.error('Error creating design:', error);
 
@@ -207,10 +284,21 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       imageText: '',
       style: ''
     });
-    // Focus the prompt textarea after reset
-    promptRef.current?.focus();
+    
+    // Ensure the textarea height is reset
+    setTimeout(() => {
+      if (promptRef.current) {
+        // Reset to auto first
+        promptRef.current.style.height = 'auto';
+        // Then adjust to proper minimum height
+        adjustTextareaHeight();
+        // Focus the prompt textarea after reset
+        promptRef.current.focus();
+      }
+    }, 0);
   };
 
+  // Handle style click with animation
   const handleStyleClick = async (style: string) => {
     try {
       setIsPillLoading(style);
@@ -235,12 +323,8 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
         throw new Error('Unexpected response format');
       }
 
-      // Set the generated prompt text and trigger animation
-      setGeneratedPrompt(promptText);
-      setIsAnimating(true);
-      
-      // Clear the form first
-      setValue('prompt', '');
+      // Animate the typing effect using DOM-based approach
+      animateTyping(promptText);
       
     } catch (error: any) {
       console.error('Error generating prompt:', error);
@@ -274,7 +358,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                     key={style}
                     type="button"
                     onClick={() => handleStyleClick(style)}
-                    disabled={isPillLoading !== null || isSubmitDisabled}
+                    disabled={isPillLoading !== null || isSubmitDisabled || isAnimating}
                     className="mr-2 inline-flex flex-shrink-0 items-center whitespace-nowrap rounded-full bg-neutral-200 px-3 py-1.5 text-sm text-neutral-700 transition-colors hover:bg-secondary hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isPillLoading === style && (
@@ -286,43 +370,29 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
               </div>
             </div>
             
-            {isAnimating ? (
-              <div className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] p-4 overflow-hidden"
-                   style={{ 
-                     minHeight: '100px',
-                     paddingBottom: '68px',
-                   }}>
-                <TypeAnimation
-                  sequence={[
-                    generatedPrompt,
-                    onAnimationComplete
-                  ]}
-                  wrapper="div"
-                  cursor={true}
-                  speed={70}
-                  style={{ display: 'block', whiteSpace: 'pre-wrap' }}
-                />
-              </div>
-            ) : (
-              <textarea
-                {...register('prompt')}
-                ref={(e) => {
-                  register('prompt').ref(e);
-                  promptRef.current = e;
-                }}
-                className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
-                placeholder='A colorful, grafiti-style design that says "I love you"'
-                style={{ minHeight: '100px', paddingBottom: '64px' }}
-                onChange={() => adjustTextareaHeight()}
-              />
-            )}
+            {/* Unified textarea */}
+            <textarea
+              {...register('prompt')}
+              ref={(e) => {
+                register('prompt').ref(e);
+                promptRef.current = e;
+              }}
+              className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
+              placeholder='A colorful, grafiti-style design that says "I love you"'
+              style={{ 
+                minHeight: '100px',
+                paddingBottom: '68px'
+              }}
+              onChange={() => adjustTextareaHeight()}
+            />
 
             {/* Button Controls - Bottom Left */}
             <div className="absolute bottom-4 left-3 z-10 flex items-center space-x-3">
               <button
                 type="button"
                 onClick={handleNewGeneration}
-                className="flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
+                disabled={isAnimating}
+                className="flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="New generation"
               >
                 <ArrowPathIcon className="h-5 w-5 text-gray-600" />
@@ -346,13 +416,15 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
               <button
                 type="submit"
                 disabled={
-                  isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0)
+                  isSubmitting || isSubmitDisabled || (!isAuthenticated && remainingDesigns === 0) || isAnimating
                 }
                 className={clsx(
                   'flex transform items-center justify-center rounded-full bg-secondary p-3 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:shadow-md active:scale-95',
+                  isFormValid && 'pulse-animation shadow-xl ring-2 ring-secondary/30',
                   (isSubmitting ||
                     isSubmitDisabled ||
-                    (!isAuthenticated && remainingDesigns === 0)) &&
+                    (!isAuthenticated && remainingDesigns === 0) ||
+                    isAnimating) &&
                     'cursor-not-allowed opacity-50'
                 )}
                 onClick={() => {
