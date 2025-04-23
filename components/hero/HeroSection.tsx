@@ -32,7 +32,7 @@ export default function HeroSection() {
                 href="/designs/studio"
                 className="btn h-12 flex-1 gap-2 whitespace-nowrap border-none bg-secondary text-white hover:bg-accent sm:w-40"
               >
-                <span>Create Design</span>
+                <span>Create Designs</span>
               </Link>
             </div>
           </div>
