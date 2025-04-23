@@ -16,6 +16,7 @@ import { serverClient } from '@/clients/server';
 import MyDesignsButton from '../buttons/MyDesignsButton';
 import ImageGridIcon from 'icons/ImageGrid';
 import MyDesignsModal from 'components/modals/MyDesignsModal';
+import { TypeAnimation } from 'react-type-animation';
 
 // Define the form schema
 const formSchema = z.object({
@@ -39,6 +40,8 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [remainingDesigns, setRemainingDesigns] = useState<number | null>(null);
   const [isPillLoading, setIsPillLoading] = useState<string | null>(null);
   const [showMyDesignsModal, setShowMyDesignsModal] = useState(false);
+  const [generatedPrompt, setGeneratedPrompt] = useState('');
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const {
     register,
@@ -106,6 +109,23 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       setRemainingDesigns(null);
     }
   }, [isAuthenticated, myDesigns]);
+
+  // Handle animation completion
+  const onAnimationComplete = () => {
+    // Set the form value
+    setValue('prompt', generatedPrompt);
+    
+    // End animation state
+    setIsAnimating(false);
+    
+    // Adjust height and focus in the next render cycle
+    setTimeout(() => {
+      adjustTextareaHeight();
+      if (promptRef.current) {
+        promptRef.current.focus();
+      }
+    }, 0);
+  };
 
   const onSubmit = async (data: FormValues) => {
     if (isSubmitDisabled) return;
@@ -202,25 +222,26 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
       );
 
       // Extract the prompt from the response
-      let generatedPrompt;
+      let promptText;
       let isDesignCreating = false;
 
       if (typeof response.data === 'string') {
-        generatedPrompt = response.data;
+        promptText = response.data;
       } else if (response.data && typeof response.data === 'object') {
-        generatedPrompt = response.data.prompt || '';
+        promptText = response.data.prompt || '';
         isDesignCreating = !!response.data.design_creating;
       } else {
         console.error('Unexpected response format:', response.data);
         throw new Error('Unexpected response format');
       }
 
-      // Update the form with the generated prompt
-      setValue('prompt', generatedPrompt);
+      // Set the generated prompt text and trigger animation
+      setGeneratedPrompt(promptText);
+      setIsAnimating(true);
       
-      // Ensure textarea height adjusts for the new content
-      setTimeout(adjustTextareaHeight, 0);
-
+      // Clear the form first
+      setValue('prompt', '');
+      
     } catch (error: any) {
       console.error('Error generating prompt:', error);
 
@@ -264,17 +285,37 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
                 ))}
               </div>
             </div>
-            <textarea
-              {...register('prompt')}
-              ref={(e) => {
-                register('prompt').ref(e);
-                promptRef.current = e;
-              }}
-              className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
-              placeholder='A colorful, grafiti-style design that says "I love you"'
-              style={{ minHeight: '100px', paddingBottom: '64px' }}
-              onChange={() => adjustTextareaHeight()}
-            />
+            
+            {isAnimating ? (
+              <div className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] p-4 overflow-hidden"
+                   style={{ 
+                     minHeight: '100px',
+                     paddingBottom: '68px',
+                   }}>
+                <TypeAnimation
+                  sequence={[
+                    generatedPrompt,
+                    onAnimationComplete
+                  ]}
+                  wrapper="div"
+                  cursor={true}
+                  speed={70}
+                  style={{ display: 'block', whiteSpace: 'pre-wrap' }}
+                />
+              </div>
+            ) : (
+              <textarea
+                {...register('prompt')}
+                ref={(e) => {
+                  register('prompt').ref(e);
+                  promptRef.current = e;
+                }}
+                className="textarea w-full bg-neutral-100 text-[16px] font-extralight leading-[1.3] resize-none overflow-hidden"
+                placeholder='A colorful, grafiti-style design that says "I love you"'
+                style={{ minHeight: '100px', paddingBottom: '64px' }}
+                onChange={() => adjustTextareaHeight()}
+              />
+            )}
 
             {/* Button Controls - Bottom Left */}
             <div className="absolute bottom-4 left-3 z-10 flex items-center space-x-3">
