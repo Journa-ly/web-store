@@ -19,7 +19,7 @@ export default function MyDesignsButton() {
 
   return (
     <>
-      <IconButton icon={<ImageGrid />} onClick={() => setIsModalOpen(true)} />
+      <IconButton icon={<ImageGrid />} text="Designs" onClick={() => setIsModalOpen(true)} />
 
       <MyDesignsModal
         open={isModalOpen}

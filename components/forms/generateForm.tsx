@@ -14,6 +14,8 @@ import AuthModal from 'components/modals/AuthModal';
 import { LiveStream } from '@/requests/livestreams';
 import { serverClient } from '@/clients/server';
 import MyDesignsButton from '../buttons/MyDesignsButton';
+import ImageGridIcon from 'icons/ImageGrid';
+import MyDesignsModal from 'components/modals/MyDesignsModal';
 
 // Define the form schema
 const formSchema = z.object({
@@ -25,7 +27,7 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>;
 
 const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) => {
-  const { selectedDesign } = useDesign();
+  const { selectedDesign, setSelectedDesign, setPreviewImage } = useDesign();
   const { isAuthenticated } = useAuth();
   const promptRef = useRef<HTMLTextAreaElement>(null);
   const textareaContainerRef = useRef<HTMLDivElement>(null);
@@ -36,6 +38,7 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   const [pendingDesignData, setPendingDesignData] = useState<FormValues | null>(null);
   const [remainingDesigns, setRemainingDesigns] = useState<number | null>(null);
   const [isPillLoading, setIsPillLoading] = useState<string | null>(null);
+  const [showMyDesignsModal, setShowMyDesignsModal] = useState(false);
 
   const {
     register,
@@ -214,6 +217,9 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
 
       // Update the form with the generated prompt
       setValue('prompt', generatedPrompt);
+      
+      // Ensure textarea height adjusts for the new content
+      setTimeout(adjustTextareaHeight, 0);
 
     } catch (error: any) {
       console.error('Error generating prompt:', error);
@@ -233,11 +239,6 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
   return (
     <>
       <div>
-        {/* My Designs Button - Top Right */}
-        {/* <div className="flex justify-end mb-2">
-          <MyDesignsButton />
-        </div> */}
-
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-2">
           {/* Description Field with Overlaid Buttons */}
           <div className="relative" ref={textareaContainerRef}>
@@ -275,17 +276,28 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
               onChange={() => adjustTextareaHeight()}
             />
 
-            {/* New Generation Button - Bottom Left */}
-            <div className="absolute bottom-4 left-3 z-10">
+            {/* Button Controls - Bottom Left */}
+            <div className="absolute bottom-4 left-3 z-10 flex items-center space-x-3">
               <button
                 type="button"
                 onClick={handleNewGeneration}
                 className="flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
                 aria-label="New generation"
               >
-                <ArrowPathIcon className="h-4 w-4 text-gray-600" />
+                <ArrowPathIcon className="h-5 w-5 text-gray-600" />
               </button>
-              <MyDesignsButton />
+              
+              {/* Custom My Designs Button with same styling as New Generation button */}
+              <button
+                type="button"
+                onClick={() => setShowMyDesignsModal(true)}
+                className="flex transform items-center justify-center rounded-full bg-white p-1.5 shadow-sm ring-1 ring-black/5 transition-all duration-200 hover:scale-105 hover:bg-white hover:shadow-md active:scale-95"
+                aria-label="My Designs"
+              >
+                <div className="h-5 w-5 flex items-center justify-center">
+                  <ImageGridIcon />
+                </div>
+              </button>
             </div>
 
             {/* Generate Button - Bottom Right */}
@@ -421,6 +433,19 @@ const DesignForm = ({ livestream = null }: { livestream?: LiveStream | null }) =
             ? "You've reached the maximum number of designs for anonymous users. Sign in or create an account to continue designing."
             : undefined
         }
+      />
+      
+      {/* My Designs Modal */}
+      <MyDesignsModal
+        open={showMyDesignsModal}
+        onClose={() => setShowMyDesignsModal(false)}
+        onSelectDesign={(design) => {
+          setSelectedDesign(design);
+          if (design.product_image?.image) {
+            setPreviewImage(design.product_image?.image);
+          }
+          setShowMyDesignsModal(false);
+        }}
       />
     </>
   );
